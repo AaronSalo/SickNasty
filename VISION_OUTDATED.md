@@ -12,4 +12,4 @@ SickNasty is considered to be valuable because users will be able to share conte
  
 The system is envisioned to be an android app as it will allow users to have it with them all the time.It will further be available on other platforms such as iOS and web.
 
-The success of this project will be determined by 3 criteria as follows. Firstly, if users have a good experience in effectively sharing and communicating their interests through this platform. Second, if new users can easily find and join communities as soon as they create an account. Finally, if, after launch, user retention is at least 20% in the following 6 months.
+The success of this project will be determined by 3 criteria as follows. First, if users have a good experience in effectively sharing and communicating their interests through this platform. Second, if new users can easily find and join communities as soon as they create an account. Finally, if, after launch, user retention is at least 20% in the following 6 months.
