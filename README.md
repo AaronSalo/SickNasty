@@ -12,4 +12,4 @@ We consider SickNasty to be valuable because users will be able to share content
  
 The system is envisioned to be an android app. After initial release, we will consider expanding to an iOS and web release.
 
-The success of this project will be determined by 3 criteria as follows. Firstly, if users can easily share content to the platform. Second, if new users can easily find and join communities as soon as they create an account. Finally, if, after launch, user retention is at least 20% in the following 6 months after release.
+The success of this project will be determined by 3 criteria as follows. First, if users can easily share content to the platform. Second, if new users can easily find and join communities as soon as they create an account. Finally, if, after launch, user retention is at least 20% in the following 6 months after release.
