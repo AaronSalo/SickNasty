@@ -1,7 +1,11 @@
+package com.sicknasty.objects;
 
 import java.util.ArrayList;
 
 public class User {
+
+    private static int globalUserID = 0; //global int, increments every time a new user is created
+    private int userID;
 
     private String userName;
     private String passwordHASHED; //MAKE SURE we store a hashed version
@@ -14,11 +18,17 @@ public class User {
     private int maxUsernameLength = 12; //username cannot be longer than 12 characters
 
     public User(String userName, String passwordHASHED) {
+        this.userID = globalUserID;
+        globalUserID++;
         this.userName =  userName;
         this.passwordHASHED = passwordHASHED;
         //personalPage = new PersonalPage(); //*******WAITING FOR PAGE IMPLEMENTATION********
     }//end of constructor
 
+
+    public String getUsername(){return userName;}
+
+    public int getUserID() {return userID;}
 
     //Pass a new password through a hashing funciton
     public void changePassword(String newPass) {
