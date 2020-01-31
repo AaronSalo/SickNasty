@@ -1,59 +1,50 @@
-package com.sicknasty.persistance.stub;
+package com.sicknasty.persistance.stubs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.sicknasty.persistance.PostPersistance;
 
 public class PostPersistanceStub implements PostPersistance {
-    // an ArrayList containing ALL the posts in the app
-    private ArrayList<Post> posts;
+    // an HashMap containing ALL the posts in the app
+    private HashMap<Integer, Post> posts;
 
     public PostPersistanceStub() {
-        this.posts = new ArrayList<Post>();
+        this.posts = new HashMap<Integer, Post>();
     }
 
+    @Override
     public Post GetPostById(int id) {
-        for (Post post : this.posts) {
-            // return post here
-        }
+        return this.posts.get(id);
+    }
 
+    @Override
+    public ArrayList<Post> GetPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
+        // this function is up for discussion
         return null;
     }
 
-    public ArrayList<Post> GetPostsByUser(User user, int limit) {
-        ArrayList<Post> userPosts = new ArrayList<Post>();
-
-        for (Post post : this.posts) {
-            // if user == post.author then add
-        }
-
-        return userPosts;
-    }
-
-    public ArrayList<Post> GetPostsByCommunity(Page community, int limit) {
-        ArrayList<Post> communityPosts = new ArrayList<Post>();
-
-        for (Post post : this.posts) {
-            // if community == post.page then add
-        }
-
-        return communityPosts;
-    }
-
+    @Override
     public boolean InsertNewPost() {
-        // insert post
-
+        // waiting on Post implementation
         return false;
     }
 
+    @Override
     public boolean DeletePost(int id) {
-        // delete post by id
+        // remove the post, if it removes then result will be the Post object
+        // if it did not fine an id, it will return null
+        Post result = this.posts.remove(id);
 
-        return false;
+        return result != null;
     }
 
+    @Override
     public boolean DeletePost(Post post) {
-        // delete post by object
+        int id = post.GET_ID_HERE;
 
-        return false;
+        // i dont like this.
+        // the existance of this function can be discussed
+        return this.DeletePost(id);
     }
 }
