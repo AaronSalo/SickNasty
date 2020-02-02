@@ -63,7 +63,6 @@ public class Password {
         return "";
     }
 
-
     //if the stored hash equals the hash of the input, the password is correct
     public boolean checkPass(String input) {
         return hash.equals(hash(input, salt));

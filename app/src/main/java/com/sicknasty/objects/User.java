@@ -8,7 +8,7 @@ public class User {
     private int userID;
 
     private String userName;
-    private String passwordHASHED; //MAKE SURE we store a hashed version
+    private Password password;
 
     ArrayList<User> followers; //list of people that follow the user
     ArrayList<User> follows; //list of people that the user follows
@@ -17,11 +17,11 @@ public class User {
 
     private int maxUsernameLength = 12; //username cannot be longer than 12 characters
 
-    public User(String userName, String passwordHASHED) {
+    public User(String userName, String password) {
         this.userID = globalUserID;
         globalUserID++;
         this.userName =  userName;
-        this.passwordHASHED = passwordHASHED;
+        this.password = new Password(password);
         //personalPage = new PersonalPage(); //*******WAITING FOR PAGE IMPLEMENTATION********
     }//end of constructor
 
@@ -32,9 +32,7 @@ public class User {
 
     //Pass a new password through a hashing funciton
     public void changePassword(String newPass) {
-        //pass thru hash function, not available yet
-        String newPassHASHED = newPass; //just for now, waiting for jays hash function
-        passwordHASHED = newPassHASHED;
+        this.password.changePassword(newPass);
     }//end of change password
 
 
