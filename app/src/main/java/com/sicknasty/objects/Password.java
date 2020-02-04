@@ -20,6 +20,23 @@ public class Password {
 
     //this combines the password string and the salt and creates a hash
     private static String hash(String password, String salt) {
+        try {
+            // 64 byte hash, same length as the salt
+            byte hash[] = new byte[64];
+
+            // get the byte encoding of concat password and salt
+            MessageDigest msg = MessageDigest.getInstance("SHA-512");
+            msg.update((password + salt).getBytes());
+
+            // digest the password + salt and put bytes into the array
+            hash = msg.digest();
+
+            // just like in generateSalt() we return text
+            return Base64.getEncoder().withoutPadding().encodeToString(hash);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "";
     }//end of hash function
 
@@ -34,6 +51,8 @@ public class Password {
         return "";
     }
 
+        return "";
+    }
 
     //if the stored hash equals the hash of the input, the password is correct
     public boolean checkPass(String inputPassword) {

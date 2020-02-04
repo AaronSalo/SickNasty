@@ -1,8 +1,8 @@
-package com.sicknasty.persistance;
+package com.sicknasty.persistence;
 
 import java.util.ArrayList;
 
-public interface PostPersistance {
+public interface PostPersistence {
     public enum FILTER_BY {TIME_CREATED, AMOUNT_LIKES};
     /**
      * Returns a Post specified by it's unique ID.
