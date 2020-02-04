@@ -14,11 +14,15 @@ public class PagePersistenceStub implements PagePersistence {
 
     @Override
     public Page GetPage(String name) {
+        if (name == null) return null;
+
         return this.pages.get(name);
     }
 
     @Override
     public boolean InsertNewPage(Page page) {
+        if (page == null) return false;
+
         Page localPage = this.pages.get(page.getPageID());
 
         if (localPage == null) {
@@ -32,6 +36,8 @@ public class PagePersistenceStub implements PagePersistence {
 
     @Override
     public boolean DeletePage(String name) {
+        if (name == null) return false;
+
         Page result = this.pages.remove(name);
 
         return result != null;
@@ -39,6 +45,8 @@ public class PagePersistenceStub implements PagePersistence {
 
     @Override
     public boolean DeletePage(Page page) {
+        if (page == null) return false;
+
         Page exisitingPost = this.pages.get(page.getPageName());
 
         if (exisitingPost == null) {

@@ -28,6 +28,8 @@ public class PostPersistenceStub implements PostPersistence {
 
     @Override
     public boolean InsertNewPost(Post post) {
+        if (post == null) return false;
+
         Post exisitingPost = this.posts.get(post.getPostID());
 
         if (exisitingPost == null) {
@@ -50,6 +52,8 @@ public class PostPersistenceStub implements PostPersistence {
 
     @Override
     public boolean DeletePost(Post post) {
+        if (post == null) return false;
+
         Post exisitingPost = this.posts.get(post.getPostID());
 
         if (exisitingPost == null) {
