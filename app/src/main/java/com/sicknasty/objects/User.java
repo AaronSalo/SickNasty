@@ -33,6 +33,10 @@ public class User {
 
     public String getUsername(){return userName;}
 
+    public Password getPassword() {
+        return password;
+    }
+
     public int getUserID() {return userID;}
 
     //Pass a new password through a hashing funciton
