@@ -6,10 +6,10 @@ public interface UserPersistence {
     /**
      * This returns a User object specified by its unique Id
      *
-     * @param   id      the unique id of the User
+     * @param   username the unique username of the User
      * @return          returns the User object if a user with specified username exists, otherwise null
      */
-    public User GetUserById(int id);
+    public User GetUser(String username);
 
     /**
      * Inserts a new User with by specifying a unique username and a hashed password.

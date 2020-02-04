@@ -1,7 +1,10 @@
 package com.sicknasty.persistence.stubs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sicknasty.objects.Page;
+import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
 
 public class PostPersistenceStub implements PostPersistence {
@@ -24,8 +27,15 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean InsertNewPost() {
-        // waiting on Post implementation
+    public boolean InsertNewPost(Post post) {
+        Post exisitingPost = this.posts.get(post.getPostID());
+
+        if (exisitingPost == null) {
+            this.posts.put(post.getPostID(), post);
+
+            return true;
+        }
+
         return false;
     }
 
@@ -40,10 +50,14 @@ public class PostPersistenceStub implements PostPersistence {
 
     @Override
     public boolean DeletePost(Post post) {
-        int id = post.GET_ID_HERE;
+        Post exisitingPost = this.posts.get(post.getPostID());
+
+        if (exisitingPost == null) {
+            return false;
+        }
 
         // i dont like this.
         // the existance of this function can be discussed
-        return this.DeletePost(id);
+        return this.DeletePost(exisitingPost.getPostID());
     }
 }

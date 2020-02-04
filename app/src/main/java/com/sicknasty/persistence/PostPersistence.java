@@ -1,5 +1,8 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Page;
+import com.sicknasty.objects.Post;
+
 import java.util.ArrayList;
 
 public interface PostPersistence {
@@ -25,10 +28,11 @@ public interface PostPersistence {
 
     /**
      * Inserts a new Post.
-     * 
+     *
+     * @param   post    the Post object to insert into the database
      * @return      returns true on successful insert, otherwise return false
      */
-    public boolean InsertNewPost();
+    public boolean InsertNewPost(Post post);
 
     /**
      * Deletes a Post specified by it's unique ID.
