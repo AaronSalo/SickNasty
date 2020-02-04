@@ -1,4 +1,6 @@
 //object for only holding picture posts
+package com.sicknasty.objects;
+
 public class PicturePost extends Post {
 
 

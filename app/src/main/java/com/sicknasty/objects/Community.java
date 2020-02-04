@@ -1,4 +1,4 @@
-package com.example.test1;
+package com.sicknasty.objects;
 
 import java.util.ArrayList;
 

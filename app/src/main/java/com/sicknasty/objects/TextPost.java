@@ -1,4 +1,6 @@
 //class for text posts only. no media added
+package com.sicknasty.objects;
+
 public class TextPost extends Post{
 
 

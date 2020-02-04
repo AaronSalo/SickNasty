@@ -1,4 +1,4 @@
-package com.example.test1;
+package com.sicknasty.objects;
 
 public class CommunityPage extends Page {
     private Community community;

@@ -1,7 +1,7 @@
 /*
 abstract class for post
  */
-
+package com.sicknasty.objects;
 
 public abstract class Post {
 

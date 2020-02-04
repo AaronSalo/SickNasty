@@ -1,9 +1,8 @@
-package com.example.test1;
+package com.sicknasty.objects;
 
 import java.util.ArrayList;
 
 public class PersonalPage extends Page {
-    ArrayList Post posts;
 
     private ArrayList<Post> posts;
     private User user;
