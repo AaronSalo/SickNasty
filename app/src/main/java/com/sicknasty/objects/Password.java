@@ -15,6 +15,7 @@ public class Password {
     public Password(String password) {
         salt = generateSalt(); //generate the salt for this obj
         hash = hash(password, salt);
+
     }
 
 

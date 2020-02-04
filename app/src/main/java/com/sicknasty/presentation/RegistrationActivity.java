@@ -1,4 +1,4 @@
-package com.sicknasty.application;
+package com.sicknasty.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
