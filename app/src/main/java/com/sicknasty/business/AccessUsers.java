@@ -14,7 +14,7 @@ public class AccessUsers {
     }
 
     public User insertUser(String userName,String password){
-        if(userHandler.GetUser(userName)==null){                              //if the user does not exist in stub
+        if(userHandler.GetUser(userName)==null){  //if the user does not exist in stub
             return userHandler.InsertNewUser(userName,password);
         }
                                                                 //else return null
