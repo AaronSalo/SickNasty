@@ -10,15 +10,22 @@ public abstract class Post {
     private User userId;            //user id to see who this post belongs to
     private int thisPostID;
 
+    private long timeCreated;
+    private int likes;
+    private int dislikes;
+
 
     public Post(){};
 
-    public Post(String insertedText, User userId){
+    public Post(String insertedText, User userId, long timeCreated, int likes, int dislikes){
         this.globalpostID = globalpostID++;
         thisPostID = globalpostID;
         this.title = insertedText;
         this.userId = userId;
 
+        this.timeCreated = System.currentTimeMillis();
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 
     abstract void displayPost();
@@ -39,4 +46,15 @@ public abstract class Post {
         this.title = insertedText;
     }
 
+    public long getTimeCreated() {
+        return this.timeCreated;
+    }
+
+    public int getNumberOfLikes() {
+        return this.likes;
+    }
+
+    public int getNumberOfDislikes() {
+        return this.dislikes;
+    }
 }
