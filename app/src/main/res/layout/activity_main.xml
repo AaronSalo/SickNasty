@@ -30,7 +30,9 @@
         app:layout_constraintEnd_toEndOf="@+id/logo"
         app:layout_constraintHorizontal_bias="0.238"
         app:layout_constraintStart_toStartOf="@+id/logo"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:layout_marginLeft="124dp"
+        android:layout_marginRight="62dp" />
 
     <EditText
         android:id="@+id/userName"
@@ -74,7 +76,9 @@
         app:layout_constraintEnd_toEndOf="@+id/password"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="44dp" />
 
     <Button
         android:id="@+id/Register"
