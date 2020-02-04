@@ -1,4 +1,6 @@
 //video post object,, that holds videos for media type
+package com.sicknasty.objects;
+
 public class VideoPost extends Post {
 
 
