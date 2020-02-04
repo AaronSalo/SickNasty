@@ -1,21 +1,19 @@
 package com.sicknasty.objects;
 
-//@project sicknasty
-//@author aaron salo
-//this password object handles all password related stuff
-//All hashing functions and password validation is done here
+
+import java.security.MessageDigest;
+import java.util.Base64;
+import java.security.SecureRandom;
+
 public class Password {
 
-    private String hash; //a hashed version of the password
+    private String hash;
     private String salt; //a new "salt" will be created for each user, just makes things more secure
 
     private int maxPassLength = 30;
-
-
     public Password(String password) {
         salt = generateSalt(); //generate the salt for this obj
         hash = hash(password, salt);
-
     }
 
 
@@ -47,16 +45,26 @@ public class Password {
         }
     }
 
-    //todo -- lucas has a good idea on how to implement this so im leaving it to him
     private static String generateSalt(){
-        return "";
-    }
+        try {
+            // create a 64 byte salt
+            byte salt[] = new byte[64];
+
+            // start a new instance of the generator and populate the salt array with random bytes
+            SecureRandom saltGenerator = SecureRandom.getInstance("SHA1PRNG");
+            saltGenerator.nextBytes(salt);
+
+            // encode the bytes as UTF-8 encoded text so that it can go into the database
+            return Base64.getEncoder().withoutPadding().encodeToString(salt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "";
     }
 
     //if the stored hash equals the hash of the input, the password is correct
-    public boolean checkPass(String inputPassword) {
-        return hash.equals(hash(inputPassword, salt));
+    public boolean checkPass(String input) {
+        return hash.equals(hash(input, salt));
     }
 }//end of class
