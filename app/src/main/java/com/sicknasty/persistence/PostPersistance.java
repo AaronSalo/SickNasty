@@ -1,4 +1,4 @@
-package com.sicknasty.persistance;
+package com.sicknasty.persistence;
 
 import java.util.ArrayList;
 
