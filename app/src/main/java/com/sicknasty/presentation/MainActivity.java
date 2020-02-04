@@ -1,4 +1,4 @@
-package com.sicknasty.application;
+package com.sicknasty.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +14,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final EditText userName=findViewById(R.id.userName);
         final EditText password=findViewById(R.id.password);
         Button login =findViewById(R.id.Login);
