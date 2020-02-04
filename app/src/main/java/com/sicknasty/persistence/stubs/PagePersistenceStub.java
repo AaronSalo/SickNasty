@@ -1,13 +1,13 @@
-package com.sicknasty.persistance.stubs;
+package com.sicknasty.persistence.stubs;
 
 import java.util.HashMap;
 
-import com.sicknasty.persistance.PagePersistance;
+import com.sicknasty.persistence.PagePersistence;
 
-public class PagePersistanceStub implements PagePersistance {
+public class PagePersistenceStub implements PagePersistence {
     private HashMap<Integer, Page> pages;
 
-    public PagePersistanceStub() {
+    public PagePersistenceStub() {
         this.pages = new HashMap<Integer, Page>();
     }
 

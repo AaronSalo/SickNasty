@@ -2,13 +2,18 @@ package com.sicknasty.objects;
 
 import java.util.ArrayList;
 
+
+//@project sicknasty
+///@author aaron salo
+//the user object manages the each individual user account. Stores a password object, and other
+//things related to the user
 public class User {
 
     private static int globalUserID = 0; //global int, increments every time a new user is created
     private int userID;
 
     private String userName;
-    private String passwordHASHED; //MAKE SURE we store a hashed version
+    private Password password; //MAKE SURE we store a hashed version
 
     ArrayList<User> followers; //list of people that follow the user
     ArrayList<User> follows; //list of people that the user follows
@@ -17,11 +22,11 @@ public class User {
 
     private int maxUsernameLength = 12; //username cannot be longer than 12 characters
 
-    public User(String userName, String passwordHASHED) {
-        this.userID = globalUserID;
-        globalUserID++;
+    public User(String userName, String newPassword){
+        this.userID = globalUserID; //set this users userID (for db purposes)
+        globalUserID++; //increment the global counter
         this.userName =  userName;
-        this.passwordHASHED = passwordHASHED;
+        password = new Password(newPassword);
         //personalPage = new PersonalPage(); //*******WAITING FOR PAGE IMPLEMENTATION********
     }//end of constructor
 
@@ -32,9 +37,7 @@ public class User {
 
     //Pass a new password through a hashing funciton
     public void changePassword(String newPass) {
-        //pass thru hash function, not available yet
-        String newPassHASHED = newPass; //just for now, waiting for jays hash function
-        passwordHASHED = newPassHASHED;
+        password.changePassword(newPass);
     }//end of change password
 
 

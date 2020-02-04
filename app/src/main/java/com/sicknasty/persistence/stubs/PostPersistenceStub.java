@@ -1,15 +1,14 @@
-package com.sicknasty.persistance.stubs;
+package com.sicknasty.persistence.stubs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sicknasty.persistance.PostPersistance;
+import com.sicknasty.persistence.PostPersistence;
 
-public class PostPersistanceStub implements PostPersistance {
+public class PostPersistenceStub implements PostPersistence {
     // an HashMap containing ALL the posts in the app
     private HashMap<Integer, Post> posts;
 
-    public PostPersistanceStub() {
+    public PostPersistenceStub() {
         this.posts = new HashMap<Integer, Post>();
     }
 

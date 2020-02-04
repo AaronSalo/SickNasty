@@ -1,6 +1,6 @@
 package com.sicknasty.persistence;
 
-public interface PagePersistance {
+public interface PagePersistence {
     /**
      * Returns a Page specified by it's unique ID.
      * 
