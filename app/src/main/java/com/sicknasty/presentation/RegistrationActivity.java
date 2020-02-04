@@ -27,7 +27,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private User signUpValidation(String name, String username, String password) {
         if(name != null) {
-            
+
         }
         return null;
     }
