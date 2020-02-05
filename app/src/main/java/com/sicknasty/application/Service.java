@@ -11,7 +11,7 @@ import com.sicknasty.persistence.stubs.*;
  */
 public class Service {
 
-    private static UserPersistence userData;
+    private static UserPersistence userData = null;
     private static PostPersistence postData = null;
     private static PagePersistence pageData = null;
 
