@@ -10,8 +10,8 @@ public class PicturePost extends Post {
     String PICTURE_PATH="";
 
 
-   public PicturePost(String insertedText, User user,String pic, String path, long timeCreated, int likes, int dislikes){      //uses superclass constructor to implement tital and user object
-       super(insertedText, user, timeCreated, likes, dislikes);
+   public PicturePost(String insertedText, User user,String pic, String path, long timeCreated, int likes, int dislikes, Page page){      //uses superclass constructor to implement tital and user object
+       super(insertedText, user, timeCreated, likes, dislikes, page);
        examplePic = pic;
        PICTURE_PATH = path;
    }

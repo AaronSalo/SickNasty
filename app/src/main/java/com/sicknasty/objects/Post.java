@@ -7,7 +7,11 @@ public abstract class Post {
 
     private String title;
     private static int globalpostID = 0;         //specific id for every post
-    private User userId;            //user id to see who this post belongs to
+    private User userId;            //user id kept so we know which who owns this post
+                                    //can discuss redundantcy later during refactoring, useful when posting to communities
+                                    //so we can trace back to the users personal page.
+
+    private Page pageId;            //stored so we know which page this post is being posted too
     private int thisPostID;
 
     private long timeCreated;
@@ -17,8 +21,9 @@ public abstract class Post {
 
     public Post(){};
 
-    public Post(String insertedText, User userId, long timeCreated, int likes, int dislikes){
+    public Post(String insertedText, User userId, long timeCreated, int likes, int dislikes, Page page){
         this.globalpostID = globalpostID++;
+        this.pageId = page;
         thisPostID = globalpostID;
         this.title = insertedText;
         this.userId = userId;
@@ -32,6 +37,10 @@ public abstract class Post {
 
     public int getPostID() {
         return thisPostID;
+    }
+
+    public Page getPageId(){
+        return pageId;
     }
 
     public User getUserId(){
