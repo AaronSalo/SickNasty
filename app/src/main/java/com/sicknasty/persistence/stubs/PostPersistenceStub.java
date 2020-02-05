@@ -2,6 +2,7 @@ package com.sicknasty.persistence.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
@@ -22,8 +23,17 @@ public class PostPersistenceStub implements PostPersistence {
 
     @Override
     public ArrayList<Post> GetPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
-        // this function is up for discussion
-        return null;
+        ArrayList<Post> pagePosts = new ArrayList<Post>();
+
+        for (Map.Entry<Integer, Post> e : this.posts.entrySet()) {
+            Post post = e.getValue();
+
+            if (post.getPageId().getPageName() == page.getPageName()) {
+                pagePosts.add(post);
+            }
+        }
+
+        return pagePosts;
     }
 
     @Override
