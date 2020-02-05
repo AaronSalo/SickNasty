@@ -17,7 +17,7 @@ public class CommunityPage extends Page {
         users.add(newUser);
     }
 
-    
+
     /**
      * @param user  user we want to delete
      * @return  true on success, false on failure
