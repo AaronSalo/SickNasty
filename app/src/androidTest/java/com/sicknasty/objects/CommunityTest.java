@@ -7,22 +7,16 @@ import static org.junit.Assert.*;
 public class CommunityTest {
 
     @Test
-    public void getID() {
+    public void deleteUser(User user) {
+
     }
 
     @Test
-    public void getName() {
+    public void addUser(User newUser){
+
     }
 
-    @Test
-    public void addUser() {
-    }
 
-    @Test
-    public void getPage() {
-    }
 
-    @Test
-    public void addPost() {
-    }
+
 }
