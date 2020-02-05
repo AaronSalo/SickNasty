@@ -7,11 +7,13 @@ public abstract class Page {
     private int id;
     private String pageName;
     private ArrayList<Post> postList;
+    private User creator; //user that created the page
 
-    public Page(String pageName){
+    public Page(String pageName, User creator){
         pageID++;
         this.id = pageID;
         this.pageName = pageName;
+        this.creator = creator;
     }
 
     public void setPostList(ArrayList<Post> postList){
