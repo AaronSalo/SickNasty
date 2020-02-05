@@ -7,8 +7,8 @@ public class PersonalPage extends Page {
     private ArrayList<Post> posts;
     private User user;
 
-    public PersonalPage(String name, User user){
-        super(name);
+    public PersonalPage(String name, User creator){
+        super(name, creator);
         this.user = user;
     }
 
