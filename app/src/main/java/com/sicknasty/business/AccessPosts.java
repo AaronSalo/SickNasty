@@ -8,14 +8,14 @@ import com.sicknasty.persistence.stubs.PostPersistenceStub;
 
 import java.util.ArrayList;
 
-public class GetPosts {
+public class AccessPosts {
 
     private int postGetLimit = 15; //the max amount of posts to get
 
     private PostPersistenceStub postHandler;
     private ArrayList<Post> posts;
 
-    public GetPosts() {
+    public AccessPosts() {
         postHandler = Service.getPostData();
     }
 
