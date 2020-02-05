@@ -1,5 +1,6 @@
 package com.sicknasty.application;
 
+import com.sicknasty.persistence.*;
 import com.sicknasty.persistence.stubs.*;
 
 
@@ -10,12 +11,12 @@ import com.sicknasty.persistence.stubs.*;
  */
 public class Service {
 
-    private static UserPersistenceStub userData = null;
-    private static PostPersistenceStub postData = null;
-    private static PagePersistenceStub pageData = null;
+    private static UserPersistence userData;
+    private static PostPersistence postData = null;
+    private static PagePersistence pageData = null;
 
     //this will retrieve the user stub, from which we can call functs such as getUser()
-    public static synchronized UserPersistenceStub getUserData() {
+    public static synchronized UserPersistence getUserData() {
         //if the stub hasn't been created yet, create it
         if(userData == null) {
             userData = new UserPersistenceStub();
@@ -23,14 +24,14 @@ public class Service {
         return userData;
     }
 
-    public static synchronized PostPersistenceStub getPostData() {
+    public static synchronized PostPersistence getPostData() {
         if(postData == null) {
             postData = new PostPersistenceStub();
         }
         return postData;
     }
 
-    public static synchronized PagePersistenceStub getPageData() {
+    public static synchronized PagePersistence getPageData() {
         if(pageData == null) {
             pageData = new PagePersistenceStub();
         }
