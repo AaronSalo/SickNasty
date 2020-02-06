@@ -5,14 +5,13 @@ public class PicturePost extends Post {
 
 
 
-    String examplePic;
+    //private String examplePic;
 
-    String PICTURE_PATH="";
+    private int PICTURE_PATH;
 
-
-   public PicturePost(String insertedText, User user,String pic, String path, long timeCreated, int likes, int dislikes, Page page){      //uses superclass constructor to implement tital and user object
-       super(insertedText, user, timeCreated, likes, dislikes, page);
-       examplePic = pic;
+   public PicturePost(String text, User user, int path, long timeCreated, int likes, int dislikes, Page page){      //uses superclass constructor to implement tital and user object
+       super(text, user, timeCreated, likes, dislikes, page);
+      // examplePic = pic;
        PICTURE_PATH = path;
    }
 
@@ -20,5 +19,11 @@ public class PicturePost extends Post {
     void displayPost() {                //UI work
 
     }
+
+    public int getPICTURE_PATH(){
+       return this.PICTURE_PATH;
+    }
+
+
 
 }
