@@ -22,25 +22,19 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User insertNewUser(String username, String password) {
-        if (username == null || password == null) return null;
-
-        if (this.users.containsKey(username)) return null;
-
-        // generate a new user object
-        User newUser = new User(username, password);
-
-        // put that new user into the hash table using its id as the key
-        this.users.put(newUser.getUsername(), newUser);
-
-        return newUser;
-    }
-
-    @Override
     public User insertNewUser(User user) {
         if (user == null) return null;
 
         // cool thing is, is that this will return null on failure and the object on success
         return this.users.put(user.getUsername(), user);
+    }
+
+    @Override
+    public boolean deleteUser(User user) {
+	if (user == null) return null;
+
+	User result = this.users.remove(user.getUsername());
+
+	return result != null;
     }
 }
