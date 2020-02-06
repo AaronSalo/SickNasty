@@ -13,7 +13,7 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User GetUser(String username) {
+    public User getUser(String username) {
         if (username == null) return null;
 
         // this will return the User object at that id
@@ -22,7 +22,7 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User InsertNewUser(String username, String password) {
+    public User insertNewUser(String username, String password) {
         if (username == null || password == null) return null;
 
         if (this.users.containsKey(username)) return null;
@@ -37,7 +37,7 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User InsertNewUser(User user) {
+    public User insertNewUser(User user) {
         if (user == null) return null;
 
         // cool thing is, is that this will return null on failure and the object on success

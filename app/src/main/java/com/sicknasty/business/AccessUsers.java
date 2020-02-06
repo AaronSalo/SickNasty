@@ -15,8 +15,8 @@ public class AccessUsers {
     }
 
     public User insertUser(String userName,String password){
-        if(userHandler.GetUser(userName)==null){  //if the user does not exist in stub
-            return userHandler.InsertNewUser(userName,password);
+        if(userHandler.getUser(userName)==null){  //if the user does not exist in stub
+            return userHandler.insertNewUser(userName,password);
         }
                                                                 //else return null
         return null;
@@ -37,7 +37,7 @@ public class AccessUsers {
     }
     public boolean updateUsername(User user,String newUsername){
         if(user!=null && newUsername!=null){
-            if(userHandler.GetUser(newUsername)==null){         //if user with newUserName does not exist (then change it)
+            if(userHandler.getUser(newUsername)==null){         //if user with newUserName does not exist (then change it)
                 user.changeUsername(newUsername);               //change the password
                 return true;
             }
@@ -56,7 +56,7 @@ public class AccessUsers {
      * @return  true if the username is valid, false if not
      */
     public boolean validNewUsername(String username){
-        if(userHandler.GetUser(username)!=null)
+        if(userHandler.getUser(username)!=null)
             return true;
         return false;
     }

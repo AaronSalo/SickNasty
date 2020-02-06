@@ -9,7 +9,7 @@ public interface UserPersistence {
      * @param   username the unique username of the User
      * @return          returns the User object if a user with specified username exists, otherwise null
      */
-    public User GetUser(String username);
+    public User getUser(String username);
 
     /**
      * Inserts a new User with by specifying a unique username and a hashed password.
@@ -19,7 +19,7 @@ public interface UserPersistence {
      * 
      * @return          returns the new User object on success, otherwise null
      */
-    public User InsertNewUser(String username, String password);
+    public User insertNewUser(String username, String password);
 
     /**
      * Inserts a new User object
@@ -27,5 +27,5 @@ public interface UserPersistence {
      * @param   user    the User object to insert
      * @return          returns the User object if successful, otherwise null
      */
-    public User InsertNewUser(User user);
+    public User insertNewUser(User user);
 }
