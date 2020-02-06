@@ -9,14 +9,14 @@ public interface PagePersistence {
      * @param   name    the unique name of the Page
      * @return      the Page corresponding to the ID, otherwise it will return null
      */
-    public Page GetPage(String name);
+    public Page getPage(String name);
 
     /**
      * Inserts a new Page.
      * 
      * @return      returns true on success, otherwise return false
      */
-    public boolean InsertNewPage(Page page);
+    public boolean insertNewPage(Page page);
 
     /**
      * Delete a Page by its unique name.
@@ -24,7 +24,7 @@ public interface PagePersistence {
      * @param   name  the unique name of the Page
      * @return      returns true if it deleted successfully, otherwise false
      */
-    public boolean DeletePage(String name);
+    public boolean deletePage(String name);
 
     /**
      * Delete a Page by object.
@@ -32,5 +32,5 @@ public interface PagePersistence {
      * @param   page    the page object to delete
      * @return          returns true if it deleted successfully, otherwise false
      */
-    public boolean DeletePage(Page page);
+    public boolean deletePage(Page page);
 }

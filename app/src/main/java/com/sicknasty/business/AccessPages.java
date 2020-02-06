@@ -23,7 +23,7 @@ public class AccessPages {
      * @return the page, or null if not found
      */
     public Page getPage(String pageName) {
-        return pageHandler.GetPage(pageName);
+        return pageHandler.getPage(pageName);
     }
 
     /**
@@ -31,8 +31,8 @@ public class AccessPages {
      *
      * @return      returns true on success, otherwise return false
      */
-    public boolean InsertNewPage(Page page){
-        return pageHandler.InsertNewPage(page);
+    public boolean insertNewPage(Page page){
+        return pageHandler.insertNewPage(page);
     }
 
     /**
@@ -41,8 +41,8 @@ public class AccessPages {
      * @param   name  the unique name of the Page
      * @return      returns true if it deleted successfully, otherwise false
      */
-    public boolean DeletePage(String name){
-        return pageHandler.DeletePage(name);
+    public boolean deletePage(String name){
+        return pageHandler.deletePage(name);
     }
 
 }//end of class
