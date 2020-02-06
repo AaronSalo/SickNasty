@@ -39,10 +39,13 @@ public class Password {
         return "";
     }//end of hash function
 
-    public void changePassword(String newPass) {
+    public boolean changePassword(String newPass) {
+        boolean success = false;
         if(newPass.length() < maxPassLength) { //make sure the password isn't rediculously long
             hash = hash(newPass, salt); //hash the password and set it as the new password
+            success = true;
         }
+        return success;
     }
 
     private static String generateSalt(){

@@ -12,7 +12,8 @@ public class User {
     private static int globalUserID = 0; //global int, increments every time a new user is created
     private int userID;
 
-    private String userName;
+    private String name; //the "display name" of the user
+    private String userName; //used for storage, searching, etc.
     private Password password; //MAKE SURE we store a hashed version
 
     ArrayList<User> followers; //list of people that follow the user
@@ -31,6 +32,22 @@ public class User {
     }//end of constructor
 
 
+    public String getName(){ return name;}
+
+    /**
+     * change the display name of the user, checking some parameters
+     * @param newName   the name we want to change to
+     * @return true on success
+     */
+    public boolean changeName(String newName) {
+        boolean success = false;
+        if(newName.length() < maxUsernameLength) {
+            name = newName;
+            success = true;
+        }
+        return success;
+    }
+
     public String getUsername(){return userName;}
 
     public Password getPassword() {
@@ -39,27 +56,32 @@ public class User {
 
     public int getUserID() {return userID;}
 
-    //Pass a new password through a hashing funciton
-    public void changePassword(String newPass) {
-        password.changePassword(newPass);
+    /**
+     * Pass a new password through a hashing function
+     * @return  true on success
+     */
+    public boolean changePassword(String newPass) {
+        return password.changePassword(newPass); //password class will handle the password change
     }//end of change password
 
 
-    //change the user name
-    //there is some error checking to see if the username isn't too long, or isn't used by anyone
-    //etc. If the checks fail, it will return false and do nothing, otherwise, change the username
-    //and return true
+    /**change the user name
+     * there is some error checking to see if the username isn't too long, or isn't used by anyone
+     * etc. If the checks fail, it will return false and do nothing, otherwise, change the username
+     * @return true on success
+     */
     public boolean changeUsername(String newUsername) {
+        boolean success = false;
         //check if newUsername is used by anyone
         if(true) { //to-do check other usernames
             if(newUsername.length() < maxUsernameLength) { //is the newUsername short enough
                 if(newUsername.contains(" ")) { //check to see if the string contains whitespace
                     userName = newUsername;
-                    return true;
+                    success = true;
                 }//if
             }//if
         }//if
-        return false;
+        return success;
     } //changeUsername
 
     //if you need an explanation for this one.... idk man....
