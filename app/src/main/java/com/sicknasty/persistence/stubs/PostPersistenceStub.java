@@ -23,6 +23,8 @@ public class PostPersistenceStub implements PostPersistence {
 
     @Override
     public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
+        if (page == null) return null;
+
         ArrayList<Post> pagePosts = new ArrayList<Post>();
 
         for (Map.Entry<Integer, Post> e : this.posts.entrySet()) {

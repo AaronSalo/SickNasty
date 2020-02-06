@@ -22,7 +22,7 @@ public interface PostPersistence {
      * @param   limit   the maximum number of posts to fetch
      * @param   filter  the filter to sort Page posts by
      * @param   accendingOrder set true to get an ArrayList sorted in accending order
-     * @return          ArrayList of type Post
+     * @return          ArrayList of type Post or null on error
      */
     public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder);
 
