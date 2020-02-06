@@ -11,9 +11,6 @@ import java.util.ArrayList;
 //things related to the user
 public class User {
 
-    private static int globalUserID = 0; //global int, increments every time a new user is created
-    private int userID;
-
     private String name; //the "display name" of the user
     private String userName; //used for storage, searching, etc.
     private Password password; //MAKE SURE we store a hashed version
@@ -21,20 +18,23 @@ public class User {
     ArrayList<User> followers; //list of people that follow the user
     ArrayList<User> follows; //list of people that the user follows
 
-    //PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
+    PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
 
     private int maxUsernameLength = 12; //username cannot be longer than 12 characters
+    private int minUsernameLength = 3; //username must be at least 3 characters
 
-    public User(String userName, String newPassword){
-        this.userID = globalUserID; //set this users userID (for db purposes)
-        globalUserID++; //increment the global counter
-        this.userName =  userName;
+    public User(String name, String username, String newPassword){
+        changeName(name);
+        changeUsername(username);
         password = new Password(newPassword);
-        //personalPage = new PersonalPage(); //*******WAITING FOR PAGE IMPLEMENTATION********
+        personalPage = new PersonalPage(userName, this); //create a personal page for this user
     }//end of constructor
 
 
     public String getName(){ return name;}
+
+
+    public PersonalPage getPersonalPage() {return this.personalPage;}
 
     /**
      * change the display name of the user, checking some parameters
@@ -51,8 +51,6 @@ public class User {
     }
 
     public String getUsername(){return userName;}
-
-    public int getUserID() {return userID;}
 
     /**
      * Pass a new password through a hashing function
@@ -77,9 +75,10 @@ public class User {
         boolean success = false;
         //check if newUsername is used by anyone
         if(newUsername!=null) {
-            if (Service.getUserData().getUser(newUsername) == null) { //to-do check other usernames
-                if (newUsername.length() < maxUsernameLength) { //is the newUsername short enough
-                    if (newUsername.contains(" ")) { //check to see if the string contains whitespace
+            if (Service.getUserData().getUser(newUsername) == null) { //is the username used by anyone else
+                if ((newUsername.length() < maxUsernameLength) &&
+                        (newUsername.length() > minUsernameLength)) { //is the newUsername an appropriate length
+                    if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
                         userName = newUsername;
                         success = true;
                     }//if

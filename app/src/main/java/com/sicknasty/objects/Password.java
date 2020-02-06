@@ -1,6 +1,7 @@
 package com.sicknasty.objects;
 
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.Base64;
 import java.security.SecureRandom;
@@ -10,10 +11,17 @@ public class Password {
     private String hash;
     private String salt; //a new "salt" will be created for each user, just makes things more secure
 
-    private int maxPassLength = 30;
-    public Password(String password) {
-        salt = generateSalt(); //generate the salt for this obj
-        hash = hash(password, salt);
+    private final int MAX_PASS_LENGTH = 40;
+    private final int MIN_PASS_LENGTH = 7;
+
+
+    public Password(String password){
+        if(isValidNewPass(password)) { //is this password valid
+            salt = generateSalt(); //generate the salt for this obj
+            hash = hash(password, salt);
+        } else {
+            //throw new PasswordErrorException("Password is not valid"); //for iteration 2
+        }
     }
 
 
@@ -41,9 +49,20 @@ public class Password {
 
     public boolean changePassword(String newPass) {
         boolean success = false;
-        if(newPass.length() < maxPassLength) { //make sure the password isn't rediculously long
+        if(newPass.length() < MAX_PASS_LENGTH) { //make sure the password isn't rediculously long
             hash = hash(newPass, salt); //hash the password and set it as the new password
             success = true;
+        }
+        return success;
+    }
+
+    private boolean isValidNewPass(String input) {
+        boolean success = false;
+        if(!input.contains(" ")){
+            if((input.length() <= MAX_PASS_LENGTH) &&
+                    (input.length() >= MIN_PASS_LENGTH)){
+                success = true;
+            }
         }
         return success;
     }
@@ -71,3 +90,10 @@ public class Password {
         return hash.equals(hash(input, salt));
     }
 }//end of class
+
+class PasswordErrorException extends Exception {
+
+    public PasswordErrorException(String message) {
+        super(message);
+    }
+}
