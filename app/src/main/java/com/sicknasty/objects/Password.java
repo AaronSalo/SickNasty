@@ -58,10 +58,12 @@ public class Password {
 
     private boolean isValidNewPass(String input) {
         boolean success = false;
-        if(!input.contains(" ")){
-            if((input.length() <= MAX_PASS_LENGTH) &&
-                    (input.length() >= MIN_PASS_LENGTH)){
-                success = true;
+        if(input != null) {
+            if (!input.contains(" ")) {
+                if ((input.length() <= MAX_PASS_LENGTH) &&
+                        (input.length() >= MIN_PASS_LENGTH)) {
+                    success = true;
+                }
             }
         }
         return success;

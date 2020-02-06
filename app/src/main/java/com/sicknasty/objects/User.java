@@ -27,7 +27,7 @@ public class User {
         changeName(name);
         changeUsername(username);
         password = new Password(newPassword);
-        personalPage = new PersonalPage(userName, this); //create a personal page for this user
+        personalPage = new PersonalPage(this); //create a personal page for this user
     }//end of constructor
 
 

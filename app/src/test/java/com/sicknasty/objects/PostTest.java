@@ -15,7 +15,7 @@ public class PostTest {
                                         // using different post objects
 
         User user = new User("Will", "I.AM","hdvmdvamdmh");
-        Page page = new PersonalPage("pageTest", user);
+        Page page = new PersonalPage(user);
 
         Post post1 = new PicturePost("testText", user,"N/A", "N/A", 123, 1,2,page);
         Post post2 = new PicturePost("testText", user,"N/A", "N/A", 123, 2,4,page);
