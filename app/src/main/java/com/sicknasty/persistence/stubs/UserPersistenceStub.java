@@ -31,7 +31,7 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public boolean deleteUser(User user) {
-	if (user == null) return null;
+	if (user == null) return false;
 
 	User result = this.users.remove(user.getUsername());
 

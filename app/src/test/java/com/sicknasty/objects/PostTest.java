@@ -14,7 +14,7 @@ public class PostTest {
     public void checkPostNum() {        //checks to see that the global post id of posts, compared to the local post id.
                                         // using different post objects
 
-        User user = new User("Will", "I.AM");
+        User user = new User("Will", "I.AM","hdvmdvamdmh");
         Page page = new PersonalPage("pageTest", user);
 
         Post post1 = new PicturePost("testText", user,"N/A", "N/A", 123, 1,2,page);

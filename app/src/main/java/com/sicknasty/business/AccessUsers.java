@@ -15,8 +15,8 @@ public class AccessUsers {
         userHandler= Service.getUserData();             //get the dataStub
     }
 
-    public User insertUser(String userName,String password){
-            return userHandler.insertNewUser(userName,password);
+    public User insertUser(String name, String userName,String password){
+            return userHandler.insertNewUser(new User(name,userName,password));
     }
 
     public boolean updateUserPassword(String username,String oldPassword,String newPassword){

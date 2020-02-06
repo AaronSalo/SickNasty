@@ -59,7 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 if(signUpValidation(name, username, password)){
                     if(users.validNewUsername(username)){
-                        users.insertUser(username,password);        //after validating the user
+                        users.insertUser(name,username,password);        //after validating the user
                         Toast toast = Toast.makeText(RegistrationActivity.this,"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
                         toast.show();
                         Intent startIntent=new Intent(getApplicationContext(),MainActivity.class);
