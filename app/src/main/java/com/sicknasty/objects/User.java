@@ -50,10 +50,6 @@ public class User {
 
     public String getUsername(){return userName;}
 
-    public Password getPassword() {
-        return password;
-    }
-
     public int getUserID() {return userID;}
 
     /**
@@ -63,6 +59,11 @@ public class User {
     public boolean changePassword(String newPass) {
         return password.changePassword(newPass); //password class will handle the password change
     }//end of change password
+
+
+    public boolean checkPasswordCorrect(String inputPass){
+        return password.checkPass(inputPass); //check if the password is correct
+    }
 
 
     /**change the user name
