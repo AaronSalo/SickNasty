@@ -9,14 +9,6 @@ public class PageTest {
     }
 
     @Test
-    public void getPageID() {
-    }
-
-    @Test
-    public void getPageName() {
-    }
-
-    @Test
     public void showPostList() {
     }
 
