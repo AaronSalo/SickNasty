@@ -22,7 +22,7 @@ public abstract class Post {
     public Post(){};
 
     public Post(String insertedText, User userId, long timeCreated, int likes, int dislikes, Page page){
-        this.globalpostID = globalpostID++;
+        globalpostID++;
         this.pageId = page;
         thisPostID = globalpostID;
         this.title = insertedText;
@@ -37,6 +37,10 @@ public abstract class Post {
 
     public int getPostID() {
         return thisPostID;
+    }
+
+    public static int getGlobalpostID() {
+        return globalpostID;
     }
 
     public Page getPageId(){
