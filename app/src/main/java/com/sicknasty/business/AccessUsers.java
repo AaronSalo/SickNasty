@@ -3,52 +3,40 @@ package com.sicknasty.business;
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
-import com.sicknasty.persistence.stubs.UserPersistenceStub;
-
+/** @author jay
+        * wrapper for the user db
+        * passes info from UI to the db and vise versa
+ */
 public class AccessUsers {
 
     private UserPersistence userHandler;
 
-
     public AccessUsers(){
-        userHandler= Service.getUserData();
+        userHandler= Service.getUserData();             //get the dataStub
     }
 
     public User insertUser(String userName,String password){
-        if(userHandler.getUser(userName)==null){  //if the user does not exist in stub
             return userHandler.insertNewUser(userName,password);
-        }
-                                                                //else return null
-        return null;
     }
 
-    public boolean updateUserPassword(User user,String oldPassword,String newPassword){
-        if(user!=null && oldPassword!=null && newPassword!=null){
-            if(oldPassword.equals(user.getPassword())){
-                   user.changePassword(newPassword);                //change the password
-                   return true;
-            }
-            else{
-                //old password is not correct //error
-                return false;
-            }
+    public boolean updateUserPassword(String username,String oldPassword,String newPassword){
+        User user =userHandler.getUser(username);
+        if(true){                   //check the password
+            return user.changePassword(newPassword);
         }
         return false;
     }
+    /**
+     * Updates username of a user if that username is available
+     * @param user  the username we want to check,newUsername that we want to updarte
+     * @return  true if the changing username was successful, false if not
+     */
     public boolean updateUsername(User user,String newUsername){
-        if(user!=null && newUsername!=null){
-            if(userHandler.getUser(newUsername)==null){         //if user with newUserName does not exist (then change it)
-                user.changeUsername(newUsername);               //change the password
-                return true;
-            }
-            else{
-                //new userName user already exists //show error
-                return false;
-            }
+        if(user!=null){                     //if the user is not null
+                return user.changeUsername(newUsername);
         }
         return false;
     }
-
 
     /**
      * Checks to see if a given username is available for use
@@ -60,9 +48,4 @@ public class AccessUsers {
             return true;
         return false;
     }
-
-
-
-
-
 }

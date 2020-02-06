@@ -4,7 +4,6 @@ import com.sicknasty.application.Service;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PostPersistence;
-import com.sicknasty.persistence.stubs.PostPersistenceStub;
 
 import java.util.ArrayList;
 

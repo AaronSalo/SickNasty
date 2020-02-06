@@ -1,5 +1,7 @@
 package com.sicknasty.objects;
 
+import com.sicknasty.application.Service;
+
 import java.util.ArrayList;
 
 
@@ -74,14 +76,16 @@ public class User {
     public boolean changeUsername(String newUsername) {
         boolean success = false;
         //check if newUsername is used by anyone
-        if(true) { //to-do check other usernames
-            if(newUsername.length() < maxUsernameLength) { //is the newUsername short enough
-                if(newUsername.contains(" ")) { //check to see if the string contains whitespace
-                    userName = newUsername;
-                    success = true;
+        if(newUsername!=null) {
+            if (Service.getUserData().getUser(newUsername) == null) { //to-do check other usernames
+                if (newUsername.length() < maxUsernameLength) { //is the newUsername short enough
+                    if (newUsername.contains(" ")) { //check to see if the string contains whitespace
+                        userName = newUsername;
+                        success = true;
+                    }//if
                 }//if
             }//if
-        }//if
+        }
         return success;
     } //changeUsername
 
