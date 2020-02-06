@@ -12,7 +12,7 @@ public class AccessPosts {
 
     private int postGetLimit = 15; //the max amount of posts to get
 
-    private PostPersistenceStub postHandler;
+    private PostPersistence postHandler;
     private ArrayList<Post> posts;
 
     public AccessPosts() {

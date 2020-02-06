@@ -2,6 +2,7 @@ package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Page;
+import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.stubs.PagePersistenceStub;
 
 /** @author aaron
@@ -11,7 +12,7 @@ import com.sicknasty.persistence.stubs.PagePersistenceStub;
 
 public class AccessPages {
 
-    private PagePersistenceStub pageHandler;
+    private PagePersistence pageHandler;
     private Page page;
 
     public AccessPages() {

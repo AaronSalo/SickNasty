@@ -2,11 +2,12 @@ package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.stubs.UserPersistenceStub;
 
 public class AccessUsers {
 
-    private UserPersistenceStub userHandler;
+    private UserPersistence userHandler;
 
 
     public AccessUsers(){
@@ -47,8 +48,15 @@ public class AccessUsers {
         }
         return false;
     }
-    public boolean validateUser(User user){
-        if(userHandler.GetUser(user.getUsername())!=null)
+
+
+    /**
+     * Checks to see if a given username is available for use
+     * @param username  the username we want to check
+     * @return  true if the username is valid, false if not
+     */
+    public boolean validNewUsername(String username){
+        if(userHandler.GetUser(username)!=null)
             return true;
         return false;
     }

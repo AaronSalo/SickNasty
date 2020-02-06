@@ -8,6 +8,9 @@ import com.sicknasty.persistence.stubs.*;
  * @author aaron
  *
  * this class manages the database, and allows us to fetch the db from other classes with ease
+ * We create a new data handler for user, page, and post, which hold the data for each respective
+ * items. We then can ask this class to provide the data handlers for each, allowing for persistant
+ * data
  */
 public class Service {
 
