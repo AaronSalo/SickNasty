@@ -13,14 +13,14 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public Page GetPage(String name) {
+    public Page getPage(String name) {
         if (name == null) return null;
 
         return this.pages.get(name);
     }
 
     @Override
-    public boolean InsertNewPage(Page page) {
+    public boolean insertNewPage(Page page) {
         if (page == null) return false;
 
         Page localPage = this.pages.get(page.getPageID());
@@ -35,7 +35,7 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public boolean DeletePage(String name) {
+    public boolean deletePage(String name) {
         if (name == null) return false;
 
         Page result = this.pages.remove(name);
@@ -44,7 +44,7 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public boolean DeletePage(Page page) {
+    public boolean deletePage(Page page) {
         if (page == null) return false;
 
         Page exisitingPost = this.pages.get(page.getPageName());
@@ -55,6 +55,6 @@ public class PagePersistenceStub implements PagePersistence {
 
         // i dont like this.
         // the existance of this function can be discussed
-        return this.DeletePage(exisitingPost.getPageName());
+        return this.deletePage(exisitingPost.getPageName());
     }
 }

@@ -25,7 +25,7 @@ public class AccessPosts {
     * @return   returns an ArrayList holding a number of posts equal to postGetLimit
      */
     public ArrayList<Post> getPostsByPage(Page page) {
-        return postHandler.GetPostsByPage(page, postGetLimit,
+        return postHandler.getPostsByPage(page, postGetLimit,
                 PostPersistence.FILTER_BY.TIME_CREATED, true);
     }
 
@@ -34,7 +34,7 @@ public class AccessPosts {
      *@return true if the post was successful, false if the post was unsuccessful
      */
     public boolean insertPost(Post post) {
-        return postHandler.InsertNewPost(post);
+        return postHandler.insertNewPost(post);
     }
 
     /**
@@ -42,7 +42,7 @@ public class AccessPosts {
      *@return true if the deletion was successful, false if the deletion was unsuccessful
      */
     public boolean deletePost(int id) {
-        return postHandler.DeletePost(id);
+        return postHandler.deletePost(id);
     }
 
 }

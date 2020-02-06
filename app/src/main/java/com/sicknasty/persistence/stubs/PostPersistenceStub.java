@@ -17,12 +17,12 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public Post GetPostById(int id) {
+    public Post getPostById(int id) {
         return this.posts.get(id);
     }
 
     @Override
-    public ArrayList<Post> GetPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
+    public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
         ArrayList<Post> pagePosts = new ArrayList<Post>();
 
         for (Map.Entry<Integer, Post> e : this.posts.entrySet()) {
@@ -37,7 +37,7 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean InsertNewPost(Post post) {
+    public boolean insertNewPost(Post post) {
         if (post == null) return false;
 
         Post exisitingPost = this.posts.get(post.getPostID());
@@ -52,7 +52,7 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean DeletePost(int id) {
+    public boolean deletePost(int id) {
         // remove the post, if it removes then result will be the Post object
         // if it did not fine an id, it will return null
         Post result = this.posts.remove(id);
@@ -61,7 +61,7 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean DeletePost(Post post) {
+    public boolean deletePost(Post post) {
         if (post == null) return false;
 
         Post exisitingPost = this.posts.get(post.getPostID());
@@ -72,6 +72,6 @@ public class PostPersistenceStub implements PostPersistence {
 
         // i dont like this.
         // the existance of this function can be discussed
-        return this.DeletePost(exisitingPost.getPostID());
+        return this.deletePost(exisitingPost.getPostID());
     }
 }

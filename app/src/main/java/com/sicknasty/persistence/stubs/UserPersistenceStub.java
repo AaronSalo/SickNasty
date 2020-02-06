@@ -25,6 +25,8 @@ public class UserPersistenceStub implements UserPersistence {
     public User InsertNewUser(String username, String password) {
         if (username == null || password == null) return null;
 
+        if (this.users.containsKey(username)) return null;
+
         // generate a new user object
         User newUser = new User(username, password);
 
