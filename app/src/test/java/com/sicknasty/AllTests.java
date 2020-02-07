@@ -17,40 +17,10 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        AccessUsers.class,
-        AccessPosts.class
+        AccessUsersTest.class,
+        AccessPostsTest.class
 })
-public class AllTests {
+public class AllTests
+{
 
-//    @Test
-//    public void callAllTests() {
-//        callObjectTests();
-//        callBusinessTests();
-//    }
-//
-//
-//    /**
-//     * method for calling all the object tests
-//     */
-//    @Test
-//    public void callObjectTests() {
-//        UserTest userTester = new UserTest();
-//        PasswordTest passTester = new PasswordTest();
-//
-//        userTester.allUserTests();
-//        passTester.allPasswordTests();
-//    }
-//
-//
-//    /**
-//     * method for calling all the business class tests
-//     */
-//    @Test
-//    public void callBusinessTests() {
-//        AccessUsersTest accessUsersTest = new AccessUsersTest();
-//        AccessPostsTest accessPostsTest = new AccessPostsTest();
-//
-//        //accessUsersTest.allAccessUsersTests(); //get jay to implement this
-//        accessPostsTest.allAccessPostTests();
-//    }
 }

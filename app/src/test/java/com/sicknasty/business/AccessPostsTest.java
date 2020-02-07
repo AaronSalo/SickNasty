@@ -18,18 +18,7 @@ import static org.junit.Assert.assertFalse;
 
 public class AccessPostsTest {
 
-    PostPersistence postData;
-
-    public AccessPostsTest (){
-        postData =  Service.getPostData();
-    }
-
-
-    @Test
-    public void allAccessPostTests() {
-        testPostInsert();
-        testPostInsert();
-    }
+    PostPersistence postData=Service.getPostData();
 
     @Test
     public void testPostInsert() {
