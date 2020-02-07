@@ -37,18 +37,31 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 if(signUpValidation(name, username, password)){
 
-                    User newUser=users.validNewUsername(username);
-                    if(newUser==null){
-                        users.insertUser(name,username,password);        //after validating the user
-                        Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
-                        toast.show();
-
-
-                        onBackPressed();
+                    boolean temp=true;
+                    if(name.length()<4){
+                        Toast.makeText(getApplicationContext(),"Name has to be minimum 4 characters long",Toast.LENGTH_SHORT).show();
+                        temp=false;
                     }
-                    else{
-                        Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
-                        toast.show();
+                    if(password.length()<7) {
+                        temp=false;
+                        Toast.makeText(getApplicationContext(), "Password has to be of minimum length 7 ", Toast.LENGTH_SHORT).show();
+                    }
+                    if(username.length()<3) {
+                        temp=false;
+                        Toast.makeText(getApplicationContext(), "Username has to be minimum 3 characters long", Toast.LENGTH_SHORT).show();
+                    }
+                    if(temp){
+                        User newUser=users.validNewUsername(username);
+                        if(newUser==null){
+                            users.insertUser(name,username,password);        //after validating the user
+                            Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
+                            toast.show();
+                            onBackPressed();
+                        }
+                        else{
+                            Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
                 }
             }

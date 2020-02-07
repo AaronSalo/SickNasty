@@ -2,7 +2,6 @@ package com.sicknasty.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,29 +35,23 @@ public class LoginActivity extends AppCompatActivity {
                 if(validateUser(userName.getText().toString(),password.getText().toString())) {
 
                     User currUser=users.validNewUsername(userName.getText().toString());
-                    Log.d("checkingUserdetails","dmavddvvdmd");
                     if(currUser!=null)                      //if successfull login add a toast
                     {
                         if(currUser.checkPasswordCorrect(password.getText().toString()))
                         {
                             Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
-
                             startIntent.putExtra("user",  userName.getText().toString());
                             startActivity(startIntent);
-                            Toast toast = Toast.makeText(getApplicationContext(),"Login Successful!",Toast.LENGTH_SHORT);
-                            toast.show();
-
+                            Toast.makeText(getApplicationContext(),"Login Successful!",Toast.LENGTH_SHORT).show();
                             finish();
                         }
                         else{
-                            Toast toast = Toast.makeText(getApplicationContext(),"Invalid Details",Toast.LENGTH_SHORT);
-                            toast.show();
+                            Toast.makeText(getApplicationContext(),"Password and username doesn't match",Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-                else {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Invalid Details",Toast.LENGTH_SHORT);
-                    toast.show();
+                    else{
+                        Toast.makeText(getApplicationContext(),"User doesn't exist",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
