@@ -29,25 +29,6 @@ public class RegistrationActivity extends AppCompatActivity {
         //get the sign up details from the ui
 
         Button register=findViewById(R.id.Register);
-        ((EditText) findViewById(R.id.signUpUsername)).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(users.validNewUsername(s.toString())) {
-                    Log.d("checking username", "you can use this username");
-
-                }
-            }
-        });
 
         //validate the new account and create it
         register.setOnClickListener(new View.OnClickListener() {
@@ -58,15 +39,18 @@ public class RegistrationActivity extends AppCompatActivity {
                 String password = ((EditText)findViewById(R.id.signUpPassword)).getText().toString();
 
                 if(signUpValidation(name, username, password)){
-                    if(users.validNewUsername(username)){
+
+                    User newUser=users.validNewUsername(username);
+                    if(newUser==null){
                         users.insertUser(name,username,password);        //after validating the user
-                        Toast toast = Toast.makeText(RegistrationActivity.this,"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
                         toast.show();
-                        Intent startIntent=new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(startIntent);
+
+
+                        onBackPressed();
                     }
                     else{
-                        Toast toast = Toast.makeText(RegistrationActivity.this,"Try a different username",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
@@ -87,18 +71,18 @@ public class RegistrationActivity extends AppCompatActivity {
         boolean res=false;
 
         if(name.isEmpty() && username.isEmpty() && password.isEmpty()){
-            Toast.makeText(RegistrationActivity.this,"You cannot leave blanks empty",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"You cannot leave blanks empty",Toast.LENGTH_SHORT).show();
         }
         else if(name.isEmpty()){
-            Toast toast = Toast.makeText(RegistrationActivity.this,"Enter your Name:",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(),"Enter your Name:",Toast.LENGTH_SHORT);
             toast.show();
         }
         else if(username.isEmpty()){
-            Toast toast = Toast.makeText(RegistrationActivity.this,"Enter your Username",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(),"Enter your Username",Toast.LENGTH_SHORT);
             toast.show();
         }
         else if(password.isEmpty()){
-            Toast toast = Toast.makeText(RegistrationActivity.this,"Enter your password",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(),"Enter your password",Toast.LENGTH_SHORT);
             toast.show();
         }
         else

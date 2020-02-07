@@ -25,7 +25,7 @@ public class User {
 
     public User(String name, String username, String newPassword){
         changeName(name);
-        changeUsername(username);
+        this.userName=username;
         password = new Password(newPassword);
         personalPage = new PersonalPage(this); //create a personal page for this user
     }//end of constructor
@@ -76,9 +76,10 @@ public class User {
         //check if newUsername is used by anyone
         if(newUsername!=null) {
             if (Service.getUserData().getUser(newUsername) == null) { //is the username used by anyone else
-                if ((newUsername.length() < maxUsernameLength) &&
-                        (newUsername.length() > minUsernameLength)) { //is the newUsername an appropriate length
+                if ((newUsername.length() <= maxUsernameLength) &&
+                        (newUsername.length() >= minUsernameLength)) { //is the newUsername an appropriate length
                     if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
+                        Service.getUserData().updateUsername(userName,newUsername);
                         userName = newUsername;
                         success = true;
                     }//if

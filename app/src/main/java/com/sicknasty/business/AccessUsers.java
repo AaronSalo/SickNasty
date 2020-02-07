@@ -21,7 +21,7 @@ public class AccessUsers {
 
     public boolean updateUserPassword(String username,String oldPassword,String newPassword){
         User user =userHandler.getUser(username);
-        if(true){                   //check the password
+        if(user.checkPasswordCorrect(oldPassword)){                   //check the password
             return user.changePassword(newPassword);
         }
         return false;
@@ -41,11 +41,13 @@ public class AccessUsers {
     /**
      * Checks to see if a given username is available for use
      * @param username  the username we want to check
-     * @return  true if the username is valid, false if not
+     * @return  null if the username is not validvalid, else user
      */
-    public boolean validNewUsername(String username){
-        if(userHandler.getUser(username)!=null)
-            return true;
-        return false;
+    public User validNewUsername(String username){
+        return userHandler.getUser(username);
+    }
+
+    public boolean deleteUser(String username){
+        return userHandler.deleteUser(validNewUsername(username));
     }
 }

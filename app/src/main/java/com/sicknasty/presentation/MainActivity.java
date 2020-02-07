@@ -2,6 +2,8 @@ package com.sicknasty.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final EditText userName=findViewById(R.id.userName);
         final EditText password=findViewById(R.id.password);
         Button login =findViewById(R.id.Login);
@@ -34,16 +35,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validateUser(userName.getText().toString(),password.getText().toString())) {
-                    if(users.validNewUsername(userName.getText().toString()))          //if successfull login add a toast
-                    {
-                        Toast toast = Toast.makeText(MainActivity.this,"Login Successful",Toast.LENGTH_SHORT);
-                        toast.show();
 
-                        //go to personalized page//intent
+                    User currUser=users.validNewUsername(userName.getText().toString());
+                    Log.d("checkingUserdetails","dmavddvvdmd");
+                    if(currUser!=null)                      //if successfull login add a toast
+                    {
+                        if(currUser.checkPasswordCorrect(password.getText().toString()))
+                        {
+                            Intent startIntent=new Intent(MainActivity.this,PageActivity.class);
+
+                            startIntent.putExtra("user",  userName.getText().toString());
+                            startActivity(startIntent);
+                            Toast toast = Toast.makeText(getApplicationContext(),"Login Successful!",Toast.LENGTH_SHORT);
+                            toast.show();
+
+                            finish();
+                        }
+                        else{
+                            Toast toast = Toast.makeText(getApplicationContext(),"Invalid Details",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
                 }
                 else {
-                    Toast toast = Toast.makeText(MainActivity.this,"Invalid Details",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(),"Invalid Details",Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }

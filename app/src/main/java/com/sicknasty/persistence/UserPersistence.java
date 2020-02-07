@@ -26,4 +26,7 @@ public interface UserPersistence {
      * @return		returns true if an object was deleted, otherwise false
      */
      public boolean deleteUser(User user);
+
+
+     public boolean updateUsername(String old,String newOne);
 }

@@ -23,10 +23,17 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public User insertNewUser(User user) {
-        if (user == null) return null;
-
-        // cool thing is, is that this will return null on failure and the object on success
-        return this.users.put(user.getUsername(), user);
+        System.out.println(users.containsKey(user.getUsername()));
+        System.out.println(user.getUsername());
+        if (user == null)
+            return null;
+        else if(!(users.containsKey(user.getUsername())))                  // cool thing is, is that this will return null on failure and the object on success
+        {
+            this.users.put(user.getUsername(),user);
+            return users.get(user.getUsername());
+        }
+        else
+            return null;
     }
 
     @Override
@@ -36,5 +43,17 @@ public class UserPersistenceStub implements UserPersistence {
 	User result = this.users.remove(user.getUsername());
 
 	return result != null;
+    }
+
+    @Override
+    public boolean updateUsername(String old, String newOne) {
+        if(users.containsKey(old)){
+            User oldUser=users.get(old);
+
+            users.remove(old);
+            users.put(newOne,oldUser);
+            return true;
+        }
+        return false;
     }
 }

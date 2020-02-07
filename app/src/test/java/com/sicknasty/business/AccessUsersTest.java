@@ -11,75 +11,60 @@ import static org.junit.Assert.*;
 
 public class AccessUsersTest {
 
-    UserPersistence userData= Service.getUserData();
-    @Test
-    public void testNullUser(){
-        User user1=new User("Jay",null,null);
-        assertNull(userData.insertNewUser(user1));
-
-
-        user1=new User("jay","jay",null);
-        assertNull(userData.insertNewUser(user1));
-
-        user1=new User("jay",null,"abcd");
-        assertNull(userData.insertNewUser(user1));
-    }
+    AccessUsers users=new AccessUsers();              //use business layer
     @Test
     public void testInsertUsers() {
-        User user1=new User("Jay K","jay","abcdeff");;
-        User user2;
-        assertNotNull(userData.insertNewUser(user1));
-        assertTrue("user not found in the database",userData.getUser(user1.getUsername())!=null);
-        assertEquals(userData.getUser(user1.getUsername()).getUsername(),"jay");
-        assertTrue("password not saved correctly",userData.getUser(user1.getUsername()).checkPasswordCorrect("2345"));
 
-        user2=new User("Aaron Solo","aaron","abcdefg");;
-        assertNotNull(userData.insertNewUser(user2));
-        assertTrue("cannot find aaron",userData.getUser(user1.getUsername())!=null);
-        assertEquals("username doesn't match with aaron",userData.getUser(user1.getUsername()).getUsername(),"aaron");
-        assertEquals(userData.getUser(user1.getUsername()).checkPasswordCorrect("1234"),"true");
+        assertNotNull(users.insertUser("Jay K","jay","23416772"));
+        assertNotNull("user not found in the database",users.validNewUsername("jay"));
+        assertTrue("wrong password found for jay",users.validNewUsername("jay").checkPasswordCorrect("23416772"));
 
-        assertTrue("user not deleted",userData.deleteUser(user1));
-        assertTrue("user not deleted",userData.deleteUser(user2));
+        assertNotNull(new User("Aaron Solo","aaron","abcdefg"));
+
+
+        assertNotNull(users.insertUser("Aaron Solo","aaron","abcdefg"));
+        assertNull("user not created found in the database",users.validNewUsername("aaron1"));
+
+        assertTrue("user not deleted",users.deleteUser("jay"));
+        assertTrue("user not deleted",users.deleteUser("aaron"));
 
     }
     @Test
     public void testDuplicateUsers(){
+        assertNotNull("user not added",users.insertUser("Jay K","jay","abcmmdef"));
+        assertNull("duplicated  added!!!Error",users.insertUser("Jay K","jay","abcmmdef"));
 
-        User user1=new User("Jay K","jay","abcdef");
 
-        assertNotNull("user not added successfully",userData.insertNewUser(user1));
-        assertNull("duplicate added",userData.insertNewUser(user1));
-
-        assertTrue("",userData.getUser(user1.getUsername()).checkPasswordCorrect("abcdef"));
+        assertFalse("item not found but still deleted!!error",users.deleteUser("aaron"));
+        assertTrue("existing user not deleted !!error",users.deleteUser("jay"));
     }
     @Test
-    public void testNotNullUser(){
-        User user1=new User("axhbabha","jay","abcd"),user2;
-        assertNotNull(userData.insertNewUser(user1));
+    public void testUpdatesInUsername(){
+        User user1=users.insertUser("Jay K","jay","abcmmdef");
 
-        user2=new User("jay",null,"abcd");
-        assertNull(userData.insertNewUser(user1));
-        assertTrue("user not deleted",userData.deleteUser(user1));
+        assertNotNull("user not added",user1);
+        assertTrue("username not changed even though it was available",users.updateUsername(user1,"aaron"));
 
-        assertFalse("user with null username added",userData.insertNewUser(user2)!=null);
+        assertEquals("nd nad",user1.getUsername(),"aaron");
+        assertNotNull("user not added",users.insertUser("Jay K","jay","abcmmdef"));
+        assertNull("duplicated  added!!!Error",users.insertUser("Jay K","jay","abcmmdef"));
 
-        assertFalse("user not found",userData.deleteUser(user2));
+        assertTrue(" not deleted!!error",users.deleteUser("aaron"));
+        assertTrue("existing user not deleted !!error",users.deleteUser("jay"));
     }
+
     @Test
-    public void testDelete(){
-        User jay=new User("Jay K","jay","abcdef");
-        User aaron=new User("Aaron Solo","aaron","abcdef");
+    public void testUpdatesInPassword(){
+        User jay=users.insertUser("Jay K","jay","abcmmdef");
 
-        assertNotNull(userData.insertNewUser(jay));
-        assertNotNull(userData.insertNewUser(aaron));
+        assertNotNull("user not added",jay);
+        assertTrue("username not changed even though it was available",users.updateUserPassword("jay","abcmmdef","234567819"));
 
-        assertTrue("user not deleted",userData.deleteUser(jay));
-        assertTrue("user not deleted",userData.deleteUser(aaron));
+        assertFalse("password not change",jay.checkPasswordCorrect("abcmmdef"));
+        assertTrue("password not change",jay.checkPasswordCorrect("234567819"));
 
-        assertFalse("user not found",userData.deleteUser(jay));
-        assertFalse("user not found",userData.deleteUser(aaron));
 
+        assertTrue(" not deleted!!error",users.deleteUser("jay"));
 
     }
 

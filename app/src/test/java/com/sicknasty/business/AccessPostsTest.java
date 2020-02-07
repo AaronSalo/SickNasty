@@ -18,10 +18,10 @@ import static org.junit.Assert.assertFalse;
 
 public class AccessPostsTest {
 
-    PostPersistenceStub postData;
+    PostPersistence postData;
 
     public AccessPostsTest (){
-        postData = (PostPersistenceStub) Service.getPostData();
+        postData =  Service.getPostData();
     }
 
 
@@ -57,6 +57,4 @@ public class AccessPostsTest {
         test = postData.getPostsByPage(page,2, PostPersistence.FILTER_BY.TIME_CREATED, true);
         assertFalse("the array held by the persistence stub still holds the post" , test.contains(post)); //the post should no longer be in the arrayList
     }
-
-
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PersonalPage extends Page {
 
-    private ArrayList<Post> posts;
+    private ArrayList<PicturePost> posts;
     private User user;
 
     public PersonalPage(User creator){
@@ -14,5 +14,9 @@ public class PersonalPage extends Page {
 
     public User getUser() {
         return user;
+    }
+
+    public ArrayList<PicturePost> getPosts() {
+        return posts;
     }
 }
