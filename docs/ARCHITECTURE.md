@@ -17,7 +17,7 @@ This layer contains three different activities:
 ## Business
 This layer contains three different managing classes that act as the middlemen for Presentation and Persistence:  
 1. AccessPages
-    - This mananger class provides the link between PageActivity and PagePersistence
+    - This manager class provides the link between PageActivity and PagePersistence
 2. AccessPosts
     - This class provides the link between PageActivity and PostPersistence
 3. AccessUsers
