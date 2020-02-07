@@ -44,4 +44,11 @@ public class AccessPosts {
         return postHandler.deletePost(id);
     }
 
+    /**
+     *@param    post    the post we want to delete from the db
+     *@return true if the deletion was successful, false if the deletion was unsuccessful
+     */
+    public boolean deletePost(Post post) {
+        return postHandler.deletePost(post);
+    }
 }
