@@ -13,7 +13,7 @@ import com.sicknasty.persistence.stubs.PagePersistenceStub;
 public class AccessPages {
 
     private PagePersistence pageHandler;
-    private Page page;
+//    private Page page;
 
     public AccessPages() {
         pageHandler = Service.getPageData();

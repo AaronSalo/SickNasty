@@ -8,8 +8,7 @@ public class PersonalPage extends Page {
     private User user;
 
     public PersonalPage(User creator){
-        super(creator.getUsername(), creator);
-        this.user = user;
+        super(creator);
     }
 
     public User getUser() {

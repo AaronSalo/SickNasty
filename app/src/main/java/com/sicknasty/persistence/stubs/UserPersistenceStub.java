@@ -23,8 +23,7 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public User insertNewUser(User user) {
-        System.out.println(users.containsKey(user.getUsername()));
-        System.out.println(user.getUsername());
+
         if (user == null)
             return null;
         else if(!(users.containsKey(user.getUsername())))                  // cool thing is, is that this will return null on failure and the object on success

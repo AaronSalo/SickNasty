@@ -7,7 +7,7 @@ public class CommunityPage extends Page {
     private ArrayList<User> users; //list of users that are a part of this page
 
     public CommunityPage(String name, User creator){
-        super(name, creator);
+        super(creator);
         this.users = new ArrayList<User>();
         users.add(creator);
     }

@@ -10,16 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PostAdapter extends ArrayAdapter<PicturePost> {
+public class PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
 
-    public PostAdapter(@NonNull Context context, int resource ,List<PicturePost> posts) {
-        super(context, resource,posts);
+    public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
+        super(context,resource,posts);
         resourceId = resource;
     }
 
@@ -44,7 +46,7 @@ public class PostAdapter extends ArrayAdapter<PicturePost> {
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        PicturePost post = getItem(position);//give a post position in layout
+        PicturePost post = (PicturePost) getItem(position);//give a post position in layout
 
         viewHolder.ivImage.setImageResource(post.getPICTURE_PATH());
         viewHolder.userName.setText(post.getUserId().getUsername());

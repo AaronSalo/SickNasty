@@ -2,7 +2,6 @@ package com.sicknasty.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,14 +15,14 @@ import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.User;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     AccessUsers users =new AccessUsers();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         final EditText userName=findViewById(R.id.userName);
         final EditText password=findViewById(R.id.password);
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         if(currUser.checkPasswordCorrect(password.getText().toString()))
                         {
-                            Intent startIntent=new Intent(MainActivity.this,PageActivity.class);
+                            Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
 
                             startIntent.putExtra("user",  userName.getText().toString());
                             startActivity(startIntent);
@@ -75,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean validateUser(String username,String password){
         boolean res=false;
         if(username.isEmpty() && password.isEmpty()){
-            Toast toast = Toast.makeText(MainActivity.this,"Enter your username and password",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(LoginActivity.this,"Enter your username and password",Toast.LENGTH_SHORT);
             toast.show();
         }
         else if(username.isEmpty()){
-            Toast toast = Toast.makeText(MainActivity.this,"Enter your Username",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(LoginActivity.this,"Enter your Username",Toast.LENGTH_SHORT);
             toast.show();
         }
         else if(password.isEmpty()){
-            Toast toast = Toast.makeText(MainActivity.this,"Enter your password",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(LoginActivity.this,"Enter your password",Toast.LENGTH_SHORT);
             toast.show();
         }
         else

@@ -12,7 +12,7 @@ public class AccessPosts {
     private int postGetLimit = 15; //the max amount of posts to get
 
     private PostPersistence postHandler;
-    private ArrayList<Post> posts;
+//    private ArrayList<Post> posts;
 
     public AccessPosts() {
         postHandler = Service.getPostData();

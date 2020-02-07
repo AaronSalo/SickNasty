@@ -1,5 +1,6 @@
 package com.sicknasty;
 
+import com.sicknasty.business.AccessPagesTest;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessPostsTest;
 import com.sicknasty.business.AccessUsers;
@@ -18,6 +19,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AccessUsersTest.class,
+        AccessPagesTest.class,
         AccessPostsTest.class
 })
 public class AllTests

@@ -21,7 +21,14 @@ public class PagePersistenceStub implements PagePersistence {
 
     @Override
     public boolean insertNewPage(Page page) {
+
         if (page == null) return false;
+
+        if(page.getPageName()==null)
+                return false;
+
+        if(pages.containsKey(page.getPageName()))
+            return false;
 
         Page localPage = this.pages.get(page.getPageID());
 
@@ -30,7 +37,6 @@ public class PagePersistenceStub implements PagePersistence {
 
             return true;
         }
-
         return false;
     }
 
