@@ -59,14 +59,10 @@ public class PageActivity extends AppCompatActivity {
         pageName+=intent.getStringExtra("user");
         ((TextView)findViewById(R.id.profileName)).setText(""+currUser.getName());
         int[] imageIds = {R.drawable.logo, R.drawable.logo,
-                R.drawable.logo, R.drawable.logo,
-                R.drawable.logo, R.drawable.logo,
-                R.drawable.logo, R.drawable.logo,
-                R.drawable.logo, R.drawable.logo};
-        String[] userName = {"a", "b", "c", "d", "e", "f", "g", "h", "i",
-                "j"};
-        String[] text = {",m dam", "b", "c", "d", "e", "f", "g", "h", "i",
-                "j"};
+                R.drawable.post1,R.drawable.post2,R.drawable.post3, R.drawable.post3, R.drawable.post4, R.drawable.post5};
+
+        String[] text = {"burger", "burger", "burger", "burger", "burger"};
+
         for (int i = 0; i < imageIds.length; i++) {
             PicturePost picturePost = new PicturePost(text[i],currUser,imageIds[i],123, 123, 123, currUser.getPersonalPage());
             posts.insertPost(picturePost);
