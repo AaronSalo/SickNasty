@@ -26,9 +26,9 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:textSize="25dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="25dp" />
 
 
 </LinearLayout>

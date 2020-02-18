@@ -19,8 +19,6 @@ public abstract class Post {
     private int likes;
     private int dislikes;
 
-
-
     public Post(){};
 
     public Post(String text, User userId, long timeCreated, int likes, int dislikes, Page page){
@@ -44,9 +42,6 @@ public abstract class Post {
     public static int getGlobalpostID() {
         return globalpostID;
     }
-
-
-
     public Page getPageId(){
         return pageId;
     }

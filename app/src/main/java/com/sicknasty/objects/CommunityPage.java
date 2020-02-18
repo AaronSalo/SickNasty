@@ -15,6 +15,7 @@ public class CommunityPage extends Page {
         bannedUsers = new ArrayList<>();
         mods = new ArrayList<>();
         users = new ArrayList<>();
+        this.users = new ArrayList<>();
         users.add(creator);
 
     }

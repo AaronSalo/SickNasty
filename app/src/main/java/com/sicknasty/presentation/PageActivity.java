@@ -4,28 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.sicknasty.R;
-import com.sicknasty.application.Service;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
-import com.sicknasty.adapter.PostAdapter;
+import com.sicknasty.presentation.adapter.*;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.ListView;
-import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class PageActivity extends AppCompatActivity {
 
@@ -69,7 +58,7 @@ public class PageActivity extends AppCompatActivity {
 
         int[] a={(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random())};
 
-        for (int i = 0; i < imageIds.length; i++) {
+        for (int i = 0; i < 2; i++) {
             PicturePost picturePost = new PicturePost(text[a[i]],currUser,imageIds[a[i]],123, 123, 123, currUser.getPersonalPage());
             posts.insertPost(picturePost);
 
