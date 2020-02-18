@@ -7,7 +7,7 @@ public abstract class Page {
     private int id;
     private String pageName;
     private ArrayList<Post> postList;
-    private User creator; //user that created the page
+    private User creator;                   //user that created the page
 
     public Page(User creator){
         pageID++;
