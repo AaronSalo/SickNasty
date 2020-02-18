@@ -8,6 +8,7 @@ public class CommunityPageTest {
 
     @Test
     public void addPost() {
+
     }
 
     @Test
