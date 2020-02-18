@@ -3,3 +3,4 @@ SickNasty is an online community platform that will allow users to create and sh
   
 ## Important Documents
 * [VISION.md](docs/VISION.md)
+* [ARCHITECTURE.md](docs/ARCHITECTURE.md)
