@@ -11,16 +11,15 @@ public class Password {
     private String hash;
     private String salt; //a new "salt" will be created for each user, just makes things more secure
 
-    private final int MAX_PASS_LENGTH = 40;
     private final int MIN_PASS_LENGTH = 7;
 
 
-    public Password(String password){
+    public Password(String password) throws PasswordErrorException {
         if(isValidNewPass(password)) { //is this password valid
             salt = generateSalt(); //generate the salt for this obj
             hash = hash(password, salt);
         } else {
-            //throw new PasswordErrorException("Password is not valid"); //for iteration 2
+            throw new PasswordErrorException("Password is not valid");
         }
     }
 
@@ -47,25 +46,26 @@ public class Password {
         return "";
     }//end of hash function
 
-    public boolean changePassword(String newPass) {
+    public boolean changePassword(String newPass) throws PasswordErrorException{
         boolean success = false;
-        if(newPass.length() < MAX_PASS_LENGTH) { //make sure the password isn't rediculously long
+        if(newPass.length() > MIN_PASS_LENGTH) { // make sure the pass is a little bit long
             hash = hash(newPass, salt); //hash the password and set it as the new password
             success = true;
-        }
+        } else
+            throw new PasswordErrorException("Password too short");
         return success;
     }
 
-    private boolean isValidNewPass(String input) {
+    private boolean isValidNewPass(String input) throws PasswordErrorException{
         boolean success = false;
         if(input != null) {
             if (!input.contains(" ")) {
-                if ((input.length() <= MAX_PASS_LENGTH) &&
-                        (input.length() >= MIN_PASS_LENGTH)) {
-                    success = true;
-                }
-            }
-        }
+                if (input.length() >= MIN_PASS_LENGTH) success = true;
+                else throw new PasswordErrorException("Password is too short");
+            } else
+                throw new PasswordErrorException("Password cannot contain spaces");
+        } else
+            throw new PasswordErrorException("Some unknown error with password creation");
         return success;
     }
 

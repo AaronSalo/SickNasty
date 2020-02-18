@@ -20,19 +20,19 @@ public class User {
 
     PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
 
-    private int maxUsernameLength = 12; //username cannot be longer than 12 characters
-    private int minUsernameLength = 3; //username must be at least 3 characters
+    private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
+    private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 
-    public User(String name, String username, String newPassword){
+    public User(String name, String username, String newPassword)throws PasswordErrorException, UserCreationException,
+            ChangeNameException, ChangeUsernameException {
         changeName(name);
-        this.userName=username;
+        changeUsername(username);
         password = new Password(newPassword);
         personalPage = new PersonalPage(this); //create a personal page for this user
     }//end of constructor
 
 
     public String getName(){ return name;}
-
 
     public PersonalPage getPersonalPage() {return this.personalPage;}
 
@@ -41,12 +41,13 @@ public class User {
      * @param newName   the name we want to change to
      * @return true on success
      */
-    public boolean changeName(String newName) {
+    public boolean changeName(String newName) throws ChangeNameException{
         boolean success = false;
-        if(newName.length() < maxUsernameLength) {
+        if(newName.length() < MAX_USERNAME_LENGTH) {
             name = newName;
             success = true;
-        }
+        } else
+            throw new ChangeNameException("The username was too long; must be shorter than "+ MAX_USERNAME_LENGTH);
         return success;
     }
 
@@ -56,8 +57,8 @@ public class User {
      * Pass a new password through a hashing function
      * @return  true on success
      */
-    public boolean changePassword(String newPass) {
-        return password.changePassword(newPass); //password class will handle the password change
+    public void changePassword(String newPass) {
+        //return password.changePassword(newPass); //password class will handle the password change
     }//end of change password
 
 
@@ -71,22 +72,25 @@ public class User {
      * etc. If the checks fail, it will return false and do nothing, otherwise, change the username
      * @return true on success
      */
-    public boolean changeUsername(String newUsername) {
+    public void changeUsername(String newUsername) throws ChangeUsernameException{
         boolean success = false;
         //check if newUsername is used by anyone
         if(newUsername!=null) {
             if (Service.getUserData().getUser(newUsername) == null) { //is the username used by anyone else
-                if ((newUsername.length() <= maxUsernameLength) &&
-                        (newUsername.length() >= minUsernameLength)) { //is the newUsername an appropriate length
+                if ((newUsername.length() <= MAX_USERNAME_LENGTH) &&
+                        (newUsername.length() >= MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
                     if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
                         Service.getUserData().updateUsername(userName,newUsername);
                         userName = newUsername;
-                        success = true;
-                    }//if
-                }//if
-            }//if
-        }
-        return success;
+                    } else
+                        throw new ChangeUsernameException("Username cannot contain whitespace");
+                } else
+                    throw new ChangeUsernameException("Username must be longer than " + MIN_USERNAME_LENGTH +
+                            " and shorter than " + MAX_USERNAME_LENGTH);
+            } else
+                throw new ChangeUsernameException("Username is already taken");
+        } else
+            throw new ChangeUsernameException("An unknown error occured when trying to update the username");
     } //changeUsername
 
     //if you need an explanation for this one.... idk man....
@@ -101,3 +105,23 @@ public class User {
     }//follow
 
 } //end of class
+
+class ChangeNameException extends Exception{
+    public ChangeNameException(String message) {
+        super(message);
+    }
+}
+
+class UserCreationException extends Exception {
+
+    public UserCreationException(String message) {
+        super(message);
+    }
+}
+
+class ChangeUsernameException extends Exception {
+
+    public ChangeUsernameException(String message) {
+        super(message);
+    }
+}
