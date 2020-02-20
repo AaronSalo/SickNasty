@@ -99,4 +99,65 @@ public class RegistrationActivity extends AppCompatActivity {
             res=true;
         return res;
     }
+
+
+    //old method
+    void oldMethod(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+
+        //get the sign up details from the ui
+
+        Button register=findViewById(R.id.Register);
+
+        //validate the new account and create it
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = ((EditText)findViewById(R.id.signUpName)).getText().toString();
+                String username = ((EditText)findViewById(R.id.signUpUsername)).getText().toString();
+                String password = ((EditText)findViewById(R.id.signUpPassword)).getText().toString();
+
+                if(signUpValidation(name, username, password)){
+
+                    boolean temp=true;
+                    if(name.length()<4){
+                        Toast.makeText(getApplicationContext(),"Name has to be minimum 4 characters long",Toast.LENGTH_SHORT).show();
+                        temp=false;
+                    }
+                    if(password.length()<7) {
+                        temp=false;
+                        Toast.makeText(getApplicationContext(), "Password has to be of minimum length 7 ", Toast.LENGTH_SHORT).show();
+                    }
+                    if(username.length()<3) {
+                        temp=false;
+                        Toast.makeText(getApplicationContext(), "Username has to be minimum 3 characters long", Toast.LENGTH_SHORT).show();
+                    }
+                    if(temp){
+                        User newUser=users.validNewUsername(username);
+                        if(newUser==null){
+                            users.insertUser(name,username,password);        //after validating the user
+                            Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
+                            toast.show();
+                            onBackPressed();
+                        }
+                        else{
+                            Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                }
+            }
+        });
+        Button signIn=findViewById(R.id.signIn);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startIntent=new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(startIntent);
+            }
+        });
+
+
+    }
 }
