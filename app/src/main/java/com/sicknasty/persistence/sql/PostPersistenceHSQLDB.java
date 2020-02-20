@@ -65,7 +65,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT * FROM POsts WHERE p_id = ? LIMIT 1"
+                    "SELECT * FROM Posts WHERE p_id = ? LIMIT 1"
             );
             stmt.setInt(1, id);
 
