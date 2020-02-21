@@ -1,6 +1,9 @@
 package com.sicknasty.objects;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
 
 import java.util.ArrayList;
 
@@ -13,7 +16,7 @@ public class User {
 
     private String name; //the "display name" of the user
     private String userName; //used for storage, searching, etc.
-    private Password password; //MAKE SURE we store a hashed version
+    private String password; //just store unsecure pass for now
 
     ArrayList<User> followers; //list of people that follow the user
     ArrayList<User> follows; //list of people that the user follows
@@ -23,11 +26,14 @@ public class User {
     private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 
+    //password restrictions; public in case UI wants to display this value
+    public final int MIN_PASS_LENGTH = 6;
+
     public User(String name, String username, String newPassword)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
         changeName(name);
         changeUsername(username);
-        password = new Password(newPassword);
+        password = newPassword;
         personalPage = new PersonalPage(this); //create a personal page for this user
     }//end of constructor
 
@@ -57,13 +63,21 @@ public class User {
      * Pass a new password through a hashing function
      * @return  true on success
      */
-    public void changePassword(String newPass) {
-        //return password.changePassword(newPass); //password class will handle the password change
+    public void changePassword(String input) throws PasswordErrorException{
+        if(input != null) {
+            if (!input.contains(" ")) {
+                if (input.length() >= MIN_PASS_LENGTH)
+                    password = input;
+                else throw new PasswordErrorException("Password is too short");
+            } else
+                throw new PasswordErrorException("Password cannot contain spaces");
+        } else
+            throw new PasswordErrorException("Some unknown error with password creation");
     }//end of change password
 
 
     public boolean checkPasswordCorrect(String inputPass){
-        return password.checkPass(inputPass); //check if the password is correct
+        return password.equals(inputPass); //check if the password is correct
     }
 
 
@@ -106,22 +120,3 @@ public class User {
 
 } //end of class
 
-class ChangeNameException extends Exception{
-    public ChangeNameException(String message) {
-        super(message);
-    }
-}
-
-class UserCreationException extends Exception {
-
-    public UserCreationException(String message) {
-        super(message);
-    }
-}
-
-class ChangeUsernameException extends Exception {
-
-    public ChangeUsernameException(String message) {
-        super(message);
-    }
-}

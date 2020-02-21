@@ -1,6 +1,8 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 /** @author jay
@@ -15,23 +17,33 @@ public class AccessUsers {
         userHandler= Service.getUserData();             //get the dataStub
     }
 
-    public User insertUser(String name, String userName,String password){
-            return userHandler.insertNewUser(new User(name,userName,password));
+
+    //insert a user to the db
+    public User insertUser(User user){
+        return userHandler.insertNewUser(user);
     }
 
-    public boolean updateUserPassword(String username,String oldPassword,String newPassword){
+
+    public void updateUserPassword(String username,String oldPassword,String newPassword) throws PasswordErrorException {
         User user =userHandler.getUser(username);
-        if(user.checkPasswordCorrect(oldPassword)){                   //check the password
-            return user.changePassword(newPassword);
+        if(user == null) {
+            throw new PasswordErrorException("User not found. Cannot change password.");
+        } else {
+            try {
+                user.changePassword(newPassword);
+            } catch (PasswordErrorException e) {
+                throw e;
+            } catch (Exception ex) {
+
+            }
         }
-        return false;
     }
     /**
      * Updates username of a user if that username is available
      * @param user  the username we want to check,newUsername that we want to updarte
      * @return  true if the changing username was successful, false if not
      */
-    public boolean updateUsername(User user,String newUsername){
+    public boolean updateUsername(User user,String newUsername) throws ChangeUsernameException {
         if(user!=null){                     //if the user is not null
                 return user.changeUsername(newUsername);
         }
