@@ -1,4 +1,4 @@
-package com.sicknasty.adapter;
+package com.sicknasty.presentation.adapter;
 
 import android.widget.ArrayAdapter;
 
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.view.LayoutInflater;
 import android.widget.ImageView;

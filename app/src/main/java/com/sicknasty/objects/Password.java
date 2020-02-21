@@ -1,7 +1,8 @@
 package com.sicknasty.objects;
 
 
-import java.io.IOException;
+import android.os.Build;
+
 import java.security.MessageDigest;
 import java.util.Base64;
 import java.security.SecureRandom;
@@ -38,7 +39,9 @@ public class Password {
             hash = msg.digest();
 
             // just like in generateSalt() we return text
-            return Base64.getEncoder().withoutPadding().encodeToString(hash);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return Base64.getEncoder().withoutPadding().encodeToString(hash);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,7 +82,9 @@ public class Password {
             saltGenerator.nextBytes(salt);
 
             // encode the bytes as UTF-8 encoded text so that it can go into the database
-            return Base64.getEncoder().withoutPadding().encodeToString(salt);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return Base64.getEncoder().withoutPadding().encodeToString(salt);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

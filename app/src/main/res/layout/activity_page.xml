@@ -7,35 +7,65 @@
     android:background="@drawable/gradient1"
     tools:context=".presentation.PageActivity">
 
-    <TextView
-        android:id="@+id/Posts"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:text="Posts"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/Following"
-        app:layout_constraintTop_toBottomOf="@+id/Following" />
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/following"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/followers"
-        app:layout_constraintTop_toBottomOf="@+id/Followers" />
+        <TextView
+            android:id="@+id/Followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Followers" />
 
-    <TextView
-        android:id="@+id/followers"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/Followers"
-        app:layout_constraintStart_toEndOf="@+id/Followers"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/Following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Following" />
+
+        <TextView
+            android:id="@+id/Posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posts" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="followers" />
+
+        <TextView
+            android:id="@+id/following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="following" />
+
+        <TextView
+            android:id="@+id/posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="posts" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView"
@@ -55,36 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.934" />
-
-    <TextView
-        android:id="@+id/Followers"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="16dp"
-        android:text="Followers"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Following"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:text="Following"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/Followers"
-        app:layout_constraintTop_toBottomOf="@+id/Followers" />
-
-    <TextView
-        android:id="@+id/posts"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/following"
-        app:layout_constraintTop_toBottomOf="@+id/Following" />
 
     <ImageView
         android:id="@+id/settings"
