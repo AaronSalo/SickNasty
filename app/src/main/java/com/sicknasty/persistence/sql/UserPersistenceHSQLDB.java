@@ -2,6 +2,7 @@ package com.sicknasty.persistence.sql;
 
 
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.HSQLDBInitializer;
 import com.sicknasty.persistence.UserPersistence;
 
 import java.sql.Connection;
@@ -16,16 +17,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
         this.path = path;
 
         try {
-            Connection db = this.getConnection();
-
-            PreparedStatement stmt = db.prepareStatement(
-                "CREATE TABLE IF NOT EXISTS Users (" +
-                    "username VARCHAR(32) PRIMARY KEY," +
-                    "name VARCHAR(32) NOT NULL," +
-                    "password VARCHAR(128) NOT NULL" +
-                ")"
-            );
-            stmt.execute();
+            HSQLDBInitializer.setupTables(this.getConnection());
         } catch (SQLException e) {
             //TODO: do something lul
         }
