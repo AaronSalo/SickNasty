@@ -15,7 +15,7 @@ public class User {
     private String userName; //used for storage, searching, etc.
     private Password password; //MAKE SURE we store a hashed version
 
-    ArrayList<User> followers; //list of people that follow the user
+    //ArrayList<User> followers; //list of people that follow the user
     ArrayList<User> follows; //list of people that the user follows
 
     PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
@@ -90,9 +90,9 @@ public class User {
     } //changeUsername
 
     //if you need an explanation for this one.... idk man....
-    public void addFollower(User newFollower) {
-        followers.add(newFollower);
-    }//addFollower
+//    //public void addFollower(User newFollower) {
+//        followers.add(newFollower);
+//    }//addFollower
 
 
     //add a new user to the list of users you follow

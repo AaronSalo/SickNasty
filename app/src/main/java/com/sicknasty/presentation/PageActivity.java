@@ -65,6 +65,4 @@ public class PageActivity extends AppCompatActivity {
         }
         pages.insertNewPage(currUser.getPersonalPage());
     }
-
-
 }
