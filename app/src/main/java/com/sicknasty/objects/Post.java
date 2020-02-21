@@ -12,7 +12,7 @@ public abstract class Post {
 
     //private String communityID;
 
-    //private Page pageId;            //stored so we know which page this post is being posted too
+    private Page pageId;            //stored so we know which page this post is being posted too
     private int thisPostID;
 
     private long timeCreated;
@@ -21,7 +21,7 @@ public abstract class Post {
 
     public Post(String text, User userId, long timeCreated, int likes, int dislikes, Page page){
         globalpostID++;
-        //pageId = page;
+        pageId = page;
         thisPostID = globalpostID;
         this.text = text;
         this.userId = userId;
@@ -29,6 +29,10 @@ public abstract class Post {
         this.timeCreated = System.currentTimeMillis();
         this.likes = likes;
         this.dislikes = dislikes;
+    }
+
+    public Page getPageId() {
+        return pageId;
     }
 
     public int getPostID() {

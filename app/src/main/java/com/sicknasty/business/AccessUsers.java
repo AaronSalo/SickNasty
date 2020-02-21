@@ -15,29 +15,44 @@ public class AccessUsers {
         userHandler= Service.getUserData();             //get the dataStub
     }
 
-    public User insertUser(String name, String userName,String password){
-            return userHandler.insertNewUser(new User(name,userName,password));
+
+    //throwing exceptions everywhere
+    public void insertUser(String name, String userName,String password){
+        try {
+            userHandler.insertNewUser(new User(name,userName,password));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public boolean updateUserPassword(String username,String oldPassword,String newPassword){
+    //ahh throw exceptions
+    public void updateUserPassword(String username,String oldPassword,String newPassword){
         User user =userHandler.getUser(username);
         if(user.checkPasswordCorrect(oldPassword)){                   //check the password
-            return user.changePassword(newPassword);
+            try {
+                user.changePassword(newPassword);
+            } catch (Exception e) {
+                e.printStackTrace();                                //don't just print it (do something)
+            }
         }
-        return false;
     }
     /**
      * Updates username of a user if that username is available
      * @param user  the username we want to check,newUsername that we want to updarte
      * @return  true if the changing username was successful, false if not
      */
-    public boolean updateUsername(User user,String newUsername){
+    public void updateUsername(User user,String newUsername){
         if(user!=null){                     //if the user is not null
-                return user.changeUsername(newUsername);
+            try {
+                user.changeUsername(newUsername);
+            } catch (Exception e) {
+                e.printStackTrace();                                //don't just print it (do something)
+            }
         }
-        return false;
     }
 
+    //have to revisit this!!!!!!
     /**
      * Checks to see if a given username is available for use
      * @param username  the username we want to check
@@ -47,6 +62,7 @@ public class AccessUsers {
         return userHandler.getUser(username);
     }
 
+    //what to return (Revisit this??)
     public boolean deleteUser(String username){
         return userHandler.deleteUser(validNewUsername(username));
     }

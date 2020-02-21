@@ -1,5 +1,6 @@
 package com.sicknasty.persistence.sql;
 
+
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 
@@ -52,11 +53,15 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 
             ResultSet result = stmt.executeQuery();
             if (result.first()) {
-                return new User(
-                    result.getString("name"),
-                    result.getString("username"),
-                    result.getString("password")
-                );
+                try {
+                    return new User(
+                        result.getString("name"),
+                        result.getString("username"),
+                        result.getString("password")
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();                                //also to do something( Change made by Jay---)
+                }
             }
         } catch (SQLException e) {
             //TODO: do something lul
