@@ -61,9 +61,12 @@ public class User {
         }
     }//end of change password
 
-
     public boolean checkPasswordCorrect(String inputPass){
         return password.equals(inputPass); //check if the password is correct
+    }
+    
+    public String getPassword() {
+        return this.password;
     }
 
     /**change the user name

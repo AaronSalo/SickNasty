@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class UserPersistenceHSQLDB implements UserPersistence {
     private String path;
@@ -20,11 +19,12 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS Users (" +
-                            "username VARCHAR(32) PRIMARY KEY," +
-                            "name VARCHAR(32) NOT NULL," +
-                            "password VARCHAR(128) NOT NULL" +
-                            ")");
+                "CREATE TABLE IF NOT EXISTS Users (" +
+                    "username VARCHAR(32) PRIMARY KEY," +
+                    "name VARCHAR(32) NOT NULL," +
+                    "password VARCHAR(128) NOT NULL" +
+                ")"
+            );
             stmt.execute();
         } catch (SQLException e) {
             //TODO: do something lul
@@ -38,7 +38,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path, "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + "shutdown=true", "SA", "");
     }
 
     @Override
@@ -47,23 +47,19 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-              "SELECT * FROM Users WHERE username = ? LIMIT 1"
+                "SELECT * FROM Users WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, username);
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
-                try {
-                    return new User(
-                        result.getString("name"),
-                        result.getString("username"),
-                        result.getString("password")
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();                                //also to do something( Change made by Jay---)
-                }
+            if (result.next()) {
+                return new User(
+                    result.getString("name"),
+                    result.getString("username"),
+                    result.getString("password")
+                );
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             //TODO: do something lul
         }
 
@@ -81,7 +77,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             stmt.setString(1, user.getUsername());
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
+            if (result.next()) {
                 //TODO: throw an exception or something lul
                 return null;
             } else {
@@ -90,7 +86,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 );
                 stmt.setString(1, user.getUsername());
                 stmt.setString(2, user.getName());
-                stmt.setString(3, "123");
+                stmt.setString(3, user.getPassword());
                 stmt.execute();
             }
         } catch (SQLException e) {
