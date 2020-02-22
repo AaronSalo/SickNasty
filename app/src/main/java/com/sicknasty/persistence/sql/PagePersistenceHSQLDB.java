@@ -72,6 +72,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
+    //TODO:
     //PICKLE
     // i cant tell what is personal page and what is community page
     public boolean insertNewPage(Page page) {
