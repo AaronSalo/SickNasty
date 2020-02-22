@@ -11,12 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sicknasty.R;
 import com.sicknasty.business.AccessUsers;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    AccessUsers users =new AccessUsers();
+    AccessUsers userHandler =new AccessUsers();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,26 +33,37 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateUser(userName.getText().toString(),password.getText().toString())) {
+                String inputUsername = userName.getText().toString();
+                String inputPassword = password.getText().toString();
 
-                    User currUser=users.validNewUsername(userName.getText().toString());
-                    if(currUser!=null)                      //if successfull login add a toast
-                    {
-                        if(currUser.checkPasswordCorrect(password.getText().toString()))
+                if( validateInput(inputUsername, inputPassword) ){ //check sure we have a valid input
+
+                    //some text we are going to show the user
+                    //its going to get changed, so if it doesnt, we have an unexpected error
+                    String infoText = "An unexpected error has occurred";
+
+                    try {
+                        //get the user
+                        User currUser = userHandler.getUser(inputUsername);
+                        //check if the password is correct
+                        if(currUser.checkPasswordCorrect(inputPassword) )
                         {
                             Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
-                            startIntent.putExtra("user",  userName.getText().toString());
+                            startIntent.putExtra("user",  inputUsername);
                             startActivity(startIntent);
-                            Toast.makeText(getApplicationContext(),"Login Successful!",Toast.LENGTH_SHORT).show();
+                            infoText = "Login Successful";
                             finish();
                         }
                         else{
-                            Toast.makeText(getApplicationContext(),"Password and username doesn't match",Toast.LENGTH_SHORT).show();
+                            infoText = "Password and username doesn't match";
                         }
+                    } catch (UserNotFoundException e) {
+                        infoText = e.getMessage();
+                    } finally {
+                        //show the user the appropriate message
+                        Toast.makeText(getApplicationContext(),infoText,Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(),"User doesn't exist",Toast.LENGTH_SHORT).show();
-                    }
+
                 }
             }
         });
@@ -64,22 +76,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean validateUser(String username,String password){
-        boolean res=false;
+
+
+    //make sure the user actually input some values
+    private boolean validateInput(String username,String password){
+        username = username.trim();
+        password = password.trim();
+
+        String infoText = "";
+
+        boolean result=false;
         if(username.isEmpty() && password.isEmpty()){
-            Toast toast = Toast.makeText(LoginActivity.this,"Enter your username and password",Toast.LENGTH_SHORT);
-            toast.show();
+            infoText = "enter your username and password";
         }
         else if(username.isEmpty()){
-            Toast toast = Toast.makeText(LoginActivity.this,"Enter your Username",Toast.LENGTH_SHORT);
-            toast.show();
+            infoText = "Enter your username";
         }
         else if(password.isEmpty()){
-            Toast toast = Toast.makeText(LoginActivity.this,"Enter your password",Toast.LENGTH_SHORT);
-            toast.show();
+            infoText = "Enter your password";
         }
         else
-            res=true;
-        return res;
+            result = true;
+
+        //if we have a message for the user, display it
+        if(infoText.length() > 0) {
+            Toast toast = Toast.makeText(LoginActivity.this, infoText, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        return result;
     }
 }

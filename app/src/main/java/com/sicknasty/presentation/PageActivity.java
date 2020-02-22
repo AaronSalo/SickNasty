@@ -8,7 +8,8 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
-import com.sicknasty.presentation.adapter.*;
+import com.sicknasty.adapter.PostAdapter;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,26 +44,32 @@ public class PageActivity extends AppCompatActivity {
 
     //Hard code here for post
     private void getData() {
-        Intent intent =getIntent();
-        User currUser=users.validNewUsername(intent.getStringExtra("user"));
-        pageName+=intent.getStringExtra("user");
-        ((TextView)findViewById(R.id.profileName)).setText(""+currUser.getName());
-        int[] imageIds = {R.drawable.post1, R.drawable.post2,
-                R.drawable.post3, R.drawable.post4,
-                R.drawable.post5, R.drawable.post1,
-                R.drawable.post2, R.drawable.post3,
-                R.drawable.post4, R.drawable.post5};
+        Intent intent = getIntent();
+        try {
+            User currUser = users.getUser(intent.getStringExtra("user"));
+            pageName += intent.getStringExtra("user");
+            ((TextView) findViewById(R.id.profileName)).setText("" + currUser.getName());
+            int[] imageIds = {R.drawable.post1, R.drawable.post2,
+                    R.drawable.post3, R.drawable.post4,
+                    R.drawable.post5, R.drawable.post1,
+                    R.drawable.post2, R.drawable.post3,
+                    R.drawable.post4, R.drawable.post5};
 
 
-        String[] text = {"Look at this sick dog trick!!!!!!!!!", "This post is sickkky sickkky nasty", "u should look at what i bought for 50$", "funny,right? no,you are so dumb", "screw life !! i want to suicide", "sarcasm at it's best","Look at this sick dog trick!!!!!!!!!","dont look at me ,i find you offensive dude","this is so cooll man","this post is dope man!!!!!"};
+            String[] text = {"Look at this sick dog trick!!!!!!!!!", "This post is sickkky sickkky nasty", "u should look at what i bought for 50$", "funny,right? no,you are so dumb", "screw life !! i want to suicide", "sarcasm at it's best", "Look at this sick dog trick!!!!!!!!!", "dont look at me ,i find you offensive dude", "this is so cooll man", "this post is dope man!!!!!"};
 
-        int[] a={(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random()),(int)(10*Math.random())};
+            int[] a = {(int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random()), (int) (10 * Math.random())};
 
-        for (int i = 0; i < 2; i++) {
-            PicturePost picturePost = new PicturePost(text[a[i]],currUser,imageIds[a[i]],123, 123, 123, currUser.getPersonalPage());
-            posts.insertPost(picturePost);
+            for (int i = 0; i < imageIds.length; i++) {
+                PicturePost picturePost = new PicturePost(text[a[i]], currUser, imageIds[a[i]], 123, 123, 123, currUser.getPersonalPage());
+                posts.insertPost(picturePost);
 
+            }
+            pages.insertNewPage(currUser.getPersonalPage());
+
+        } catch (UserNotFoundException e) {
+            String errorMsg = e.getMessage();
+            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }
-        pages.insertNewPage(currUser.getPersonalPage());
     }
 }
