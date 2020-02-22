@@ -6,7 +6,7 @@ import com.sicknasty.objects.Post;
 import java.util.ArrayList;
 
 public interface PostPersistence {
-    public enum FILTER_BY {TIME_CREATED, AMOUNT_LIKES};
+    public enum FILTER_BY {TIME_CREATED, AMOUNT_LIKES, AMOUNT_DISLIKES};
     /**
      * Returns a Post specified by it's unique ID.
      * 
