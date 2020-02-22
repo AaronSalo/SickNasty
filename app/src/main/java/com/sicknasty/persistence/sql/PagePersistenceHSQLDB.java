@@ -2,6 +2,7 @@ package com.sicknasty.persistence.sql;
 
 import com.sicknasty.objects.CommunityPage;
 import com.sicknasty.objects.Page;
+import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.UserPersistence;
@@ -13,8 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PagePersistenceHSQLDB implements PagePersistence {
-    private static int PERSONAL_PAGE = 0;
-    private static int COMMUNITY_PAGE = 1;
+    private final static int PERSONAL_PAGE = 0;
+    private final static int COMMUNITY_PAGE = 1;
 
     private String path;
 
@@ -56,9 +57,9 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
                 if (user != null) {
                     switch (result.getInt("type")) {
-                        case this.PERSONAL_PAGE:
+                        case PERSONAL_PAGE:
                             return new PersonalPage(user);
-                        case this.COMMUNITY_PAGE:
+                        case COMMUNITY_PAGE:
                             return new CommunityPage(result.getString("pg_name"), user);
                     }
                 }

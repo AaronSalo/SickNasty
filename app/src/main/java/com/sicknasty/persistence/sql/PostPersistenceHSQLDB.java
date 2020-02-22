@@ -16,9 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PostPersistenceHSQLDB implements PostPersistence {
-    private static int TEXT_POST = 0;
-    private static int PICTURE_POST = 1;
-    private static int VIDEO_POST = 2;
+    private final static int TEXT_POST = 0;
+    private final static int PICTURE_POST = 1;
+    private final static int VIDEO_POST = 2;
 
     private String path;
 
