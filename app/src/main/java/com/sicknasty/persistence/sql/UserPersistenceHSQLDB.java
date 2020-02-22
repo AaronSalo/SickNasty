@@ -2,13 +2,13 @@ package com.sicknasty.persistence.sql;
 
 
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.HSQLDBInitializer;
 import com.sicknasty.persistence.UserPersistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserPersistenceHSQLDB implements UserPersistence {
     private String path;
@@ -86,7 +86,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 stmt.execute();
             }
             
-            return User;
+            return user;
         } catch (SQLException e) {
             //TODO: do something lul
         }

@@ -2,7 +2,6 @@ package com.sicknasty.persistence.sql;
 
 import com.sicknasty.objects.CommunityPage;
 import com.sicknasty.objects.Page;
-import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.UserPersistence;
@@ -95,8 +94,8 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
                 );
                 stmt.setString(1, page.getPageName());
-                stmt.setString(2, page.getUserId().getUsername());
-                stmt.setString(3, this.PERSONAL_PAGE);
+                stmt.setString(2, page.getCreator().getUsername());
+                stmt.setInt(3, this.PERSONAL_PAGE);
                 stmt.execute();
             }
             

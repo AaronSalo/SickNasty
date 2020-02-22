@@ -1,5 +1,9 @@
 package com.sicknasty.persistence.sql;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 // no, I did not forget to include a keyword as a part of the class signature
 // blame Java for being stupid
 // - Lucas
@@ -22,7 +26,7 @@ class HSQLDBInitializer {
                 "likes INTEGER NOT NULL," +
                 "dislikes INTEGER NOT NULL," +
                 "creator_username VARCHAR(32) NOT NULL," +
-                "time_created FLOAT NOT NULL" +
+                "time_created LONG NOT NULL" +
                 "type TINYINT NOT NULL" +
             ")"
         );

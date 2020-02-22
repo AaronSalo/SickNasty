@@ -6,13 +6,13 @@ import com.sicknasty.objects.TextPost;
 import com.sicknasty.objects.PicturePost;
 import com.sicknasty.objects.VideoPost;
 import com.sicknasty.persistence.PostPersistence;
-import com.sicknasty.persistence.sql.UserPersistenceHSQLDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PostPersistenceHSQLDB implements PostPersistence {
@@ -71,13 +71,13 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             
             String filterArg = "";
             switch (filter) {
-                case PostPersistence.FILTER_BY.TIME_CREATED:
+                case TIME_CREATED:
                     filterArg = "time_created";
                     break;
-                case PostPersistence.FILTER_BY.AMOUNT_LIKES:
+                case AMOUNT_LIKES:
                     filterArg = "likes";
                     break;
-                case PostPersistence.FILTER_BY.AMOUNT_DISLIKES:
+                case AMOUNT_DISLIKES:
                     filterArg = "dislikes";
                     break;
             }
@@ -91,8 +91,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             stmt.setString(1, page.getPageName());
             stmt.setInt(2, limit);
             
-            ArrayList<Posts> retList = new ArrayList<Posts>();
-            Result result = stmt.executeQuery();
+            ArrayList<Post> retList = new ArrayList<Post>();
+            ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 retList.add(this.postBuilder(result));
             }
@@ -121,18 +121,18 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
                 //TODO: throw an exception or something lul
-                return null;
+                return false;
             } else {
                 stmt = db.prepareStatement(
                     "INSERT INTO Posts VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
                 );
                 stmt.setString(1, post.getText());
-                stmt.setString(2, post.getName());
-                stmt.setString(3, "path"); //TODO: this is the path
-                stmt.setInt(4, post.getNumberOfLikes());
-                stmt.setInt(5, post.getNumberOfDislikes());
-                stmt.setString(6, post.getUserId().getUsername());
+                stmt.setString(2, "path"); //TODO: this is the path
+                stmt.setInt(3, post.getNumberOfLikes());
+                stmt.setInt(4, post.getNumberOfDislikes());
+                stmt.setString(5, post.getUserId().getUsername());
+                stmt.setLong(6, post.getTimeCreated());
                 stmt.setInt(7, this.PICTURE_POST);
                 stmt.executeUpdate();
                 
@@ -179,44 +179,55 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
     @Override
     public boolean deletePost(Post post) {
-        return this.deletePost(post.getPageID());
+        return this.deletePost(post.getPostID());
     }
     
-    private Post postBuilder(ResultSet result) {
+    private Post postBuilder(ResultSet result) throws SQLException {
         UserPersistenceHSQLDB uSQL = new UserPersistenceHSQLDB("sicknasty");
         PagePersistenceHSQLDB pgSQL = new PagePersistenceHSQLDB("sicknasty");
             
         switch (result.getInt("type")) {
-            case this.TEXT_POST:
+            case TEXT_POST:
                 return new TextPost(
                     result.getString("text"),
                     uSQL.getUser(result.getString("creator_username")),
-                    (long) result.getString("time_created"),
-                    result.getString("likes"),
-                    result.getString("dislikes"),
+                    result.getLong("time_created"),
+                    result.getInt("likes"),
+                    result.getInt("dislikes"),
                     pgSQL.getPage(result.getString("pg_name"))
                 );
-            case this.PICTURE_POST:
-                return new TextPost(
+            case PICTURE_POST:
+//                return new PicturePost(
+//                    result.getString("text"),
+//                    uSQL.getUser(result.getString("creator_username")),
+//                    result.getString("media_path"),
+//                    result.getLong("time_created"),
+//                    result.getInt("likes"),
+//                    result.getInt("dislikes"),
+//                    pgSQL.getPage(result.getString("pg_name"))
+//                );
+                return new PicturePost(
                     result.getString("text"),
                     uSQL.getUser(result.getString("creator_username")),
-                    result.getString("media_path"),
-                    (long) result.getString("time_created"),
-                    result.getString("likes"),
-                    result.getString("dislikes"),
+                    0,
+                    result.getLong("time_created"),
+                    result.getInt("likes"),
+                    result.getInt("dislikes"),
                     pgSQL.getPage(result.getString("pg_name"))
                 );
-            case this.VIDEO_POST:
-                return new TextPost(
+            case VIDEO_POST:
+                return new VideoPost(
                     result.getString("text"),
                     uSQL.getUser(result.getString("creator_username")),
                     0,
                     result.getString("media_path"),
-                    (long) result.getString("time_created"),
-                    result.getString("likes"),
-                    result.getString("dislikes"),
+                    result.getLong("time_created"),
+                    result.getInt("likes"),
+                    result.getInt("dislikes"),
                     pgSQL.getPage(result.getString("pg_name"))
                 );
         }
+
+        return null;
     }
 }
