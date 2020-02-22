@@ -3,6 +3,7 @@ package com.sicknasty.business;
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 /** @author jay
@@ -24,17 +25,15 @@ public class AccessUsers {
     }
 
 
-    public void updateUserPassword(String username,String oldPassword,String newPassword) throws PasswordErrorException {
+    public void updateUserPassword(String username,String oldPassword,String newPassword) throws Exception {
         User user =userHandler.getUser(username);
         if(user == null) {
             throw new PasswordErrorException("User not found. Cannot change password.");
         } else {
             try {
                 user.changePassword(newPassword);
-            } catch (PasswordErrorException e) {
-                throw e;
             } catch (Exception ex) {
-
+                throw ex; //rethrow the exception, handle it in the UI layer
             }
         }
     }
@@ -43,23 +42,39 @@ public class AccessUsers {
      * @param user  the username we want to check,newUsername that we want to updarte
      * @return  true if the changing username was successful, false if not
      */
-    public boolean updateUsername(User user,String newUsername) throws ChangeUsernameException {
-        if(user!=null){                     //if the user is not null
-                return user.changeUsername(newUsername);
+    public void updateUsername(User user,String newUsername) throws ChangeUsernameException {
+        try {
+            user.changeUsername(newUsername);
+        } catch (ChangeUsernameException e) {
+            throw e;
         }
-        return false;
     }
+
+
+    public User getUser(String username)throws UserNotFoundException{
+        User user = userHandler.getUser(username);
+        if(user != null)
+            return user;
+        else
+            throw new UserNotFoundException("Could not find a user with that username");
+    }
+
+
 
     /**
      * Checks to see if a given username is available for use
      * @param username  the username we want to check
-     * @return  null if the username is not validvalid, else user
+     * @return  false if the username is taken and true if it is available
      */
-    public User validNewUsername(String username){
-        return userHandler.getUser(username);
+    public boolean validNewUsername(String username){
+        return userHandler.getUser(username) != null;
     }
 
-    public boolean deleteUser(String username){
-        return userHandler.deleteUser(validNewUsername(username));
+    public void deleteUser(String username) throws UserNotFoundException{
+        User user = userHandler.getUser(username);
+        if(user != null)
+            userHandler.deleteUser(user);
+        else
+            throw new UserNotFoundException("Could not find the specified user");
     }
 }

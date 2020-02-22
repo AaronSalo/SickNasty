@@ -29,11 +29,11 @@ public class User {
     //password restrictions; public in case UI wants to display this value
     public final int MIN_PASS_LENGTH = 6;
 
-    public User(String name, String username, String newPassword)throws PasswordErrorException, UserCreationException,
+    public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
         changeName(name);
         changeUsername(username);
-        password = newPassword;
+        changePassword(password);
         personalPage = new PersonalPage(this); //create a personal page for this user
     }//end of constructor
 
@@ -49,11 +49,15 @@ public class User {
      */
     public boolean changeName(String newName) throws ChangeNameException{
         boolean success = false;
-        if(newName.length() < MAX_USERNAME_LENGTH) {
-            name = newName;
-            success = true;
+        newName = newName.trim(); //trim the whitespace
+        if(newName.length() > MIN_USERNAME_LENGTH) {
+            if (newName.length() < MAX_USERNAME_LENGTH) {
+                name = newName;
+                success = true;
+            } else
+                throw new ChangeNameException("The username was too long; must be shorter than " + MAX_USERNAME_LENGTH);
         } else
-            throw new ChangeNameException("The username was too long; must be shorter than "+ MAX_USERNAME_LENGTH);
+            throw new ChangeNameException(("The username was too short; must be at least " + MIN_USERNAME_LENGTH + " characters"));
         return success;
     }
 
@@ -64,15 +68,18 @@ public class User {
      * @return  true on success
      */
     public void changePassword(String input) throws PasswordErrorException{
+        input = input.trim(); //get the whitespace off the ends
         if(input != null) {
             if (!input.contains(" ")) {
-                if (input.length() >= MIN_PASS_LENGTH)
+                if (input.length() >= MIN_PASS_LENGTH) {
                     password = input;
-                else throw new PasswordErrorException("Password is too short");
+                }else {
+                    throw new PasswordErrorException("Password must be longer than " + MIN_PASS_LENGTH);
+                }
             } else
                 throw new PasswordErrorException("Password cannot contain spaces");
-        } else
-            throw new PasswordErrorException("Some unknown error with password creation");
+        } else //this should never occur
+            throw new PasswordErrorException("Some unknown error occurred with password creation, please try again");
     }//end of change password
 
 
@@ -89,6 +96,8 @@ public class User {
     public void changeUsername(String newUsername) throws ChangeUsernameException{
         boolean success = false;
         //check if newUsername is used by anyone
+        newUsername = newUsername.trim(); //trim whitespace off edges
+
         if(newUsername!=null) {
             if (Service.getUserData().getUser(newUsername) == null) { //is the username used by anyone else
                 if ((newUsername.length() <= MAX_USERNAME_LENGTH) &&
@@ -98,12 +107,14 @@ public class User {
                         userName = newUsername;
                     } else
                         throw new ChangeUsernameException("Username cannot contain whitespace");
-                } else
+                } else {
                     throw new ChangeUsernameException("Username must be longer than " + MIN_USERNAME_LENGTH +
                             " and shorter than " + MAX_USERNAME_LENGTH);
-            } else
+                }
+            } else { //we found the user in the db
                 throw new ChangeUsernameException("Username is already taken");
-        } else
+            }
+        } else //this should never occur... but... just in case
             throw new ChangeUsernameException("An unknown error occured when trying to update the username");
     } //changeUsername
 

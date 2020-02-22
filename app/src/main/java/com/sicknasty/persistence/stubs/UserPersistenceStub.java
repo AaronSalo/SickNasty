@@ -2,6 +2,7 @@ package com.sicknasty.persistence.stubs;
 
 import java.util.HashMap;
 
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 
@@ -13,8 +14,8 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User getUser(String username) {
-        if (username == null) return null;
+    public User getUser(String username){
+        if (username == null) return null; //this should never happen
 
         // this will return the User object at that id
         // will return null if the id does not exist
