@@ -42,6 +42,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 "SELECT * FROM Users WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, username);
+            
+            db.close();
 
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
@@ -67,6 +69,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 "SELECT uid FROM Users WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, user.getUsername());
+            
+            db.close();
 
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
@@ -99,6 +103,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 "DELETE FROM Users WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, user.getUsername());
+            
+            db.close();
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -118,6 +124,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             );
             stmt.setString(1, newOne);
             stmt.setString(1, old);
+            
+            db.close();
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {

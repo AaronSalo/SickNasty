@@ -64,6 +64,8 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     }
                 }
             }
+            
+            db.close();
         } catch (SQLException e) {
             //TODO: do something lul
         }
@@ -97,6 +99,8 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 stmt.setString(3, this.PERSONAL_PAGE);
                 stmt.execute();
             }
+            
+            db.close();
         } catch (SQLException e) {
             //TODO: do something lul
         }
@@ -114,6 +118,8 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             );
             stmt.setString(1, name);
 
+            db.close();
+            
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
             //TODO: do something lul

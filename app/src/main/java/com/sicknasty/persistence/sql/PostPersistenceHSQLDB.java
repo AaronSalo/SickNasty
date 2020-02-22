@@ -50,6 +50,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 "SELECT * FROM Posts WHERE p_id = ? LIMIT 1"
             );
             stmt.setInt(1, id);
+            
+            db.close();
 
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
@@ -94,6 +96,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             while (result.next()) {
                 retList.add(this.postBuilder(result));
             }
+            
+            db.close();
             
             if (retList.size() > 0) return retList;
         } catch (SQLException e) {
@@ -141,6 +145,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 stmt.setInt(1, postID.getInt(1));
                 stmt.setString(2, post.getPageId().getPageName());
                 stmt.execute();
+            
+                db.close();
                 
                 return true;
             }
@@ -160,6 +166,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 "DELETE FROM Posts WHERE p_id = ? LIMIT 1"
             );
             stmt.setInt(1, id);
+            
+            db.close();
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
