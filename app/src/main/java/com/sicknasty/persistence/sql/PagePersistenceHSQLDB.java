@@ -23,16 +23,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
         this.path = path;
 
         try {
-            Connection db = this.getConnection();
-
-            PreparedStatement stmt = db.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS Pages (" +
-                            "pg_id INTEGER IDENTITY PRIMARY KEY," +
-                            "name VARCHAR(32) NOT NULL UNIQUE," +
-                            "creator_username VARCHAR(32) NOT NULL," +
-                            "type TINYINT NOT NULL" +
-                            ")");
-            stmt.execute();
+            HSQLDBInitializer.setupTables(this.getConnection());
         } catch (SQLException e) {
             //TODO: do something lul
         }
@@ -45,7 +36,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path, "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + "shutdown=true", "SA", "");
     }
 
     @Override
@@ -54,21 +45,22 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT * FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT * FROM Pages WHERE name = ? LIMIT 1"
             );
             stmt.setString(1, name);
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
-                UserPersistence userDB = new UserPersistenceHSQLDB("");
+            if (result.next()) {
+                UserPersistence userDB = new UserPersistenceHSQLDB("sicknasty");
 
                 User user = userDB.getUser(result.getString("creator_username"));
 
                 if (user != null) {
-                    if (result.getInt("type") == this.PERSONAL_PAGE) {
-                        return new PersonalPage(user);
-                    } else if (result.getInt("type") == this.COMMUNITY_PAGE) {
-                        return new CommunityPage(result.getString("name"), user);
+                    switch (result.getInt("type")) {
+                        case this.PERSONAL_PAGE:
+                            return new PersonalPage(user);
+                        case this.COMMUNITY_PAGE:
+                            return new CommunityPage(result.getString("pg_name"), user);
                     }
                 }
             }
@@ -80,28 +72,29 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
+    //PICKLE
+    // i cant tell what is personal page and what is community page
     public boolean insertNewPage(Page page) {
         try {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT pg_id FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT pg_id FROM Pages WHERE name = ? LIMIT 1"
             );
             stmt.setString(1, page.getPageName());
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
+            if (result.next()) {
                 //TODO: throw an exception or something lul
                 return false;
             } else {
                 stmt = db.prepareStatement(
-                        "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
+                    "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
                 );
                 stmt.setString(1, page.getPageName());
-                //TODO: fix me urgently
-//                stmt.setString(2, page.get);
-//                stmt.setString(3, "123");
-//                stmt.execute();
+                stmt.setString(2, page.getUserId().getUsername());
+                stmt.setString(3, this.PERSONAL_PAGE);
+                stmt.execute();
             }
         } catch (SQLException e) {
             //TODO: do something lul
