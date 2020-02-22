@@ -27,13 +27,22 @@ class HSQLDBInitializer {
             ")"
         );
         stmt.execute();
+        
+        stmt = db.prepareStatement(
+            "CREATE TABLE IF NOT EXISTS Pages (" +
+                "pg_name VARCHAR(32) NOT NULL PRIMARY KEY," +
+                "creator_username VARCHAR(32) NOT NULL," +
+                "type TINYINT NOT NULL" +
+            ")"
+        );
+        stmt.execute();
             
         stmt = db.prepareStatement(
             "CREATE TABLE IF NOT EXISTS PagePosts (" +
                 "p_id INTEGER NOT NULL," +
-                "pg_id INTEGER NOT NULL," +
+                "pg_name VARCHAR(32) NOT NULL," +
                 "FOREIGN KEY(p_id) REFERENCES Posts(p_id) ON CASCADE DELETE," +
-                "FOREIGN KEY(pg_id) REFERENCES Pages(pg_id) ON CASCADE DELETE" +
+                "FOREIGN KEY(pg_name) REFERENCES Pages(pg_name) ON CASCADE DELETE" +
             ")"
         );
         stmt.execute();
