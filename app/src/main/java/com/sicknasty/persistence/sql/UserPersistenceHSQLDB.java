@@ -81,6 +81,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 stmt.setString(3, user.getPassword());
                 stmt.execute();
             }
+            
+            return User;
         } catch (SQLException e) {
             //TODO: do something lul
         }
