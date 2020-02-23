@@ -29,6 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         Button login =findViewById(R.id.Login);
         Button register=findViewById(R.id.signUp);
 
+        try {
+            users.insertUser("jay","jay1","1234567");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.sicknasty.presentation.adapter;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.sicknasty.objects.*;
@@ -47,9 +48,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         PicturePost post = (PicturePost) getItem(position);//give a post position in layout
 
-        viewHolder.ivImage.setImageResource(post.getPICTURE_PATH());
+        viewHolder.ivImage.setImageBitmap(post.getBm());
+        //viewHolder.ivImage.setImageResource(post.getPICTURE_PATH());
         viewHolder.userName.setText(post.getUserId().getUsername());
         //viewHolder.communityName.setText(post.getCommunityName());
+        Log.d("k.c ksckkskks", " skclmlmaclmlcam");
         viewHolder.textView.setText(post.getText());
         return view;
 
