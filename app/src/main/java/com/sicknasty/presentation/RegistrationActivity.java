@@ -31,42 +31,35 @@ public class RegistrationActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //get the users information
                 String name = ((EditText)findViewById(R.id.signUpName)).getText().toString();
                 String username = ((EditText)findViewById(R.id.signUpUsername)).getText().toString();
                 String password = ((EditText)findViewById(R.id.signUpPassword)).getText().toString();
 
-                if(signUpValidation(name, username, password)){
+                //some text to show the user errors, or if we were successful
+                String infoText = "An unexpected error has occurred. Please try again."; User newUser = null;
 
-                    boolean temp=true;
-                    if(name.length()<4){
-                        Toast.makeText(getApplicationContext(),"Name has to be minimum 4 characters long",Toast.LENGTH_SHORT).show();
-                        temp=false;
-                    }
-                    if(password.length()<7) {
-                        temp=false;
-                        Toast.makeText(getApplicationContext(), "Password has to be of minimum length 7 ", Toast.LENGTH_SHORT).show();
-                    }
-                    if(username.length()<3) {
-                        temp=false;
-                        Toast.makeText(getApplicationContext(), "Username has to be minimum 3 characters long", Toast.LENGTH_SHORT).show();
-                    }
-                    if(temp){
-                        User newUser=users.validNewUsername(username);
-                        if(newUser==null){
-                            users.insertUser(name,username,password);        //after validating the user
-                            Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
-                            toast.show();
-                            onBackPressed();
-                        }
-                        else{
-                            Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    }
-                }
-            }
+                //we try to create a user with the input given. If there is an error it is handled
+                //in the catch block
+                try {
+                    newUser = new User(name, username, password);
+                    infoText = "Sign Up Successful";
+                    users.insertUser(newUser); //if the user was created without error, insert to db
+                    onBackPressed(); //I don't know what this does. Please comment
+                } catch(Exception e) {
+                    infoText = e.getMessage(); //get the error message and display it
+                } finally {
+                    //display some text to the user
+                    Toast toast = Toast.makeText(getApplicationContext(),infoText ,Toast.LENGTH_SHORT);
+                    toast.show();
+                }//finally
+                }//onClickView
         });
+
+        //display a button to sign in
         Button signIn=findViewById(R.id.signIn);
+        //here we listen for a click, and attempt to register
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,87 +70,4 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private boolean signUpValidation(String name,String username,String password){
-        boolean res=false;
-
-        if(name.isEmpty() && username.isEmpty() && password.isEmpty()){
-            Toast.makeText(getApplicationContext(),"You cannot leave blanks empty",Toast.LENGTH_SHORT).show();
-        }
-        else if(name.isEmpty()){
-            Toast toast = Toast.makeText(getApplicationContext(),"Enter your Name:",Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else if(username.isEmpty()){
-            Toast toast = Toast.makeText(getApplicationContext(),"Enter your Username",Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else if(password.isEmpty()){
-            Toast toast = Toast.makeText(getApplicationContext(),"Enter your password",Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else
-            res=true;
-        return res;
-    }
-
-
-    //old method
-    void oldMethod(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-
-        //get the sign up details from the ui
-
-        Button register=findViewById(R.id.Register);
-
-        //validate the new account and create it
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = ((EditText)findViewById(R.id.signUpName)).getText().toString();
-                String username = ((EditText)findViewById(R.id.signUpUsername)).getText().toString();
-                String password = ((EditText)findViewById(R.id.signUpPassword)).getText().toString();
-
-                if(signUpValidation(name, username, password)){
-
-                    boolean temp=true;
-                    if(name.length()<4){
-                        Toast.makeText(getApplicationContext(),"Name has to be minimum 4 characters long",Toast.LENGTH_SHORT).show();
-                        temp=false;
-                    }
-                    if(password.length()<7) {
-                        temp=false;
-                        Toast.makeText(getApplicationContext(), "Password has to be of minimum length 7 ", Toast.LENGTH_SHORT).show();
-                    }
-                    if(username.length()<3) {
-                        temp=false;
-                        Toast.makeText(getApplicationContext(), "Username has to be minimum 3 characters long", Toast.LENGTH_SHORT).show();
-                    }
-                    if(temp){
-                        User newUser=users.validNewUsername(username);
-                        if(newUser==null){
-                            users.insertUser(name,username,password);        //after validating the user
-                            Toast toast = Toast.makeText(getApplicationContext(),"Sign Up successful :Now just Login",Toast.LENGTH_SHORT);
-                            toast.show();
-                            onBackPressed();
-                        }
-                        else{
-                            Toast toast = Toast.makeText(getApplicationContext(),"Username already exists::Go Sign in",Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    }
-                }
-            }
-        });
-        Button signIn=findViewById(R.id.signIn);
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startIntent=new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(startIntent);
-            }
-        });
-
-
-    }
 }

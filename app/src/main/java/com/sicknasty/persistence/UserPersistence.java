@@ -1,5 +1,6 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 
 public interface UserPersistence {

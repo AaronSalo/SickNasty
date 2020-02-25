@@ -1,6 +1,9 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 /** @author jay
@@ -16,24 +19,21 @@ public class AccessUsers {
     }
 
 
-    //throwing exceptions everywhere
-    public void insertUser(String name, String userName,String password){
-        try {
-            userHandler.insertNewUser(new User(name,userName,password));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    //insert a user to the db
+    public User insertUser(User user){
+        return userHandler.insertNewUser(user);
     }
 
-    //ahh throw exceptions
-    public void updateUserPassword(String username,String oldPassword,String newPassword){
+
+    public void updateUserPassword(String username,String oldPassword,String newPassword) throws Exception {
         User user =userHandler.getUser(username);
-        if(user.checkPasswordCorrect(oldPassword)){                   //check the password
+        if(user == null) {
+            throw new PasswordErrorException("User not found. Cannot change password.");
+        } else {
             try {
                 user.changePassword(newPassword);
-            } catch (Exception e) {
-                e.printStackTrace();                                //don't just print it (do something)
+            } catch (Exception ex) {
+                throw ex; //rethrow the exception, handle it in the UI layer
             }
         }
     }
@@ -42,28 +42,39 @@ public class AccessUsers {
      * @param user  the username we want to check,newUsername that we want to updarte
      * @return  true if the changing username was successful, false if not
      */
-    public void updateUsername(User user,String newUsername){
-        if(user!=null){                     //if the user is not null
-            try {
-                user.changeUsername(newUsername);
-            } catch (Exception e) {
-                e.printStackTrace();                                //don't just print it (do something)
-            }
+    public void updateUsername(User user,String newUsername) throws ChangeUsernameException {
+        try {
+            user.changeUsername(newUsername);
+        } catch (ChangeUsernameException e) {
+            throw e;
         }
     }
 
-    //have to revisit this!!!!!!
+
+    public User getUser(String username)throws UserNotFoundException{
+        User user = userHandler.getUser(username);
+        if(user != null)
+            return user;
+        else
+            throw new UserNotFoundException("Could not find a user with that username");
+    }
+
+
+
     /**
      * Checks to see if a given username is available for use
      * @param username  the username we want to check
-     * @return  null if the username is not validvalid, else user
+     * @return  false if the username is taken and true if it is available
      */
-    public User validNewUsername(String username){
-        return userHandler.getUser(username);
+    public boolean validNewUsername(String username){
+        return userHandler.getUser(username) != null;
     }
 
-    //what to return (Revisit this??)
-    public boolean deleteUser(String username){
-        return userHandler.deleteUser(validNewUsername(username));
+    public void deleteUser(String username) throws UserNotFoundException{
+        User user = userHandler.getUser(username);
+        if(user != null)
+            userHandler.deleteUser(user);
+        else
+            throw new UserNotFoundException("Could not find the specified user");
     }
 }
