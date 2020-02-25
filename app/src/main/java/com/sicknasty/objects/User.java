@@ -3,6 +3,7 @@ package com.sicknasty.objects;
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
 
 import java.util.ArrayList;
