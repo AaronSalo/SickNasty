@@ -8,7 +8,7 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
-import com.sicknasty.adapter.PostAdapter;
+import com.sicknasty.presentation.adapter.PostAdapter;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ListView;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PageActivity extends AppCompatActivity {
 
