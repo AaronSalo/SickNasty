@@ -1,5 +1,6 @@
 package com.sicknasty.presentation.adapter;
 
+import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -35,10 +36,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
             view = LayoutInflater.from(getContext()).inflate(//convertView is null represent layout is not loaded, and it mean that getView is not called
                     resourceId, null);
 
-            viewHolder.ivImage = (ImageView) view.findViewById(R.id.ivImage);
-            //viewHolder.communityName = (TextView) view.findViewById(R.id.communityName);
-            viewHolder.userName = (TextView) view.findViewById(R.id.userName);
-            viewHolder.textView = (TextView) view.findViewById(R.id.textView);
+            viewHolder.ivImage =  view.findViewById(R.id.ivImage);
+            viewHolder.userName = view.findViewById(R.id.userName);
+            viewHolder.textView = view.findViewById(R.id.textView);
 
             view.setTag(viewHolder);
         }else{
@@ -46,22 +46,23 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        PicturePost post = (PicturePost) getItem(position);//give a post position in layout
+        Post post =getItem(position);           //give a post position in layout
 
-        viewHolder.ivImage.setImageBitmap(post.getBm());
-        //viewHolder.ivImage.setImageResource(post.getPICTURE_PATH());
+
+        //get the path from the post and display it
+        //lucas check the following code   (setImageUri accepts an URI)
+
+        Uri postUri =Uri.parse(post.getPath());
+        viewHolder.ivImage.setImageURI(postUri);            //will update this for video later en just stick to images
+
         viewHolder.userName.setText(post.getUserId().getUsername());
-        //viewHolder.communityName.setText(post.getCommunityName());
-        Log.d("k.c ksckkskks", " skclmlmaclmlcam");
         viewHolder.textView.setText(post.getText());
         return view;
-
     }
 }
 class ViewHolder{
     ImageView ivImage;
     TextView textView;
     TextView userName;
-    //TextView communityName;
 }
 

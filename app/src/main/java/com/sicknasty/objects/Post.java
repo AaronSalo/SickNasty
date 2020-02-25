@@ -19,13 +19,15 @@ public abstract class Post {
     private int likes;
     private int dislikes;
 
-    public Post(String text, User userId, long timeCreated, int likes, int dislikes, Page page){
+    private String path;
+
+    public Post(String text, User userId, String path, int likes, int dislikes, Page page){
         globalpostID++;
         pageId = page;
         thisPostID = globalpostID;
         this.text = text;
         this.userId = userId;
-
+        this.path=path;
         this.timeCreated = System.currentTimeMillis();
         this.likes = likes;
         this.dislikes = dislikes;
@@ -53,6 +55,11 @@ public abstract class Post {
 
     public void setText(String text){
         this.text = text;
+    }
+
+
+    public String getPath() {
+        return path;
     }
 
     public long getTimeCreated() {

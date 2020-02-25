@@ -1,8 +1,9 @@
 package com.sicknasty.presentation;
 
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.sicknasty.R;
@@ -13,11 +14,9 @@ import com.sicknasty.objects.*;
 import com.sicknasty.presentation.adapter.PostAdapter;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,19 +24,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import java.io.IOException;
-
 public class PageActivity extends AppCompatActivity {
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
-    private ListView lvPost;
-    User currUser;
+    private ListView lvPost=findViewById(R.id.lvPost);         //list of posts
+    private TextView followers= findViewById(R.id.followers);           //number of followers
+    private TextView following= findViewById(R.id.following);
+    private TextView numberOfPosts= findViewById(R.id.posts);
+    private Button postButton=findViewById(R.id.postButton);
+
     AccessUsers users = new AccessUsers();
     AccessPages pages=new AccessPages();
     AccessPosts posts = new AccessPosts();
-    private int PICK_IMAGE_REQUEST = 1;
-    PostAdapter postAdapter;
-    //private ImageView imageView=findViewById(R.id.imageView);
+
     public String pageName="";
 
     @Override
@@ -45,70 +45,78 @@ public class PageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_page);
-        lvPost = findViewById(R.id.lvPost);
-        Button post=findViewById(R.id.postButton);
-        getData();
-        ((TextView)findViewById(R.id.followers)).setText("100");
-        ((TextView)findViewById(R.id.following)).setText("100");
+
+        //fetch followers,following... and display on the page
+        getData();              //fetch the user data and display page accordingly
 
 
-        //pass the updated list to the adapter
-        ((TextView)findViewById(R.id.posts)).setText("0");
+        PostAdapter postAdapter = new PostAdapter(this,R.layout.activity_post,posts.getPostsByPage(pages.getPage(pageName)));
+        lvPost.setAdapter(postAdapter);
 
-                                                                //remember to use separators(horizontal line)
+        //remember to use separators(horizontal line) ---- reminder for JAY
 
-        post.setOnClickListener(new View.OnClickListener() {
+        postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
-                Log.d(" mcsc", "a.xkkdankamamAAAAAAAAAAAAAAAA");
-                //startActivity(getIntent());
+
+                //I (Jay) have to revisit this condition
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                        String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions,PERMISSION_CODE);
+                    }
+                    else{
+                        //access granted
+                        chooseImage();
+                    }
+                }
+                else{
+                    //ose is less than marshmallow
+                    chooseImage();
+                }
             }
         });
-
-
     }
-    //Hard code here for post
+
     private void getData() {
         Intent intent = getIntent();
         try {
             User currUser = users.getUser(intent.getStringExtra("user"));
             pageName += intent.getStringExtra("user");
-            ((TextView) findViewById(R.id.profileName)).setText("" + currUser.getName());
+            ((TextView) findViewById(R.id.profileName)).setText(currUser.getName());
             pages.insertNewPage(currUser.getPersonalPage());
 
         } catch (UserNotFoundException e) {
             String errorMsg = e.getMessage();
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-            pages.insertNewPage(currUser.getPersonalPage());
         }
     }
     public void chooseImage() {
-        Log.d("choose image","start choosing");
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-        Log.d("chose image","end choosing");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE:{
+                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    chooseImage();
+                }
+                else{
+                    Toast.makeText(this,"Permission denied!!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                PicturePost post =new PicturePost("something",currUser,1,217713,0,0,currUser.getPersonalPage());
-                post.setBm(bitmap);
-                posts.insertPost(post);
-
-                postAdapter= new PostAdapter(this,R.layout.activity_post,posts.getPostsByPage(pages.getPage(pageName)));
-                lvPost.setAdapter(postAdapter);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
+                //we will save the uri.getPath to the db
+                //create a picture post and insert it to database
         }
     }
 }

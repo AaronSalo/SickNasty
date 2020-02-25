@@ -8,6 +8,7 @@ import com.sicknasty.R;
 
 public class UserAccountActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
