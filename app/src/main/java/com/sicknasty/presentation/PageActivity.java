@@ -10,9 +10,8 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
-
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +24,7 @@ import android.widget.ListView;
 
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.io.IOException;
 
@@ -68,7 +68,6 @@ public class PageActivity extends AppCompatActivity {
 
 
     }
-
     //Hard code here for post
     private void getData() {
         Intent intent = getIntent();
@@ -95,16 +94,11 @@ public class PageActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d("StativityForResult","AAAAAAAAAAAAAAAAAAAAAA");
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA");
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            Log.d("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA");
             Uri uri = data.getData();
-
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                Log.d("BBBBBBBBBBBBBBBBBBBBB","BBBBBBBBBABBBBBBBB");
                 PicturePost post =new PicturePost("something",currUser,1,217713,0,0,currUser.getPersonalPage());
                 post.setBm(bitmap);
                 posts.insertPost(post);
