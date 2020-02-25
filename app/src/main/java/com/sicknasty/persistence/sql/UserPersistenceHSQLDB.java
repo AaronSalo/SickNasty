@@ -3,12 +3,16 @@ package com.sicknasty.persistence.sql;
 
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class UserPersistenceHSQLDB implements UserPersistence {
     private String path;
@@ -31,7 +35,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(String username) throws DBUsernameNotFoundException {
         try {
             // init the connection
             Connection db = this.getConnection();
@@ -56,16 +60,20 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                     result.getString("username"),
                     result.getString("password")
                 );
+            } else {
+                throw new DBUsernameNotFoundException(username);
             }
-        } catch (Exception e) {
-            //TODO: do something lul
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
         }
 
         return null;
     }
 
     @Override
-    public User insertNewUser(User user) {
+    public User insertNewUser(User user) throws DBUsernameExistsException {
+        String username = user.getUsername();
+
         try {
             // connect to db
             Connection db = this.getConnection();
@@ -75,19 +83,18 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             PreparedStatement stmt = db.prepareStatement(
                 "SELECT uid FROM Users WHERE username = ? LIMIT 1"
             );
-            stmt.setString(1, user.getUsername());
+            stmt.setString(1, username);
 
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                //TODO: throw an exception or something lul
-                return null;
+                throw new DBUsernameExistsException(username);
             } else {
                 // if we dont have a row, that means that there is no user
                 stmt = db.prepareStatement(
                     "INSERT INTO Users VALUES(?, ?, ?)"
                 );
-                stmt.setString(1, user.getUsername());
+                stmt.setString(1, username);
                 stmt.setString(2, user.getName());
                 stmt.setString(3, user.getPassword());
                 stmt.execute();
@@ -95,10 +102,14 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             
             return user;
         } catch (SQLException e) {
-            //TODO: do something lul
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                // i dont think this will ever happen, but just in case
+                // think of it as a second line of defence
+                throw new DBUsernameExistsException(username);
+            } else {
+                throw new DBGenericException(e);
+            }
         }
-
-        return null;
     }
 
     @Override
@@ -116,14 +127,12 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             // executeUpdate() will return number of rows affected (will be 1 or 0)
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 
     @Override
-    public boolean updateUsername(String old, String newOne) {
+    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException {
         try {
             // this will update the username of the user
             Connection db = this.getConnection();
@@ -131,13 +140,17 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             PreparedStatement stmt = db.prepareStatement(
                 "UPDATE Users SET username = ? WHERE username = ? LIMIT 1"
             );
-            stmt.setString(1, newOne);
-            stmt.setString(1, old);
+            stmt.setString(1, newUsername);
+            stmt.setString(1, oldUsername);
 
             // same as deleteUser, will return 1 or 0 rows affected
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            //TODO: do something lul
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                throw new DBUsernameExistsException(newUsername);
+            } else {
+                throw new DBGenericException(e);
+            }
         }
 
         return false;
