@@ -19,14 +19,10 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
     private String path;
 
-    public PagePersistenceHSQLDB(String path) {
+    public PagePersistenceHSQLDB(String path) throws SQLException {
         this.path = path;
 
-        try {
-            HSQLDBInitializer.setupTables(this.getConnection());
-        } catch (SQLException e) {
-            //TODO: do something lul
-        }
+        HSQLDBInitializer.setupTables(this.getConnection());
     }
 
     /**
@@ -42,6 +38,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     @Override
     public Page getPage(String name) {
         try {
+            // create connection
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
@@ -51,11 +48,14 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
-                UserPersistence userDB = new UserPersistenceHSQLDB("sicknasty");
+                // this doesnt feel right but it seems to be fine?
+                // query our other class to get the user
+                UserPersistence userDB = new UserPersistenceHSQLDB(this.path);
 
                 User user = userDB.getUser(result.getString("creator_username"));
 
                 if (user != null) {
+                    // use our private "enum" to create the page
                     switch (result.getInt("type")) {
                         case PERSONAL_PAGE:
                             return new PersonalPage(user);
@@ -64,8 +64,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     }
                 }
             }
-            
-            db.close();
         } catch (SQLException e) {
             //TODO: do something lul
         }
@@ -81,6 +79,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
         try {
             Connection db = this.getConnection();
 
+            // check to see if the page exists first
             PreparedStatement stmt = db.prepareStatement(
                 "SELECT pg_id FROM Pages WHERE name = ? LIMIT 1"
             );
@@ -91,6 +90,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 //TODO: throw an exception or something lul
                 return false;
             } else {
+                // insert new page
                 stmt = db.prepareStatement(
                     "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
                 );
@@ -99,8 +99,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 stmt.setInt(3, this.PERSONAL_PAGE);
                 stmt.execute();
             }
-            
-            db.close();
         } catch (SQLException e) {
             //TODO: do something lul
         }
@@ -111,6 +109,8 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     @Override
     public boolean deletePage(String name) {
         try {
+            // deletes a page. :|
+
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
@@ -118,8 +118,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             );
             stmt.setString(1, name);
 
-            db.close();
-            
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
             //TODO: do something lul

@@ -50,8 +50,5 @@ class HSQLDBInitializer {
             ")"
         );
         stmt.execute();
-        
-        // i wonder if this will crash
-        db.close();
     }
 }
