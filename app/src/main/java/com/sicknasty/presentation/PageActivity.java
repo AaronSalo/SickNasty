@@ -3,6 +3,7 @@ package com.sicknasty.presentation;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -28,16 +29,13 @@ public class PageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    private ListView lvPost=findViewById(R.id.lvPost);         //list of posts
-    private TextView followers= findViewById(R.id.followers);           //number of followers
-    private TextView following= findViewById(R.id.following);
-    private TextView numberOfPosts= findViewById(R.id.posts);
-    private Button postButton=findViewById(R.id.postButton);
+
 
     AccessUsers users = new AccessUsers();
     AccessPages pages=new AccessPages();
     AccessPosts posts = new AccessPosts();
 
+    public User curUser;
     public String pageName="";
 
     @Override
@@ -45,6 +43,12 @@ public class PageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_page);
+
+        ListView lvPost=findViewById(R.id.lvPost);         //listView of posts
+        TextView followers= findViewById(R.id.followers);
+        TextView following= findViewById(R.id.following);
+        TextView numberOfPosts= findViewById(R.id.posts);
+        Button postButton=findViewById(R.id.postButton);
 
         //fetch followers,following... and display on the page
         getData();              //fetch the user data and display page accordingly
@@ -83,6 +87,7 @@ public class PageActivity extends AppCompatActivity {
         try {
             User currUser = users.getUser(intent.getStringExtra("user"));
             pageName += intent.getStringExtra("user");
+            curUser=currUser;
             ((TextView) findViewById(R.id.profileName)).setText(currUser.getName());
             pages.insertNewPage(currUser.getPersonalPage());
 
@@ -117,6 +122,11 @@ public class PageActivity extends AppCompatActivity {
         if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
                 //we will save the uri.getPath to the db
                 //create a picture post and insert it to database
+
+            Uri uri=data.getData();
+            Post newPost=new Post("Something i don't know",curUser,uri.getPath(),0,0,curUser.getPersonalPage());
+            posts.insertPost(newPost);
+
         }
     }
 }

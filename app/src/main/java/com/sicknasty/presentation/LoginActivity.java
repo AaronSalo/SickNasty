@@ -17,19 +17,17 @@ import com.sicknasty.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-
-    private EditText userName=findViewById(R.id.userName);
-    private EditText password=findViewById(R.id.password);
-    private Button login =findViewById(R.id.Login);
-    private Button register=findViewById(R.id.signUp);
-
     AccessUsers userHandler =new AccessUsers();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        final EditText userName=findViewById(R.id.userName);
+        final EditText password=findViewById(R.id.password);
+        Button login =findViewById(R.id.Login);
+        Button register=findViewById(R.id.signUp);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

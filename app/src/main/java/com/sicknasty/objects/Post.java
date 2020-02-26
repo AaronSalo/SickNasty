@@ -3,7 +3,7 @@ abstract class for post
  */
 package com.sicknasty.objects;
 
-public abstract class Post {
+public class Post {
 
     private String text;
     private static int globalpostID = 0;         //specific id for every post
@@ -40,11 +40,6 @@ public abstract class Post {
     public int getPostID() {
         return thisPostID;
     }
-
-    public static int getGlobalpostID() {
-        return globalpostID;
-    }
-
     public User getUserId(){
         return userId;
     }
@@ -56,7 +51,6 @@ public abstract class Post {
     public void setText(String text){
         this.text = text;
     }
-
 
     public String getPath() {
         return path;
