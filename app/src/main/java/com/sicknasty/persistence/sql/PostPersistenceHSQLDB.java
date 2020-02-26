@@ -2,9 +2,6 @@ package com.sicknasty.persistence.sql;
 
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
-import com.sicknasty.objects.TextPost;
-import com.sicknasty.objects.PicturePost;
-import com.sicknasty.objects.VideoPost;
 import com.sicknasty.persistence.PostPersistence;
 
 import java.sql.Connection;

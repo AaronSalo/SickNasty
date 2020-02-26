@@ -29,14 +29,13 @@ public class LoginActivity extends AppCompatActivity {
         Button login =findViewById(R.id.Login);
         Button register=findViewById(R.id.signUp);
 
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String inputUsername = userName.getText().toString();
                 String inputPassword = password.getText().toString();
 
-                if( validateInput(inputUsername, inputPassword) ){ //check sure we have a valid input
+                if(validateInput(inputUsername, inputPassword)){ //check sure we have a valid input
 
                     //some text we are going to show the user
                     //its going to get changed, so if it doesnt, we have an unexpected error
@@ -63,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                         //show the user the appropriate message
                         Toast.makeText(getApplicationContext(),infoText,Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
         });
