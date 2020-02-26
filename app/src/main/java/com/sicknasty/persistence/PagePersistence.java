@@ -1,6 +1,7 @@
 package com.sicknasty.persistence;
 
 import com.sicknasty.objects.Page;
+import com.sicknasty.objects.User;
 
 public interface PagePersistence {
     /**
@@ -33,4 +34,13 @@ public interface PagePersistence {
      * @return          returns true if it deleted successfully, otherwise false
      */
     public boolean deletePage(Page page);
+
+    /**
+     * Adds a follower to a page.
+     *
+     * @param   page the page to add the follower to
+     * @param   user the user to add
+     * @return  returns true if added successfully, otherwise false
+     */
+    public boolean addFollower(Page page, User user);
 }

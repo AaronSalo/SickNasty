@@ -72,9 +72,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    //TODO:
-    //PICKLE
-    // i cant tell what is personal page and what is community page
     public boolean insertNewPage(Page page) {
         try {
             Connection db = this.getConnection();
@@ -96,7 +93,14 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 );
                 stmt.setString(1, page.getPageName());
                 stmt.setString(2, page.getCreator().getUsername());
-                stmt.setInt(3, this.PERSONAL_PAGE);
+
+                //TODO: reminder for myself to justify this
+                if (page instanceof PersonalPage) {
+                    stmt.setInt(3, this.PERSONAL_PAGE);
+                } else {
+                    stmt.setInt(3, this.COMMUNITY_PAGE);
+                }
+
                 stmt.execute();
             }
         } catch (SQLException e) {
@@ -129,5 +133,40 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     @Override
     public boolean deletePage(Page page) {
         return this.deletePage(page.getPageName());
+    }
+
+    @Override
+    public boolean addFollower(Page page, User user) {
+        String pageName = page.getPageName();
+        String username = user.getUsername();
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                "SELECT * FROM PageFollowers WHERE username = ? AND pg_name = ? LIMIT 1"
+            );
+            stmt.setString(1, username);
+            stmt.setString(2, pageName);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                //throw exception
+            } else {
+                stmt = db.prepareStatement(
+                    "INSERT INTO PageFollowers VALUES (?, ?)"
+                );
+                stmt.setString(1, username);
+                stmt.setString(2, pageName);
+
+                stmt.execute();
+
+                return true;
+            }
+        } catch (SQLException e) {
+            //TODO: do something
+        }
+
+        return false;
     }
 }
