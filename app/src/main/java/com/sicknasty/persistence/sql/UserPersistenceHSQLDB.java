@@ -1,6 +1,10 @@
 package com.sicknasty.persistence.sql;
 
 
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
@@ -63,11 +67,16 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             } else {
                 throw new DBUsernameNotFoundException(username);
             }
-        } catch (SQLException e) {
+        } catch (SQLException
+                | ChangeNameException
+                | UserCreationException
+                | ChangeUsernameException
+                | PasswordErrorException e
+        ) {
+            // note that the reason I am shoving these into the generic runtime exception
+            // is that the user related exceptions will (in theory) never be thrown
             throw new DBGenericException(e);
         }
-
-        return null;
     }
 
     @Override
@@ -152,7 +161,5 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 throw new DBGenericException(e);
             }
         }
-
-        return false;
     }
 }
