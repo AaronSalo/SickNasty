@@ -3,6 +3,9 @@ package com.sicknasty.persistence.sql;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
+import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
+import com.sicknasty.persistence.exceptions.DBPostIDNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import java.sql.Connection;
@@ -32,7 +35,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + "shutdown=true", "SA", "");
     }
     @Override
-    public Post getPostById(int id) {
+    public Post getPostById(int id) throws DBPostIDNotFoundException {
         try {
             // start connection
             Connection db = this.getConnection();
@@ -45,29 +48,29 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
             ResultSet result = stmt.executeQuery();
 
-            // i also need to get the page this post belongs to
-            stmt = db.prepareStatement(
-                "SELECT * FROM PagePosts WHERE p_id = ? LIMIT 1"
-            );
-            stmt.setInt(1, id);
-
-            // this will always return a row
-            ResultSet pageRow = stmt.executeQuery();
-            pageRow.next();
-
-            String pageName = pageRow.getString("pg_name");
-
-            PagePersistenceHSQLDB pgSQL = new PagePersistenceHSQLDB(this.path);
-
             // send the result to post build (this is a private function that creates the correct subclass)
             if (result.next()) {
+                // i also need to get the page this post belongs to
+                stmt = db.prepareStatement(
+                        "SELECT * FROM PagePosts WHERE p_id = ? LIMIT 1"
+                );
+                stmt.setInt(1, id);
+
+                // this will always return a row
+                ResultSet pageRow = stmt.executeQuery();
+                pageRow.next();
+
+                String pageName = pageRow.getString("pg_name");
+
+                PagePersistenceHSQLDB pgSQL = new PagePersistenceHSQLDB(this.path);
+
                 return this.postBuilder(result, pgSQL.getPage(pageName));
             }
-        } catch (SQLException e) {
-            //TODO: do something lul
+        } catch (SQLException | DBUsernameNotFoundException e) {
+            throw new DBGenericException(e);
         }
 
-        return null;
+        throw new DBPostIDNotFoundException(id);
     }
 
     @Override
@@ -115,22 +118,22 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
             // only return if we retrieved data
             if (retList.size() > 0) return retList;
-        } catch (SQLException e) {
-            //TODO: do something lul
+        } catch (SQLException | DBUsernameNotFoundException e) {
+            throw new DBGenericException(e);
         }
         
         return null;
     }
 
-    //TODO: i cant tell what kind of post it is
     @Override
-    public boolean insertNewPost(Post post) {
+    public boolean insertNewPost(Post post) throws DBPostIDExistsException {
         try {
             // get connection
             Connection db = this.getConnection();
 
             // this is only here as a precaution in case someone does something dumb and attempts to insert an existing post
             // do note that if you, a developer in this group project, are tripping a "dupe post exception", you are entirely at fault.
+            // ¯\_(ツ)_/¯ -Lucas
             PreparedStatement stmt = db.prepareStatement(
                 "SELECT p_id FROM Posts WHERE p_id = ? LIMIT 1"
             );
@@ -139,19 +142,19 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                //TODO: throw an exception or something lul
-                return false;
+                throw new DBPostIDExistsException(post.getPostID());
             } else {
                 // insert the new post into the DB
                 // first value is NULL since that is the autoincrement primary key
 
                 // i also want the key the DB assigned to this post to insert it into the PagePosts relationship
+                // i can also use the key to update the Post object
                 stmt = db.prepareStatement(
                     "INSERT INTO Posts VALUES(NULL, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
                 );
                 stmt.setString(1, post.getText());
-                stmt.setString(2, "path"); //TODO: this is the path
+                stmt.setString(2, post.getPath());
                 stmt.setInt(3, post.getNumberOfLikes());
                 stmt.setInt(4, post.getNumberOfDislikes());
                 stmt.setString(5, post.getUserId().getUsername());
@@ -159,25 +162,27 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 stmt.executeUpdate();
 
                 // after executing, get the key
-                ResultSet postID = stmt.getGeneratedKeys();
+                ResultSet postKey = stmt.getGeneratedKeys();
                 // there will always be a key (unless SQLException is thrown)
-                postID.next();
+                postKey.next();
+
+                int postID = postKey.getInt(1);
+
+                post.setPostID(postID);
 
                 // insert into the relation
                 stmt = db.prepareStatement(
                     "INSERT INTO PagePosts VALUES(?, ?)"
                 );
-                stmt.setInt(1, postID.getInt(1));
+                stmt.setInt(1, postID);
                 stmt.setString(2, post.getPageId().getPageName());
                 stmt.execute();
 
                 return true;
             }
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-        
-        return false;
     }
 
     @Override
@@ -193,10 +198,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-    
-        return false;
     }
 
     @Override
