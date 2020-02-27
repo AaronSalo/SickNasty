@@ -27,7 +27,6 @@ class HSQLDBInitializer {
                 "dislikes INTEGER NOT NULL," +
                 "creator_username VARCHAR(32) NOT NULL," +
                 "time_created BIGINT NOT NULL," +
-                "type TINYINT NOT NULL," +
                 "FOREIGN KEY(creator_username) REFERENCES Users(username) ON DELETE CASCADE" +
             ")"
         );

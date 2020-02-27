@@ -3,6 +3,7 @@ package com.sicknasty.persistence.sql;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,10 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PostPersistenceHSQLDB implements PostPersistence {
-    private final static int TEXT_POST = 0;
-    private final static int PICTURE_POST = 1;
-    private final static int VIDEO_POST = 2;
-
     private String path;
 
     public PostPersistenceHSQLDB(String path) throws SQLException {
@@ -48,9 +45,23 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
             ResultSet result = stmt.executeQuery();
 
+            // i also need to get the page this post belongs to
+            stmt = db.prepareStatement(
+                "SELECT * FROM PagePosts WHERE p_id = ? LIMIT 1"
+            );
+            stmt.setInt(1, id);
+
+            // this will always return a row
+            ResultSet pageRow = stmt.executeQuery();
+            pageRow.next();
+
+            String pageName = pageRow.getString("pg_name");
+
+            PagePersistenceHSQLDB pgSQL = new PagePersistenceHSQLDB(this.path);
+
             // send the result to post build (this is a private function that creates the correct subclass)
             if (result.next()) {
-                return this.postBuilder(result);
+                return this.postBuilder(result, pgSQL.getPage(pageName));
             }
         } catch (SQLException e) {
             //TODO: do something lul
@@ -99,7 +110,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                retList.add(this.postBuilder(result));
+                retList.add(this.postBuilder(result, page));
             }
 
             // only return if we retrieved data
@@ -136,7 +147,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
                 // i also want the key the DB assigned to this post to insert it into the PagePosts relationship
                 stmt = db.prepareStatement(
-                    "INSERT INTO Posts VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO Posts VALUES(NULL, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
                 );
                 stmt.setString(1, post.getText());
@@ -145,7 +156,6 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 stmt.setInt(4, post.getNumberOfDislikes());
                 stmt.setString(5, post.getUserId().getUsername());
                 stmt.setLong(6, post.getTimeCreated());
-                stmt.setInt(7, this.PICTURE_POST);
                 stmt.executeUpdate();
 
                 // after executing, get the key
@@ -196,53 +206,22 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         return this.deletePost(post.getPostID());
     }
     
-    private Post postBuilder(ResultSet result) throws SQLException {
+    private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException {
         // this needs to be redone
         UserPersistenceHSQLDB uSQL = new UserPersistenceHSQLDB(this.path);
-        PagePersistenceHSQLDB pgSQL = new PagePersistenceHSQLDB(this.path);
-            
-        switch (result.getInt("type")) {
-            case TEXT_POST:
-                return new TextPost(
-                    result.getString("text"),
-                    uSQL.getUser(result.getString("creator_username")),
-                    result.getLong("time_created"),
-                    result.getInt("likes"),
-                    result.getInt("dislikes"),
-                    pgSQL.getPage(result.getString("pg_name"))
-                );
-            case PICTURE_POST:
-//                return new PicturePost(
-//                    result.getString("text"),
-//                    uSQL.getUser(result.getString("creator_username")),
-//                    result.getString("media_path"),
-//                    result.getLong("time_created"),
-//                    result.getInt("likes"),
-//                    result.getInt("dislikes"),
-//                    pgSQL.getPage(result.getString("pg_name"))
-//                );
-                return new PicturePost(
-                    result.getString("text"),
-                    uSQL.getUser(result.getString("creator_username")),
-                    0,
-                    result.getLong("time_created"),
-                    result.getInt("likes"),
-                    result.getInt("dislikes"),
-                    pgSQL.getPage(result.getString("pg_name"))
-                );
-            case VIDEO_POST:
-                return new VideoPost(
-                    result.getString("text"),
-                    uSQL.getUser(result.getString("creator_username")),
-                    0,
-                    result.getString("media_path"),
-                    result.getLong("time_created"),
-                    result.getInt("likes"),
-                    result.getInt("dislikes"),
-                    pgSQL.getPage(result.getString("pg_name"))
-                );
-        }
 
-        return null;
+        Post returnPost = new Post(
+            result.getString("text"),
+            uSQL.getUser(result.getString("creator_username")),
+            result.getString("media_path"),
+            result.getInt("likes"),
+            result.getInt("dislikes"),
+            page
+        );
+
+        returnPost.setPostID(result.getInt("p_id"));
+        returnPost.setTimeCreated(result.getLong("time_created"));
+
+        return returnPost;
     }
 }
