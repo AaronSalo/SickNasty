@@ -124,7 +124,7 @@ public class PageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
             Uri uri=data.getData();
-            Post newPost=new Post("Something i don't know",curUser,uri.getPath(),0,0,curUser.getPersonalPage());
+            Post newPost=new Post("Something i don't know",curUser,uri.toString(),0,0,curUser.getPersonalPage());
             posts.insertPost(newPost);
 
         }
