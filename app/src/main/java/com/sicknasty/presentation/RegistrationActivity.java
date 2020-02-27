@@ -17,16 +17,13 @@ import com.sicknasty.R;
 public class RegistrationActivity extends AppCompatActivity {
 
     AccessUsers users=new AccessUsers();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        //get the sign up details from the ui
-
+        Button signIn=findViewById(R.id.signIn);
         Button register=findViewById(R.id.Register);
-
         //validate the new account and create it
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +54,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 }//onClickView
         });
 
-        //display a button to sign in
-        Button signIn=findViewById(R.id.signIn);
         //here we listen for a click, and attempt to register
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +62,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 startActivity(startIntent);
             }
         });
-
     }
 
 }

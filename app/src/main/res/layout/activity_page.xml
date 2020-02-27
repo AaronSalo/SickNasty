@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient1"
     tools:context=".presentation.PageActivity">
 
     <LinearLayout
@@ -106,7 +105,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/postButton"
         android:layout_width="181dp"
         android:layout_height="45dp"
         android:layout_marginTop="21dp"

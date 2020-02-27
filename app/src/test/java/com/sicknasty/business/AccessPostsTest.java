@@ -3,11 +3,7 @@ package com.sicknasty.business;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.Post;
-import com.sicknasty.objects.TextPost;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.PostPersistence;
-import com.sicknasty.persistence.stubs.PostPersistenceStub;
-import com.sicknasty.application.Service;
 
 import org.junit.Test;
 
