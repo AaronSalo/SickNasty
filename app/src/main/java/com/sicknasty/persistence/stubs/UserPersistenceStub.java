@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class UserPersistenceStub implements UserPersistence {
     private HashMap<String, User> users;
@@ -13,16 +15,17 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(String username) throws DBUsernameNotFoundException {
         if (username == null) return null; //this should never happen
 
+        if (!this.users.containsKey(username)) throw new DBUsernameNotFoundException(username);
+
         // this will return the User object at that id
-        // will return null if the id does not exist
         return this.users.get(username);
     }
 
     @Override
-    public User insertNewUser(User user) {
+    public User insertNewUser(User user) throws DBUsernameExistsException {
         if (user == null) return null;
 
         if (!users.containsKey(user.getUsername())) {
@@ -30,9 +33,9 @@ public class UserPersistenceStub implements UserPersistence {
 
             // cool thing is, is that this will return null on failure and the object on success
             return users.get(user.getUsername());
+        } else {
+            throw new DBUsernameExistsException(user.getUsername());
         }
-
-        return null;
     }
 
     @Override
@@ -45,12 +48,14 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public boolean updateUsername(String old, String newOne) {
-        if (this.users.containsKey(old)) {
-            User oldUser = this.users.get(old);
+    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException {
+        if (this.users.containsKey(newUsername)) throw new DBUsernameExistsException(newUsername);
 
-            this.users.remove(old);
-            this.users.put(newOne, oldUser);
+        if (this.users.containsKey(oldUsername)) {
+            User oldUser = this.users.get(oldUsername);
+
+            this.users.remove(oldUsername);
+            this.users.put(newUsername, oldUser);
 
             return true;
         }
