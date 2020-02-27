@@ -6,6 +6,11 @@ import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,13 +41,13 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public Page getPage(String name) {
+    public Page getPage(String name) throws DBPageNameNotFoundException {
         try {
             // create connection
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                "SELECT * FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT * FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, name);
 
@@ -64,28 +69,27 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     }
                 }
             }
-        } catch (SQLException e) {
-            //TODO: do something lul
+        } catch (SQLException | DBUsernameNotFoundException e) {
+            throw new DBGenericException(e);
         }
 
-        return null;
+        throw new DBPageNameNotFoundException(name);
     }
 
     @Override
-    public boolean insertNewPage(Page page) {
+    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
         try {
             Connection db = this.getConnection();
 
             // check to see if the page exists first
             PreparedStatement stmt = db.prepareStatement(
-                "SELECT pg_id FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT pg_name FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, page.getPageName());
 
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
-                //TODO: throw an exception or something lul
-                return false;
+                throw new DBPageNameExistsException(page.getPageName());
             } else {
                 // insert new page
                 stmt = db.prepareStatement(
@@ -102,12 +106,12 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 }
 
                 stmt.execute();
+
+                return true;
             }
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 
     @Override
@@ -118,16 +122,14 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "DELETE FROM Pages WHERE name = ? LIMIT 1"
+                "DELETE FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, name);
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 
     @Override
@@ -136,9 +138,10 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public boolean addFollower(Page page, User user) {
+    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
         String pageName = page.getPageName();
         String username = user.getUsername();
+
         try {
             Connection db = this.getConnection();
 
@@ -151,7 +154,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             ResultSet result = stmt.executeQuery();
 
             if (result.next()) {
-                //throw exception
+                throw new DBUserAlreadyFollowingException(username, pageName);
             } else {
                 stmt = db.prepareStatement(
                     "INSERT INTO PageFollowers VALUES (?, ?)"
@@ -164,9 +167,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 return true;
             }
         } catch (SQLException e) {
-            //TODO: do something
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 }

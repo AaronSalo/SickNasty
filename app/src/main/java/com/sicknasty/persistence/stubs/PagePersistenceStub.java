@@ -6,6 +6,9 @@ import java.util.HashMap;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.objects.Page;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
 
 public class PagePersistenceStub implements PagePersistence {
     private HashMap<String, Page> pages;
@@ -17,31 +20,25 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public Page getPage(String name) {
+    public Page getPage(String name) throws DBPageNameNotFoundException {
         if (name == null) return null;
+
+        if (!this.pages.containsKey(name)) throw new DBPageNameNotFoundException(name);
 
         return this.pages.get(name);
     }
 
     @Override
-    public boolean insertNewPage(Page page) {
+    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
         if (page == null) return false;
 
         String pageName = page.getPageName();
 
-        if (pageName == null) return false;
+        if (pages.containsKey(pageName)) throw new DBPageNameExistsException(page.getPageName());
 
-        if (pages.containsKey(pageName)) return false;
+        this.pages.put(pageName, page);
 
-        Page localPage = this.pages.get(page.getPageID());
-
-        if (localPage == null) {
-            this.pages.put(pageName, page);
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     @Override
@@ -69,7 +66,7 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public boolean addFollower(Page page, User user) {
+    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
         if (page == null) return false;
 
         ArrayList<User> localFollowers = this.followers.get(page.getPageID());
@@ -80,7 +77,8 @@ public class PagePersistenceStub implements PagePersistence {
             this.followers.put(page.getPageName(), localFollowers);
         }
 
-        if (localFollowers.contains(user)) return false;
+        if (localFollowers.contains(user))
+            throw new DBUserAlreadyFollowingException(user.getUsername(), page.getPageName());
 
         localFollowers.add(user);
 
