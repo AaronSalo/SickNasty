@@ -3,7 +3,8 @@ package com.sicknasty.business;
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PagePersistence;
-import com.sicknasty.persistence.stubs.PagePersistenceStub;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 
 /** @author aaron
  * wrapper for the page db
@@ -23,7 +24,7 @@ public class AccessPages {
      * @param pageName name of the page we want to get
      * @return the page, or null if not found
      */
-    public Page getPage(String pageName) {
+    public Page getPage(String pageName) throws DBPageNameNotFoundException {
         return pageHandler.getPage(pageName);
     }
 
@@ -32,7 +33,7 @@ public class AccessPages {
      *
      * @return      returns true on success, otherwise return false
      */
-    public boolean insertNewPage(Page page){
+    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
         return pageHandler.insertNewPage(page);
     }
 

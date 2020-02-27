@@ -4,6 +4,7 @@ import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBPostIDNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
@@ -66,7 +67,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
                 return this.postBuilder(result, pgSQL.getPage(pageName));
             }
-        } catch (SQLException | DBUsernameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | DBPageNameNotFoundException e) {
             throw new DBGenericException(e);
         }
 

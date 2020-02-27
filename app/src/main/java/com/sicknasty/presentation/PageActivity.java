@@ -12,6 +12,10 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
@@ -54,7 +58,13 @@ public class PageActivity extends AppCompatActivity {
         getData();              //fetch the user data and display page accordingly
 
 
-        PostAdapter postAdapter = new PostAdapter(this,R.layout.activity_post,posts.getPostsByPage(pages.getPage(pageName)));
+        PostAdapter postAdapter = null;
+        try {
+            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(pages.getPage(pageName)));
+        } catch (DBPageNameNotFoundException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
         lvPost.setAdapter(postAdapter);
 
         //remember to use separators(horizontal line) ---- reminder for JAY
@@ -91,7 +101,7 @@ public class PageActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.profileName)).setText(currUser.getName());
             pages.insertNewPage(currUser.getPersonalPage());
 
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameExistsException e) {
             String errorMsg = e.getMessage();
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }
@@ -125,7 +135,14 @@ public class PageActivity extends AppCompatActivity {
 
             Uri uri=data.getData();
             Post newPost=new Post("Something i don't know",curUser,uri.toString(),0,0,curUser.getPersonalPage());
-            posts.insertPost(newPost);
+
+            try {
+                posts.insertPost(newPost);
+            } catch (DBPostIDExistsException e) {
+                // if this gets tripped, you have done something wrong
+                // -Lucas
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
         }
     }

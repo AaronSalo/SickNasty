@@ -13,6 +13,7 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             infoText = "Password and username doesn't match";
                         }
-                    } catch (UserNotFoundException e) {
+                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
                         infoText = e.getMessage();
                     } finally {
                         //show the user the appropriate message

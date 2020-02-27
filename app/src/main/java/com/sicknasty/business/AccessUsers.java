@@ -6,6 +6,9 @@ import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
+
 /** @author jay
         * wrapper for the user db
         * passes info from UI to the db and vise versa
@@ -20,7 +23,7 @@ public class AccessUsers {
 
 
     //insert a user to the db
-    public User insertUser(User user){
+    public User insertUser(User user) throws DBUsernameExistsException {
         return userHandler.insertNewUser(user);
     }
 
@@ -51,7 +54,7 @@ public class AccessUsers {
     }
 
 
-    public User getUser(String username)throws UserNotFoundException{
+    public User getUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
         User user = userHandler.getUser(username);
         if(user != null)
             return user;
@@ -66,11 +69,11 @@ public class AccessUsers {
      * @param username  the username we want to check
      * @return  false if the username is taken and true if it is available
      */
-    public boolean validNewUsername(String username){
+    public boolean validNewUsername(String username) throws DBUsernameNotFoundException {
         return userHandler.getUser(username) != null;
     }
 
-    public void deleteUser(String username) throws UserNotFoundException{
+    public void deleteUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
         User user = userHandler.getUser(username);
         if(user != null)
             userHandler.deleteUser(user);
