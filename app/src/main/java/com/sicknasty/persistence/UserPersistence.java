@@ -1,5 +1,6 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
@@ -40,4 +41,14 @@ public interface UserPersistence {
      * @throws  DBUsernameExistsException thrown when new username is already taken
      */
      public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException;
+
+    /**
+     * Changes the password of a user
+     *
+     * @param   password the new password to change to
+     * @return  true if changed successfully
+     * @throws  DBUsernameNotFoundException thrown when user does not exist
+     * @throws  PasswordErrorException thrown when password requirements are not met
+     */
+     public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException;
 }

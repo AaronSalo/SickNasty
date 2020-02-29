@@ -75,6 +75,10 @@ public class UserPersistenceHSQLDB implements UserPersistence {
         ) {
             // note that the reason I am shoving these into the generic runtime exception
             // is that the user related exceptions will (in theory) never be thrown
+
+            // the reason for that is because BEFORE getting entered into the database, these
+            // values will get checked in their respective places before coming to the DB
+            // so the name will never be a dupe of another, password will be correct length, etc
             throw new DBGenericException(e);
         }
     }
@@ -150,7 +154,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 "UPDATE Users SET username = ? WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, newUsername);
-            stmt.setString(1, oldUsername);
+            stmt.setString(2, oldUsername);
 
             // same as deleteUser, will return 1 or 0 rows affected
             return stmt.executeUpdate() == 1;
@@ -160,6 +164,31 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             } else {
                 throw new DBGenericException(e);
             }
+        }
+    }
+
+    @Override
+    public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
+        // try getting the user, if it fails it will throw DBUsernameNotFoundException, which we pass up
+        User usr = this.getUser(user.getUsername());
+
+        // try changing password, if it fails, throws PasswordErrorException and we pass that up
+        usr.changePassword(password);
+
+        try {
+            // this will update the username of the user
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                    "UPDATE Users SET password = ? WHERE username = ? LIMIT 1"
+            );
+            stmt.setString(1, password);
+            stmt.setString(2, user.getUsername());
+
+            // same as deleteUser, will return 1 or 0 rows affected
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
         }
     }
 }

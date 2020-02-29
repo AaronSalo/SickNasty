@@ -2,6 +2,7 @@ package com.sicknasty.persistence.stubs;
 
 import java.util.HashMap;
 
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
@@ -61,5 +62,16 @@ public class UserPersistenceStub implements UserPersistence {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
+        User usr = this.users.get(user.getUsername());
+
+        if (usr == null) throw new DBUsernameNotFoundException("");
+
+        usr.changePassword(password);
+
+        return true;
     }
 }
