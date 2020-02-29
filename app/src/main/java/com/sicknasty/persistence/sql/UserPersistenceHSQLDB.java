@@ -145,7 +145,12 @@ public class UserPersistenceHSQLDB implements UserPersistence {
     }
 
     @Override
-    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException {
+    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException, ChangeUsernameException {
+        // try getting the user, if it fails it will throw DBUsernameNotFoundException, which we pass up
+        User usr = this.getUser(oldUsername);
+
+        // try to change username, see if we fail any constraints
+        usr.changeUsername(newUsername);
         try {
             // this will update the username of the user
             Connection db = this.getConnection();

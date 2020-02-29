@@ -49,7 +49,7 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException {
+    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException {
         if (this.users.containsKey(newUsername)) throw new DBUsernameExistsException(newUsername);
 
         if (this.users.containsKey(oldUsername)) {
@@ -59,9 +59,9 @@ public class UserPersistenceStub implements UserPersistence {
             this.users.put(newUsername, oldUser);
 
             return true;
+        } else {
+            throw new DBUsernameNotFoundException(oldUsername);
         }
-
-        return false;
     }
 
     @Override
