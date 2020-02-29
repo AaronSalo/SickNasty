@@ -107,12 +107,6 @@ public class User {
         if (newUsername!=null) {
             if ((newUsername.length() <= MAX_USERNAME_LENGTH) && (newUsername.length() >= MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
                 if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
-                    try {
-                        Service.getUserData().updateUsername(this.userName, newUsername);
-                    } catch (DBUsernameExistsException e) {
-                        throw new ChangeUsernameException("Username is already taken");
-                    }
-
                     this.userName = newUsername;
                 } else {
                     throw new ChangeUsernameException("Username cannot contain whitespace");
