@@ -1,6 +1,15 @@
 package com.sicknasty.application;
+import android.content.Context;
+import android.util.Log;
+
 import com.sicknasty.persistence.*;
+import com.sicknasty.persistence.sql.PagePersistenceHSQLDB;
+import com.sicknasty.persistence.sql.PostPersistenceHSQLDB;
+import com.sicknasty.persistence.sql.UserPersistenceHSQLDB;
 import com.sicknasty.persistence.stubs.*;
+
+import java.io.File;
+import java.sql.SQLException;
 
 
 /*******
@@ -12,31 +21,77 @@ import com.sicknasty.persistence.stubs.*;
  * data
  */
 public class Service {
-
     private static UserPersistence userData = null;
     private static PostPersistence postData = null;
     private static PagePersistence pageData = null;
 
+    private static String dbPath = "";
+
+    public static synchronized void initDatabase(Context context) {
+        Log.e("SQL", "Getting hidden system folder");
+
+        File dir = context.getDir("db", Context.MODE_PRIVATE);
+        File dbFile = new File(dir.toString() + "/sicknasty.script");
+
+        Service.dbPath = dbFile.toString();
+
+        try {
+            Log.e("SQL", "Linking driver class");
+            Class.forName("org.hsqldb.jdbcDriver").newInstance();
+            Log.e("SQL", "Linked driver class");
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+            Log.e("SQL", e.getMessage());
+        }
+    }
+
     //this will retrieve the user stub, from which we can call functs such as getUser()
     public static synchronized UserPersistence getUserData() {
         //if the stub hasn't been created yet, create it
-        if(userData == null) {
-            userData = new UserPersistenceStub();
+        if (userData == null) {
+            try {
+                userData = new UserPersistenceHSQLDB(Service.dbPath);
+            } catch (SQLException e) {
+                Log.e("SQL", "Failed to connect to database (user data)");
+                Log.e("SQL", e.getSQLState());
+                Log.e("SQL", e.getMessage());
+                e.printStackTrace();
+
+                userData = new UserPersistenceStub();
+            }
         }
+
         return userData;
     }
 
     public static synchronized PostPersistence getPostData() {
-        if(postData == null) {
-            postData = new PostPersistenceStub();
+        if (postData == null) {
+            try {
+                postData = new PostPersistenceHSQLDB(Service.dbPath);
+            } catch (SQLException e) {
+                Log.e("SQL", "Failed to connect to database (post data)");
+                Log.e("SQL", e.getSQLState());
+                Log.e("SQL", e.getMessage());
+
+                postData = new PostPersistenceStub();
+            }
         }
+
         return postData;
     }
 
     public static synchronized PagePersistence getPageData() {
-        if(pageData == null) {
-            pageData = new PagePersistenceStub();
+        if (pageData == null) {
+            try {
+                pageData = new PagePersistenceHSQLDB(Service.dbPath);
+            } catch (SQLException e) {
+                Log.e("SQL", "Failed to connect to database (page data)");
+                Log.e("SQL", e.getSQLState());
+                Log.e("SQL", e.getMessage());
+
+                pageData = new PagePersistenceStub();
+            }
         }
+
         return pageData;
     }
 }

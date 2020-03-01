@@ -1,6 +1,5 @@
 package com.sicknasty.persistence.sql;
 
-
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
@@ -94,7 +93,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             // we need to check for an existing user
             // attempting to insert will throw an exception, but it appears that "SQLException" is a catch-all for ALL exceptions
             PreparedStatement stmt = db.prepareStatement(
-                "SELECT uid FROM Users WHERE username = ? LIMIT 1"
+                "SELECT username FROM Users WHERE username = ? LIMIT 1"
             );
             stmt.setString(1, username);
 

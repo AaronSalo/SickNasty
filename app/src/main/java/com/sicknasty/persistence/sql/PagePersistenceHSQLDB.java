@@ -93,7 +93,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             } else {
                 // insert new page
                 stmt = db.prepareStatement(
-                    "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
+                    "INSERT INTO Pages VALUES(?, ?, ?)"
                 );
                 stmt.setString(1, page.getPageName());
                 stmt.setString(2, page.getCreator().getUsername());

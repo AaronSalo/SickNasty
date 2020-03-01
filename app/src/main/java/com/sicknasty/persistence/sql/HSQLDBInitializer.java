@@ -1,5 +1,7 @@
 package com.sicknasty.persistence.sql;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 // - Lucas
 class HSQLDBInitializer {
     static void setupTables(Connection db) throws SQLException {
+        Log.e("INNER SQL", "Setting up tables");
         PreparedStatement stmt = db.prepareStatement(
             "CREATE TABLE IF NOT EXISTS Users (" +
                 "username VARCHAR(32) PRIMARY KEY," +
@@ -60,5 +63,6 @@ class HSQLDBInitializer {
             ")"
         );
         stmt.execute();
+        Log.e("INNER SQL", "Finished tables");
     }
 }
