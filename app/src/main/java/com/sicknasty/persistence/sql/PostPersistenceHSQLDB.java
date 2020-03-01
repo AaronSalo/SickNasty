@@ -117,13 +117,10 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 retList.add(this.postBuilder(result, page));
             }
 
-            // only return if we retrieved data
-            if (retList.size() > 0) return retList;
+            return retList;
         } catch (SQLException | DBUsernameNotFoundException e) {
             throw new DBGenericException(e);
         }
-        
-        return null;
     }
 
     @Override
