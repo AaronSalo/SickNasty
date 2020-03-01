@@ -33,7 +33,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + "shutdown=true", "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + ";shutdown=true", "SA", "");
     }
     @Override
     public Post getPostById(int id) throws DBPostIDNotFoundException {
