@@ -5,17 +5,19 @@
 
 
 package com.sicknasty.objects;
+import com.sicknasty.objects.Exceptions.MessageException;
+
 import java.util.ArrayList;
 
 
 public class Message {
 
-    private String msg;
-    private long timeSent;
-    private boolean seen = false;
-    private User messenger;
-    private User receiver;
-    private ArrayList<User> group;
+    private String msg;         //message to be sent
+    private long timeSent;      //time that message was sent at
+    private boolean seen = false;   //to see if the receiver has seen the message of not
+    private User messenger;         //person message sent from
+    private User receiver;          //person message sent to
+    private ArrayList<User> group;  //if its a group, group messsage sent to
 
 
     private final int MAX_LENGTH = 255;
@@ -25,28 +27,44 @@ public class Message {
     /*
         for private messages constructor, gets current time, message from user, and the users involved
      */
-    public Message(String msg, User messenger, User receiver){     //need to add exception for max and min length here
+    public Message(String msg, User messenger, User receiver) throws MessageException {     //need to add exception for max and min length here
 
-        this.msg = msg;
-        timeSent = System.currentTimeMillis();
-        this.messenger = messenger;
-        this.receiver = receiver;
 
+        if(msg.length() <= MAX_LENGTH){
+            if(msg.length() >= MIN_LENGTH){
+                this.msg = msg;
+                timeSent = System.currentTimeMillis();
+                this.messenger = messenger;
+                this.receiver = receiver;
+            }else{
+                throw new MessageException("The message must be larger than "+ MIN_LENGTH +" character");
+            }
+        }else{
+            throw new MessageException("The message cannot be larger than "+ MAX_LENGTH+ " characters");
+        }
     }
 
     /*
 
      */
-    public Message(String msg, User messenger, ArrayList<User> group){     //need to add exception for max and min length here
+    public Message(String msg, User messenger, ArrayList<User> group) throws MessageException{     //need to add exception for max and min length here
 
-        this.msg = msg;
-        timeSent = System.currentTimeMillis();
-        this.messenger = messenger;
-        this.group = group;
+        if(msg.length() <= MAX_LENGTH){
+            if(msg.length() >= MIN_LENGTH){
+                this.msg = msg;
+                timeSent = System.currentTimeMillis();
+                this.messenger = messenger;
+                this.group = group;
+            }else{
+                throw new MessageException("The message must be larger than "+ MIN_LENGTH +" character");
+            }
+        }else{
+            throw new MessageException("The message cannot be larger than "+ MAX_LENGTH+ " characters");
+        }
 
     }
 
-    public void viewed(){
+    public void viewed(){               //to be implemented. if we want to show if the person receiving the message has seen message sent
 
         seen = true;
 
@@ -56,15 +74,21 @@ public class Message {
         return msg;
     }
 
-    public User getMessenger(){
+    public User getMessenger(){             //returning person sending message
         return messenger;
     }
 
-    public User getReceiver(){
+    public User getReceiver(){       //returning person receiving message
         return receiver;
     }
 
-    public long getTimeSent() {
+    public ArrayList<User> getGroup(){       //returning group receiving message
+        return group;
+    }
+
+    public long getTimeSent() {             //to be implemented, if we want to show what time the message was sent
         return timeSent;
     }
+
+
 }

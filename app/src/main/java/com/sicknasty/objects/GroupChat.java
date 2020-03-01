@@ -1,5 +1,8 @@
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.GroupChatMembersException;
+import com.sicknasty.objects.Exceptions.SetChatNameException;
+
 import java.util.ArrayList;
 
 public class GroupChat extends Chat {
@@ -11,11 +14,17 @@ public class GroupChat extends Chat {
 
 
 
-    public GroupChat(String chatName, ArrayList<User> group){   //need exception for group being too small
+    public GroupChat(String chatName, ArrayList<User> group) throws SetChatNameException, GroupChatMembersException {   //need exception for group being too small
 
-        if(group.size()>3){
-            setChatName(chatName);
-            this.group = group;
+        if(group.size()>= MIN_MEMBERS){
+            if(group.size()<= MAX_MEMBERS){
+                this.group = group;
+                setChatName(chatName);      //sending to super chat method
+        }else{
+                throw new GroupChatMembersException("The group cannot excede " + MAX_MEMBERS + " members at a time");
+            }
+        }else{
+            throw new GroupChatMembersException("There must be at least " + MIN_MEMBERS +" members in a group");
         }
     }
 
@@ -31,9 +40,12 @@ public class GroupChat extends Chat {
         return group;
     }
 
-    public void addMember(User user){       //add exception for group being full
+
+    public void addMember(User user) throws GroupChatMembersException{       //add exception for group being full
         if(group.size() <= MAX_MEMBERS) {
             group.add(user);
+        }else{
+            throw new GroupChatMembersException("The group cannot excede " + MAX_MEMBERS + " members at a time");
         }
     }
 
