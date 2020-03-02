@@ -7,6 +7,8 @@ import java.util.Map;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
+import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
+import com.sicknasty.persistence.exceptions.DBPostIDNotFoundException;
 
 public class PostPersistenceStub implements PostPersistence {
     // an HashMap containing ALL the posts in the app
@@ -17,7 +19,9 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public Post getPostById(int id) {
+    public Post getPostById(int id) throws DBPostIDNotFoundException {
+        if (!this.posts.containsKey(id)) throw new DBPostIDNotFoundException(id);
+
         return this.posts.get(id);
     }
 
@@ -39,7 +43,7 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean insertNewPost(Post post) {
+    public boolean insertNewPost(Post post) throws DBPostIDExistsException {
         if (post == null) return false;
 
         Post exisitingPost = this.posts.get(post.getPostID());
@@ -48,9 +52,9 @@ public class PostPersistenceStub implements PostPersistence {
             this.posts.put(post.getPostID(), post);
 
             return true;
+        } else {
+            throw new DBPostIDExistsException(post.getPostID());
         }
-
-        return false;
     }
 
     @Override

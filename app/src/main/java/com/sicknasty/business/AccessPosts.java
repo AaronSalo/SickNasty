@@ -4,6 +4,7 @@ import com.sicknasty.application.Service;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PostPersistence;
+import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,6 @@ public class AccessPosts {
     private int postGetLimit = 15; //the max amount of posts to get
 
     private PostPersistence postHandler;
-//    private ArrayList<Post> posts;
 
     public AccessPosts() {
         postHandler = Service.getPostData();
@@ -32,7 +32,7 @@ public class AccessPosts {
      *@param    post   the post we want to insert into the db
      *@return true if the post was successful, false if the post was unsuccessful
      */
-    public boolean insertPost(Post post) {
+    public boolean insertPost(Post post) throws DBPostIDExistsException {
         return postHandler.insertNewPost(post);
     }
 

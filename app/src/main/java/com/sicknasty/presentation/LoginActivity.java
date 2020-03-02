@@ -10,14 +10,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sicknasty.R;
+import com.sicknasty.application.Service;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 
 public class LoginActivity extends AppCompatActivity {
+    AccessUsers userHandler;
 
-    AccessUsers userHandler =new AccessUsers();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,6 +30,10 @@ public class LoginActivity extends AppCompatActivity {
         final EditText password=findViewById(R.id.password);
         Button login =findViewById(R.id.Login);
         Button register=findViewById(R.id.signUp);
+
+        // the order here is VERY important
+        Service.initDatabase(getApplicationContext());
+        this.userHandler = new AccessUsers();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             infoText = "Password and username doesn't match";
                         }
-                    } catch (UserNotFoundException e) {
+                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
                         infoText = e.getMessage();
                     } finally {
                         //show the user the appropriate message

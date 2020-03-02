@@ -5,6 +5,7 @@ import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
+import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 
 import java.util.ArrayList;
 
@@ -86,9 +87,12 @@ public class User {
             throw new PasswordErrorException("Some unknown error occurred with password creation, please try again");
     }//end of change password
 
-
     public boolean checkPasswordCorrect(String inputPass){
         return password.equals(inputPass); //check if the password is correct
+    }
+    
+    public String getPassword() {
+        return this.password;
     }
 
     /**change the user name
@@ -100,21 +104,15 @@ public class User {
         //check if newUsername is used by anyone
         newUsername = newUsername.trim(); //trim whitespace off edges
 
-        if(newUsername!=null) {
-            if (Service.getUserData().getUser(newUsername) == null) { //is the username used by anyone else
-                if ((newUsername.length() <= MAX_USERNAME_LENGTH) &&
-                        (newUsername.length() >= MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
-                    if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
-                        Service.getUserData().updateUsername(userName,newUsername);
-                        userName = newUsername;
-                    } else
-                        throw new ChangeUsernameException("Username cannot contain whitespace");
+        if (newUsername!=null) {
+            if ((newUsername.length() <= MAX_USERNAME_LENGTH) && (newUsername.length() >= MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
+                if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
+                    this.userName = newUsername;
                 } else {
-                    throw new ChangeUsernameException("Username must be longer than " + MIN_USERNAME_LENGTH +
-                            " and shorter than " + MAX_USERNAME_LENGTH);
+                    throw new ChangeUsernameException("Username cannot contain whitespace");
                 }
-            } else { //we found the user in the db
-                throw new ChangeUsernameException("Username is already taken");
+            } else {
+                throw new ChangeUsernameException("Username must be longer than " + MIN_USERNAME_LENGTH + " and shorter than " + MAX_USERNAME_LENGTH);
             }
         } else //this should never occur... but... just in case
             throw new ChangeUsernameException("An unknown error occured when trying to update the username");

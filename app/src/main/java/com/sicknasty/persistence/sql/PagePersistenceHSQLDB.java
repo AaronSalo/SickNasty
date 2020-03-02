@@ -6,6 +6,11 @@ import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,28 +19,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PagePersistenceHSQLDB implements PagePersistence {
-    private static int PERSONAL_PAGE = 0;
-    private static int COMMUNITY_PAGE = 1;
+    private final static int PERSONAL_PAGE = 0;
+    private final static int COMMUNITY_PAGE = 1;
 
     private String path;
 
-    public PagePersistenceHSQLDB(String path) {
+    public PagePersistenceHSQLDB(String path) throws SQLException {
         this.path = path;
 
-        try {
-            Connection db = this.getConnection();
-
-            PreparedStatement stmt = db.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS Pages (" +
-                            "pg_id INTEGER IDENTITY PRIMARY KEY," +
-                            "name VARCHAR(32) NOT NULL UNIQUE," +
-                            "creator_username VARCHAR(32) NOT NULL," +
-                            "type TINYINT NOT NULL" +
-                            ")");
-            stmt.execute();
-        } catch (SQLException e) {
-            //TODO: do something lul
-        }
+        HSQLDBInitializer.setupTables(this.getConnection());
     }
 
     /**
@@ -45,91 +37,137 @@ public class PagePersistenceHSQLDB implements PagePersistence {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path, "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + ";shutdown=true", "SA", "");
     }
 
     @Override
-    public Page getPage(String name) {
+    public Page getPage(String name) throws DBPageNameNotFoundException {
         try {
+            // create connection
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT * FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT * FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, name);
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
-                UserPersistence userDB = new UserPersistenceHSQLDB("");
+            if (result.next()) {
+                // this doesnt feel right but it seems to be fine?
+                // query our other class to get the user
+                UserPersistence userDB = new UserPersistenceHSQLDB(this.path);
 
                 User user = userDB.getUser(result.getString("creator_username"));
 
                 if (user != null) {
-                    if (result.getInt("type") == this.PERSONAL_PAGE) {
-                        return new PersonalPage(user);
-                    } else if (result.getInt("type") == this.COMMUNITY_PAGE) {
-                        return new CommunityPage(result.getString("name"), user);
+                    // use our private "enum" to create the page
+                    switch (result.getInt("type")) {
+                        case PERSONAL_PAGE:
+                            return new PersonalPage(user);
+                        case COMMUNITY_PAGE:
+                            return new CommunityPage(result.getString("pg_name"), user);
                     }
                 }
             }
-        } catch (SQLException e) {
-            //TODO: do something lul
+        } catch (SQLException | DBUsernameNotFoundException e) {
+            throw new DBGenericException(e);
         }
 
-        return null;
+        throw new DBPageNameNotFoundException(name);
     }
 
     @Override
-    public boolean insertNewPage(Page page) {
+    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
         try {
             Connection db = this.getConnection();
 
+            // check to see if the page exists first
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT pg_id FROM Pages WHERE name = ? LIMIT 1"
+                "SELECT pg_name FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, page.getPageName());
 
             ResultSet result = stmt.executeQuery();
-            if (result.first()) {
-                //TODO: throw an exception or something lul
-                return false;
+            if (result.next()) {
+                throw new DBPageNameExistsException(page.getPageName());
             } else {
+                // insert new page
                 stmt = db.prepareStatement(
-                        "INSERT INTO Page VALUES(NULL, ?, ?, ?)"
+                    "INSERT INTO Pages VALUES(?, ?, ?)"
                 );
                 stmt.setString(1, page.getPageName());
-                //TODO: fix me urgently
-//                stmt.setString(2, page.get);
-//                stmt.setString(3, "123");
-//                stmt.execute();
+                stmt.setString(2, page.getCreator().getUsername());
+
+                //TODO: reminder for myself to justify this
+                if (page instanceof PersonalPage) {
+                    stmt.setInt(3, this.PERSONAL_PAGE);
+                } else {
+                    stmt.setInt(3, this.COMMUNITY_PAGE);
+                }
+
+                stmt.execute();
+
+                return true;
             }
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 
     @Override
     public boolean deletePage(String name) {
         try {
+            // deletes a page. :|
+
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "DELETE FROM Pages WHERE name = ? LIMIT 1"
+                "DELETE FROM Pages WHERE pg_name = ? LIMIT 1"
             );
             stmt.setString(1, name);
 
             return stmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            //TODO: do something lul
+            throw new DBGenericException(e);
         }
-
-        return false;
     }
 
     @Override
     public boolean deletePage(Page page) {
         return this.deletePage(page.getPageName());
+    }
+
+    @Override
+    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
+        String pageName = page.getPageName();
+        String username = user.getUsername();
+
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                "SELECT * FROM PageFollowers WHERE username = ? AND pg_name = ? LIMIT 1"
+            );
+            stmt.setString(1, username);
+            stmt.setString(2, pageName);
+
+            ResultSet result = stmt.executeQuery();
+
+            if (result.next()) {
+                throw new DBUserAlreadyFollowingException(username, pageName);
+            } else {
+                stmt = db.prepareStatement(
+                    "INSERT INTO PageFollowers VALUES (?, ?)"
+                );
+                stmt.setString(1, username);
+                stmt.setString(2, pageName);
+
+                stmt.execute();
+
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
     }
 }
