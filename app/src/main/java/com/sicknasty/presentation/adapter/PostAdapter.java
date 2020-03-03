@@ -39,6 +39,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
+            viewHolder.likes = view.findViewById(R.id.likes);
 
             view.setTag(viewHolder);
         }else{
@@ -57,12 +58,21 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         viewHolder.userName.setText(post.getUserId().getUsername());
         viewHolder.textView.setText(post.getText());
+        viewHolder.likes.setText(post.getNumberOfLikes());
         return view;
     }
+
+    public void incrementLikes(){
+        this.incrementLikes();
+    }
+
+
+
 }
 class ViewHolder{
     ImageView ivImage;
     TextView textView;
     TextView userName;
+    TextView likes;
 }
 

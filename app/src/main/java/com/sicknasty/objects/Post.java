@@ -32,6 +32,10 @@ public class Post {
         return pageId;
     }
 
+    public void incrementLikes(){
+        likes++;
+    }
+
     public int getPostID() {
         return postID;
     }
