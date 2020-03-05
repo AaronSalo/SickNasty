@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -73,15 +74,21 @@ public class PostAdapter extends ArrayAdapter<Post> {
         //get the path from the post and display it
         //lucas check the following code(setImageUri accepts an URI)
 
+        Uri postUri;
+        if (post != null) {
+            postUri = Uri.parse(post.getPath());
+            String ifVideo=getContext().getContentResolver().getType(postUri);      //get the format of uri
+            String[] splitUri=ifVideo.split("/");                             //try to see if a video or an image
 
-        Uri postUri =Uri.parse(post.getPath());
-        Log.d(TAG, getContext().getContentResolver().getType(postUri));
-
-        viewHolder.ivImage.setImageURI(postUri);            //will update this for video later en just stick to images
-        viewHolder.userName.setText(post.getUserId().getUsername());
-        viewHolder.textView.setText(post.getText());
-        viewHolder.likes.setText(String.valueOf(post.getNumberOfLikes()));
-
+            if(splitUri[splitUri.length-2].equals("image")){
+                ((ImageView)(viewHolder.ivImage)).setImageURI(postUri);             //this is working
+            }
+            else if(splitUri[splitUri.length-2].equals("video")){
+                ((VideoView)(viewHolder.ivImage)).setVideoURI(postUri);             //i have not tested this
+            }
+            viewHolder.userName.setText(post.getUserId().getUsername());
+            viewHolder.textView.setText(post.getText());
+        }
 
         return view;
     }
@@ -95,7 +102,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
 
 class ViewHolder{
-    ImageView ivImage;
+    View ivImage;
     TextView textView;
     TextView userName;
     TextView likes;

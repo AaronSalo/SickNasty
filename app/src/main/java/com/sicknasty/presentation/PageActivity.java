@@ -2,6 +2,7 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -48,7 +49,6 @@ public class PageActivity extends AppCompatActivity {
 
     public User curUser;
     public String pageName="";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +119,9 @@ public class PageActivity extends AppCompatActivity {
             pageName += intent.getStringExtra("user");
             curUser=currUser;
             ((TextView) findViewById(R.id.profileName)).setText(currUser.getName());
-            pages.insertNewPage(currUser.getPersonalPage());
+            //not insert page twice
+            if(intent.getBooleanExtra("loginFirstTime",false))
+                pages.insertNewPage(currUser.getPersonalPage());
 
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameExistsException e) {
             String errorMsg = e.getMessage();
@@ -157,11 +159,12 @@ public class PageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
-                //we will save the uri.getPath to the db
-                //create a picture post and insert it to database
+            //we will save the uri.getPath to the db
+            //create a picture post and insert it to database
 
             Uri uri=data.getData();
-            Post newPost=new Post(caption,curUser,uri.toString(),88,0,curUser.getPersonalPage());
+
+            Post newPost=new Post(" ",curUser,uri.toString(),0,0,curUser.getPersonalPage());
 
             try {
                 posts.insertPost(newPost);

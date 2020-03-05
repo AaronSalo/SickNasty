@@ -3,6 +3,11 @@ abstract class for post
  */
 package com.sicknasty.objects;
 
+import android.media.Image;
+import android.net.Uri;
+import android.view.View;
+import android.widget.ImageView;
+
 public class Post {
 
     private String text;
@@ -15,7 +20,9 @@ public class Post {
     private long timeCreated;
     private int likes;
     private int dislikes;
+
     private boolean liked;
+
 
     private String path;
 
@@ -53,6 +60,7 @@ public class Post {
     public void setLiked(){         //checks to see if post has already been liked by certain user
         liked = true;
     }
+
 
     public String getPath() {
         return path;
