@@ -9,6 +9,7 @@ import com.sicknasty.persistence.sql.UserPersistenceHSQLDB;
 import com.sicknasty.persistence.stubs.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 
@@ -28,17 +29,36 @@ public class Service {
     private static String dbPath = "";
 
     public static synchronized void initDatabase(Context context) {
-        Log.e("SQL", "Getting hidden system folder");
+        Log.d("SQL", "Getting hidden system folder");
 
         File dir = context.getDir("db", Context.MODE_PRIVATE);
         File dbFile = new File(dir.toString() + "/sicknasty.script");
 
         Service.dbPath = dbFile.toString();
 
+        Service.registerDriver();
+    }
+
+    public static synchronized void initTestDatabase() {
         try {
-            Log.e("SQL", "Linking driver class");
+            File tmpFile = File.createTempFile("sicknasty-", ".script");
+
+            Service.dbPath = tmpFile.toString();
+
+            Log.d("SQL", "Creating temporary database at: " + tmpFile.toString());
+        } catch (IOException e) {
+            Log.e("SQL", "Failed to create temporary file");
+            Log.e("SQL", e.getMessage());
+        }
+
+        Service.registerDriver();
+    }
+
+    private static void registerDriver() {
+        try {
+            Log.d("SQL", "Linking driver class");
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            Log.e("SQL", "Linked driver class");
+            Log.d("SQL", "Linked driver class");
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             Log.e("SQL", e.getMessage());
         }
