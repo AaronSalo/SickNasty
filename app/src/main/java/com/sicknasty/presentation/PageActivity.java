@@ -36,17 +36,12 @@ import android.widget.Toast;
 public class PageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
-    private static final int CAPTION_CODE = 1002;
-
-
 
     AccessUsers users = new AccessUsers();
     AccessPages pages=new AccessPages();
     AccessPosts posts = new AccessPosts();
 
-    String caption;
-
-
+    public SharedPreferences sharedPreferences;
     public User curUser;
     public String pageName="";
     @Override
@@ -60,8 +55,6 @@ public class PageActivity extends AppCompatActivity {
         TextView following= findViewById(R.id.following);
         TextView numberOfPosts= findViewById(R.id.posts);
         Button postButton=findViewById(R.id.postButton);
-
-        final EditText captionEntered;
 
 
 
@@ -99,29 +92,20 @@ public class PageActivity extends AppCompatActivity {
                     //ose is less than marshmallow
                     chooseImage();
                 }
-
-
-//
-//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-//                  caption = "hi";
-//                  makeCaption();
-//                }
-
-
             }
         });
     }
 
     private void getData() {
-        Intent intent = getIntent();
+        sharedPreferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
+        Intent intent=getIntent();
         try {
-            User currUser = users.getUser(intent.getStringExtra("user"));
-            pageName += intent.getStringExtra("user");
-            curUser=currUser;
-            ((TextView) findViewById(R.id.profileName)).setText(currUser.getName());
+            curUser = users.getUser(sharedPreferences.getString("username",null));
+            pageName+= curUser.getUsername();
+            ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());
             //not insert page twice
             if(intent.getBooleanExtra("loginFirstTime",false))
-                pages.insertNewPage(currUser.getPersonalPage());
+                pages.insertNewPage(curUser.getPersonalPage());
 
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameExistsException e) {
             String errorMsg = e.getMessage();
@@ -133,13 +117,6 @@ public class PageActivity extends AppCompatActivity {
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
     }
-
-//
-//    public void makeCaption() {
-//        Intent intent = new Intent(Intent.ACTION_PROCESS_TEXT);
-//        intent.setType("text/plain");
-//        startActivityForResult(Intent.createChooser(intent, "enter Caption"), CAPTION_CODE);
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -167,35 +144,16 @@ public class PageActivity extends AppCompatActivity {
             Post newPost=new Post(" ",curUser,uri.toString(),0,0,curUser.getPersonalPage());
 
             try {
-                posts.insertPost(newPost);
+                posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
             } catch (DBPostIDExistsException e) {
                 // if this gets tripped, you have done something wrong
                 // -Lucas
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
+            Intent newIntent=new Intent(PageActivity.this,CaptionActivity.class);
+            newIntent.putExtra("pageName",pageName);            //put Uri
+            startActivity(newIntent);
+            finish();
         }
-
     }
-
-    private boolean validateInput(String caption){
-
-
-        String infoText = "";
-        boolean result=true;
-
-        if(caption.length()>255){
-            infoText = "caption is too long";
-            result = false;
-        }
-
-        if(infoText.length() > 0) {
-            Toast toast = Toast.makeText(PageActivity.this, infoText, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        return result;
-    }
-
-
-
 }

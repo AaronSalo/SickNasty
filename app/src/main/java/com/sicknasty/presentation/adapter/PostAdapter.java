@@ -68,7 +68,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        Post post =getItem(position);           //give a post position in layout
+        Post post =getItem(getCount()-position-1);           //give a post position in layout(now it displays the most recent one)
 
 
         //get the path from the post and display it
@@ -99,8 +99,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 //
 //    }
 }
-
-
 class ViewHolder{
     View ivImage;
     TextView textView;

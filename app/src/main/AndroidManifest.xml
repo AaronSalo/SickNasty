@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".presentation.CaptionActivity"></activity>
         <activity android:name=".presentation.SearchActivity" />
         <activity android:name=".presentation.NavigationActivity" />
         <activity android:name=".presentation.UserAccountActivity" />

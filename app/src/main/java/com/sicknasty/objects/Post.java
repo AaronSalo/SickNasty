@@ -2,12 +2,6 @@
 abstract class for post
  */
 package com.sicknasty.objects;
-
-import android.media.Image;
-import android.net.Uri;
-import android.view.View;
-import android.widget.ImageView;
-
 public class Post {
 
     private String text;
@@ -22,7 +16,6 @@ public class Post {
     private int dislikes;
 
     private boolean liked;
-
 
     private String path;
 
