@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -34,12 +35,16 @@ import android.widget.Toast;
 public class PageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    private static final int CAPTION_CODE = 1002;
 
 
 
     AccessUsers users = new AccessUsers();
     AccessPages pages=new AccessPages();
     AccessPosts posts = new AccessPosts();
+
+    String caption;
+
 
     public User curUser;
     public String pageName="";
@@ -55,6 +60,10 @@ public class PageActivity extends AppCompatActivity {
         TextView following= findViewById(R.id.following);
         TextView numberOfPosts= findViewById(R.id.posts);
         Button postButton=findViewById(R.id.postButton);
+
+        final EditText captionEntered;
+
+
 
         //fetch followers,following... and display on the page
         getData();              //fetch the user data and display page accordingly
@@ -90,6 +99,15 @@ public class PageActivity extends AppCompatActivity {
                     //ose is less than marshmallow
                     chooseImage();
                 }
+
+
+//
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+//                  caption = "hi";
+//                  makeCaption();
+//                }
+
+
             }
         });
     }
@@ -110,9 +128,16 @@ public class PageActivity extends AppCompatActivity {
     }
     public void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+        intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
     }
+
+//
+//    public void makeCaption() {
+//        Intent intent = new Intent(Intent.ACTION_PROCESS_TEXT);
+//        intent.setType("text/plain");
+//        startActivityForResult(Intent.createChooser(intent, "enter Caption"), CAPTION_CODE);
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -136,7 +161,7 @@ public class PageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
             Uri uri=data.getData();
-            Post newPost=new Post("Something i don't know",curUser,uri.toString(),0,0,curUser.getPersonalPage());
+            Post newPost=new Post(caption,curUser,uri.toString(),88,0,curUser.getPersonalPage());
 
             try {
                 posts.insertPost(newPost);
@@ -147,5 +172,27 @@ public class PageActivity extends AppCompatActivity {
             }
 
         }
+
     }
+
+    private boolean validateInput(String caption){
+
+
+        String infoText = "";
+        boolean result=true;
+
+        if(caption.length()>255){
+            infoText = "caption is too long";
+            result = false;
+        }
+
+        if(infoText.length() > 0) {
+            Toast toast = Toast.makeText(PageActivity.this, infoText, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        return result;
+    }
+
+
+
 }

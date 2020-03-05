@@ -45,7 +45,6 @@
         android:layout_marginTop="28dp"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        android:onClick="incrementLikes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"

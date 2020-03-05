@@ -15,6 +15,7 @@ public class Post {
     private long timeCreated;
     private int likes;
     private int dislikes;
+    private boolean liked;
 
     private String path;
 
@@ -26,13 +27,14 @@ public class Post {
         this.timeCreated = System.currentTimeMillis();
         this.likes = likes;
         this.dislikes = dislikes;
+        liked = false;
     }
 
     public Page getPageId() {
         return pageId;
     }
 
-    public void incrementLikes(){
+    public void incrementLike(){
         likes++;
     }
 
@@ -46,6 +48,10 @@ public class Post {
 
     public String getText(){
         return text;
+    }
+
+    public void setLiked(){         //checks to see if post has already been liked by certain user
+        liked = true;
     }
 
     public String getPath() {
