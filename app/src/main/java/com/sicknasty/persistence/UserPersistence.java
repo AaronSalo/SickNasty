@@ -6,6 +6,8 @@ import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
+import java.util.ArrayList;
+
 public interface UserPersistence {
     /**
      * This returns a User object specified by its unique Id
@@ -15,6 +17,13 @@ public interface UserPersistence {
      * @throws  DBUsernameNotFoundException thrown when the username does not exist
      */
     public User getUser(String username) throws DBUsernameNotFoundException;
+
+    /**
+     * This returns a String list of all User's usernames
+     *
+     * @return  returns an ArrayList of Strings
+     */
+    public ArrayList<String> getAllUsers();
 
     /**
      * Inserts a new User object

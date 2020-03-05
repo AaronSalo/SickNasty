@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 
 public class UserPersistenceHSQLDB implements UserPersistence {
     private String path;
@@ -80,6 +81,31 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             // so the name will never be a dupe of another, password will be correct length, etc
             throw new DBGenericException(e);
         }
+    }
+
+    @Override
+    public ArrayList<String> getAllUsers() {
+        ArrayList<String> usernames = new ArrayList<String>();
+
+        try {
+            // init the connection
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                    "SELECT username FROM Users"
+            );
+
+            // get the result of the SELECT
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                usernames.add(result.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
+
+        return usernames;
     }
 
     @Override
