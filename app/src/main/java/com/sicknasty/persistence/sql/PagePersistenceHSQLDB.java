@@ -181,4 +181,23 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             throw new DBGenericException(e);
         }
     }
+
+	@Override
+	public boolean changeName(String oldName, String newName) {
+		try {
+			Connection db = this.getConnection();
+
+			PreparedStatement stmt = db.prepareStatement(
+				"UPDATE Pages SET pg_name = ? WHERE pg_name = ? LIMIT 1"
+			);
+			stmt.setString(1, newName);
+			stmt.setString(2, oldName);	
+
+			return stmt.executeUpdate() == 1;
+		} catch (SQLException e) {
+			throw new DBGenericException(e)
+		}
+
+		return false;
+	}
 }

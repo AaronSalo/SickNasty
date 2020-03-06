@@ -47,4 +47,13 @@ public interface PagePersistence {
      * @return  returns true if added successfully, otherwise false
      */
     public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException;
-}
+
+	/**
+ 	 * This changes the name of the page.
+ 	 *
+ 	 * @param	oldName the old name of the page to change
+ 	 * @param	newName the new name of the page to set it to
+ 	 * @return	returns true if the page name was changed successfully
+ 	 */
+	public boolean changeName(String oldName, String newName);
+

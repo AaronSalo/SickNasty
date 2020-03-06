@@ -188,7 +188,9 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 
             // same as deleteUser, will return 1 or 0 rows affected
             if (stmt.executeUpdate() == 1) {
-				PagePersistenceHSQLDB pageDB = new PagePersistenceHSQLDB();
+				PagePersistenceHSQLDB pageDB = new PagePersistenceHSQLDB(this.path);
+
+				pageDB.changeName(oldUsername, newUsername);
 
 				return true;
 			} else {
@@ -200,7 +202,9 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             } else {
                 throw new DBGenericException(e);
             }
-        }
+        } catch (DBPageNamenotFoundException e) {
+			throw new DBGenericException(e);
+		}
     }
 
     @Override
