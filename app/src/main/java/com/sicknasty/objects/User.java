@@ -40,6 +40,7 @@ public class User {
         changeUsername(username);
         changePassword(password);
         personalPage = new PersonalPage(this); //create a personal page for this user
+        follows=new ArrayList<>();
     }//end of constructor
 
 
@@ -90,7 +91,19 @@ public class User {
     public boolean checkPasswordCorrect(String inputPass){
         return password.equals(inputPass); //check if the password is correct
     }
-    
+
+    public ArrayList<User> getFollows() {
+        return follows;
+    }
+
+    public ArrayList<User> getFollowersList(){
+        return personalPage.getFollowers();
+    }
+
+    public int getPostsSize(){
+        return personalPage.getPostList().size();
+    }
+
     public String getPassword() {
         return this.password;
     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,44 +15,62 @@ import android.widget.Toast;
 import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
+import com.sicknasty.business.AccessUsers;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
+import com.sicknasty.objects.Post;
+import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class CaptionActivity extends AppCompatActivity {
 
     AccessPosts posts=new AccessPosts();
-    AccessPages pages =new AccessPages();
-    Page ourPage;
+    AccessUsers users=new AccessUsers();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caption);
 
-        EditText caption=findViewById(R.id.captionText);
+        final EditText caption=findViewById(R.id.captionText);
         Button postButton=findViewById(R.id.captionPost);
         ImageView imageView=findViewById(R.id.postImage);
 
         Intent intent=getIntent();
-        //fetch the post
+
+
+        final String uri=intent.getStringExtra("URI");
+        Uri uri1 = Uri.parse(uri);
+        imageView.setImageURI(uri1);
+
+        User curUser=null;
         try {
-            ourPage=pages.getPage(intent.getStringExtra("pageName"));
-        }catch (DBPageNameNotFoundException e){
+            curUser = users.getUser(intent.getStringExtra("pageName"));
+        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
             String errorMsg = e.getMessage();
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }
-        //how can i get the post
 
-        String uri=getIntent().getStringExtra("URI");
-        //imageView.setImageURI(Uri.parse(uri));
-
-        final String captionText=caption.getText().toString();
+        final User finalCurUser = curUser;
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String captionText=caption.getText().toString();
                 if(validateInput(captionText)){
 
+                    Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
+                    Log.d("AAAAAAAAAAAAA::::",newPost.getText());
+                    try {
+                        posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
+                    } catch (DBPostIDExistsException e) {
+                        // if this gets tripped, you have done something wrong
+                        // -Lucas
+                        Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                     Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
+                    intent.putExtra("user",finalCurUser.getUsername());
                     startActivity(intent);
                 }
             }
@@ -62,6 +81,8 @@ public class CaptionActivity extends AppCompatActivity {
         String infoText = "";
         boolean result=true;
 
+
+        //empty text??
         if(caption.length()>255){
             infoText = "caption is too long : must be less than 255 characters";
             result = false;

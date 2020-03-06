@@ -4,11 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
     tools:context=".presentation.UserAccountActivity">
 
+    <TextView
+        android:id="@+id/changeProfilePicture"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="120dp"
+        android:text="Change Profile Picture"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
+
+    <TextView
+        android:id="@+id/changeUsername"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="120dp"
+        android:text="Change Username"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/changePassword"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <TextView
+        android:id="@+id/changePassword"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="100dp"
+        android:text="Change Password"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/logout"
         android:layout_width="291dp"
         android:layout_height="60dp"
         android:background="@color/colorAccent"
@@ -16,42 +47,58 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.548" />
+        app:layout_constraintVertical_bias="0.804" />
 
-    <LinearLayout
-        android:layout_width="527dp"
-        android:layout_height="289dp"
-        android:layout_marginTop="72dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+    <EditText
+        android:id="@+id/newPasswordText"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:hint="New Password"
+        android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/changePassword" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:text="Change Profile Picture"
-            android:textSize="20sp" />
+    <EditText
+        android:id="@+id/newUserNameText"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:hint="New Username"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/newPasswordText"
+        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:text="Change Username"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/submitPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="148dp"
+        android:background="@color/colorAccent"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePassword" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:text="Change Password"
-            android:textSize="20sp" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/submitUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="132dp"
+        android:background="@color/colorAccent"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/submitPassword"
+        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

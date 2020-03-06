@@ -68,12 +68,10 @@ public class LoginActivity extends AppCompatActivity {
                         if(currUser.checkPasswordCorrect(inputPassword) )
                         {
                             prefEditor.putBoolean("isLogin",true);
-//                            prefEditor.putString("username",inputUsername);
-//                            prefEditor.putString("password",inputPassword);
+                            prefEditor.putString("username",inputUsername);
                             prefEditor.apply();
                             Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
                             startIntent.putExtra("user",  inputUsername);
-                            startIntent.putExtra("loginFirstTime", true);
                             startActivity(startIntent);
                             infoText = "Login Successful";
                             finish();

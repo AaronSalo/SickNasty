@@ -34,10 +34,6 @@ public class Post {
         return pageId;
     }
 
-    public void incrementLike(){
-        likes++;
-    }
-
     public int getPostID() {
         return postID;
     }
@@ -49,11 +45,6 @@ public class Post {
     public String getText(){
         return text;
     }
-
-    public void setLiked(){         //checks to see if post has already been liked by certain user
-        liked = true;
-    }
-
 
     public String getPath() {
         return path;

@@ -43,25 +43,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
-            viewHolder.likes = view.findViewById(R.id.likes);
-            /*
-            ImageButton button = viewHolder.like_button;
 
-            button = view.findViewById(R.id.like_button);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-                }
-            });
-
-
-            //viewHolder.like_button = view.findViewById(R.id.like_button);
-
-*/
             view.setTag(viewHolder);
         }else{
             view=convertView;
@@ -88,22 +70,15 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
+            Log.d("AAAAAAAAAAAAA::::",post.getText());
         }
 
         return view;
     }
-
-//    public void liked(View view) {
-//
-//
-//
-//    }
 }
 class ViewHolder{
     View ivImage;
     TextView textView;
     TextView userName;
-    TextView likes;
-   // ImageButton like_button;
 }
 

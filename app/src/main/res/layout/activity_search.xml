@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
+        android:background="@drawable/edit_text_border"
         android:queryHint="Search Here"></SearchView>
 
     <ListView
