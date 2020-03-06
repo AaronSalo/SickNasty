@@ -40,7 +40,7 @@ public abstract class Page {
     }
 
     public void changePageName(String newName) {this.pageName = newName; }
-    
+
     public ArrayList<User> getFollowers() {
         return followers;
     }

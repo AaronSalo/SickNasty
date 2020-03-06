@@ -1,6 +1,7 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
@@ -82,6 +83,41 @@ public class AccessUsersIT {
             assert(user1.getUsername() != username);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test (expected = PasswordErrorException.class)
+    public void testPasswordError() throws PasswordErrorException{
+        String goodPass = "thisIsAGoodPass1";
+        String badPass = "bad";
+        try {
+            User aaron = new User("A Salo", "aaron", goodPass);
+        } catch (Exception e) {
+            fail();
+        }
+        try {
+            //create a user with a bad password
+            User aaron = new User("A Salo", "aaron", badPass);
+        } catch (PasswordErrorException e) {
+            throw new PasswordErrorException("Bad password");
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test (expected = PasswordErrorException.class)
+    public void testPasswordChangeError() throws PasswordErrorException{
+        String goodPass = "thisIsAGoodPass1";
+        String badPass = "bad";
+        try {
+            //add a good pass, then change it to a bad pass through the database
+            User aaron = new User("A Salo", "aaron", goodPass);
+            users.insertUser(aaron);
+            users.updateUserPassword("aaron", badPass);
+        } catch (PasswordErrorException e) {
+            throw new PasswordErrorException("bad password");
+        } catch (Exception e) {
             fail();
         }
     }
