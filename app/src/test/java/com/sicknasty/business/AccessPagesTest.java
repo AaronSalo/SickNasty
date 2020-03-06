@@ -1,7 +1,16 @@
 package com.sicknasty.business;
 
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.PagePersistence;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.stubs.PagePersistenceStub;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -9,42 +18,43 @@ import static org.junit.Assert.assertNotNull;
 
 public class AccessPagesTest {
 
-    AccessPages pages = new AccessPages();
+    PagePersistence pages=new PagePersistenceStub();
 
     @Test
-    public void testInsertPage(){
+    public void testInsertPage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPageNameExistsException, DBPageNameNotFoundException {
         User jay=new User("Jay K","jay","abcmmdef");
 
-        PersonalPage page = new PersonalPage(jay);
+            PersonalPage page = new PersonalPage(jay);
 
-        assertTrue("page not added",pages.insertNewPage(page));
-        assertEquals("username is different",pages.getPage("jay").getPageName(),"jay");
+            assertTrue("page not added", pages.insertNewPage(page));
+            assertEquals("username is different", pages.getPage("jay").getPageName(), "jay");
 
-        assertNotNull("",pages.getPage("jay"));
+            assertNotNull("", pages.getPage("jay"));
 
-        page=new PersonalPage(jay);
-        assertFalse("two pages with same username added",pages.insertNewPage(page));
+
         assertTrue("object exist but not deleted",pages.deletePage("jay"));
+        try {
+            assertFalse("object not found but deleted", pages.deletePage("jay"));
 
-        assertFalse("object not found but deleted",pages.deletePage("jay"));
-
-        assertFalse("object not found but deleted",pages.deletePage("aaron"));
-
+            assertFalse("object not found but deleted", pages.deletePage("aaron"));
+        } catch (Exception e ){
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
-    @Test
-    public void testNullPages(){
-        PersonalPage page =null;
 
-        assertFalse("page not added",pages.insertNewPage(page));
-        assertEquals("page does not exist",pages.getPage("jay"),null);
+    //this test is 100% useless. WILL DELETE
+    @Test
+    public void testNullPages() throws DBPageNameExistsException, DBPageNameNotFoundException {
+        PersonalPage page1 =null;
+
+        assertFalse("page not added",pages.insertNewPage(page1));
 
         User user=null;
-        PersonalPage page1 = new PersonalPage(user);
+        PersonalPage page2 = new PersonalPage(user);
 
-        assertFalse("null user's page created and added",pages.insertNewPage(page1));
+        assertNull("null user's page created and added",pages.getPage(page2.getPageName()));
 
-        assertEquals("null user's page created and added",pages.getPage(page1.getPageName()),null);
-
-        assertFalse("object exist but not deleted",pages.deletePage(page1.getPageName()));
+        assertFalse("object exist but not deleted",pages.deletePage(page2.getPageName()));
     }
 }

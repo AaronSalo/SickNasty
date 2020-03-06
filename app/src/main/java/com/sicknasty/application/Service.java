@@ -40,6 +40,9 @@ public class Service {
     }
 
     public static synchronized void initTestDatabase() {
+        userData = null;
+        postData = null;
+        pageData = null;
         try {
             File tmpFile = File.createTempFile("sicknasty-", ".script");
 

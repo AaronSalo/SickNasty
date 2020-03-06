@@ -32,7 +32,7 @@ public class User {
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 
     //password restrictions; public in case UI wants to display this value
-    public final int MIN_PASS_LENGTH = 6;
+    public static final int MIN_PASS_LENGTH = 6;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
@@ -40,6 +40,7 @@ public class User {
         changeUsername(username);
         changePassword(password);
         personalPage = new PersonalPage(this); //create a personal page for this user
+        follows=new ArrayList<>();
     }//end of constructor
 
 
@@ -90,7 +91,19 @@ public class User {
     public boolean checkPasswordCorrect(String inputPass){
         return password.equals(inputPass); //check if the password is correct
     }
-    
+
+    public ArrayList<User> getFollows() {
+        return follows;
+    }
+
+    public ArrayList<User> getFollowersList(){
+        return personalPage.getFollowers();
+    }
+
+    public int getPostsSize(){
+        return personalPage.getPostList().size();
+    }
+
     public String getPassword() {
         return this.password;
     }
