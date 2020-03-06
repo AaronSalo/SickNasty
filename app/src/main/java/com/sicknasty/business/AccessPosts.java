@@ -1,6 +1,7 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PostPersistence;
@@ -23,7 +24,7 @@ public class AccessPosts {
     * @param    page    the page we want to fetch the pages from
     * @return   returns an ArrayList holding a number of posts equal to postGetLimit
      */
-    public ArrayList<Post> getPostsByPage(Page page) {
+    public ArrayList<Post> getPostsByPage(Page page) throws NoValidPageException {
         return postHandler.getPostsByPage(page, postGetLimit,
                 PostPersistence.FILTER_BY.TIME_CREATED, true);
     }

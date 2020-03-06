@@ -16,6 +16,7 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
@@ -63,13 +64,15 @@ public class CaptionActivity extends AppCompatActivity {
                 String captionText=caption.getText().toString();
                 if(validateInput(captionText)){
                     updated="something";
-                    Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
-                    Log.d("AAAAAAAAAAAAA::::",newPost.getText());
                     try {
+                        Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
+                        Log.d("AAAAAAAAAAAAA::::",newPost.getText());
                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
                     } catch (DBPostIDExistsException e) {
                         // if this gets tripped, you have done something wrong
                         // -Lucas
+                        Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (NoValidPageException e) {
                         Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     Intent intent=new Intent(CaptionActivity.this,PageActivity.class);

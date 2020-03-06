@@ -13,6 +13,7 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
@@ -97,6 +98,8 @@ public class PageActivity extends AppCompatActivity {
         try {
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(pages.getPage(pageName)));
         } catch (DBPageNameNotFoundException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

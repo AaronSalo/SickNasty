@@ -1,5 +1,6 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
@@ -17,7 +18,7 @@ public interface PostPersistence {
      * @return  the Post corresponding to the ID, otherwise it will return null
      * @throws  DBPostIDNotFoundException thrown when ID is not found
      */
-    public Post getPostById(int id) throws DBPostIDNotFoundException;
+    public Post getPostById(int id) throws DBPostIDNotFoundException, NoValidPageException;
 
     /**
      * Returns a specified number of Posts shared to a Page (this includes both personal and community Pages).
@@ -28,7 +29,7 @@ public interface PostPersistence {
      * @param   accendingOrder set true to get an ArrayList sorted in accending order
      * @return  ArrayList of type Post (this can be an empty list)
      */
-    public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder);
+    public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) throws NoValidPageException;
 
     /**
      * Inserts a new Post.

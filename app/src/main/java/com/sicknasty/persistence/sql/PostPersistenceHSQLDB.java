@@ -1,5 +1,6 @@
 package com.sicknasty.persistence.sql;
 
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
@@ -36,7 +37,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + this.path + ";shutdown=true", "SA", "");
     }
     @Override
-    public Post getPostById(int id) throws DBPostIDNotFoundException {
+    public Post getPostById(int id) throws DBPostIDNotFoundException, NoValidPageException {
         try {
             // start connection
             Connection db = this.getConnection();
@@ -75,7 +76,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
     }
 
     @Override
-    public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) {
+    public ArrayList<Post> getPostsByPage(Page page, int limit, FILTER_BY filter, boolean accendingOrder) throws NoValidPageException{
         try {
             // start connection
             Connection db = this.getConnection();
@@ -114,7 +115,11 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                retList.add(this.postBuilder(result, page));
+                try {
+                    retList.add(this.postBuilder(result, page));
+                } catch (NoValidPageException e){
+                    throw e;
+                }
             }
 
             return retList;
@@ -207,7 +212,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         return this.deletePost(post.getPostID());
     }
     
-    private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException {
+    private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException, NoValidPageException {
         // this needs to be redone
         UserPersistenceHSQLDB uSQL = new UserPersistenceHSQLDB(this.path);
 
