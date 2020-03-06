@@ -36,7 +36,6 @@ public class AccessUsers {
             try {
                 // update local copy and the database copy
                 // note that order here is not important
-                user.changePassword(newPassword);
                 this.userHandler.updatePassword(user, newPassword);
             } catch (Exception ex) {
                 throw ex; //rethrow the exception, handle it in the UI layer
@@ -51,7 +50,6 @@ public class AccessUsers {
      */
     public void updateUsername(User user,String newUsername) throws ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
         try {
-            user.changeUsername(newUsername);
             this.userHandler.updateUsername(user.getUsername(), newUsername);
         } catch (ChangeUsernameException | DBUsernameExistsException | DBUsernameNotFoundException e) {
             throw e;
