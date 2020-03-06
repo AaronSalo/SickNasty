@@ -1,6 +1,8 @@
 package com.sicknasty.persistence.stubs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.User;
@@ -23,6 +25,17 @@ public class UserPersistenceStub implements UserPersistence {
 
         // this will return the User object at that id
         return this.users.get(username);
+    }
+
+    @Override
+    public ArrayList<String> getAllUsers() {
+        ArrayList<String> usernames = new ArrayList<String>();
+
+        for (String k : this.users.keySet()) {
+            usernames.add(k);
+        }
+
+        return usernames;
     }
 
     @Override

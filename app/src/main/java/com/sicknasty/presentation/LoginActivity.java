@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(validateInput(inputUsername, inputPassword)){ //check sure we have a valid input
 
                     //some text we are going to show the user
-                    //its going to get changed, so if it doesnt, we have an unexpected error
+                    //its going to get changed, so if it doesn't, we have an unexpected error
                     String infoText = "An unexpected error has occurred";
 
                     try {
