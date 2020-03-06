@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,9 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
+import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
+import com.sicknasty.objects.User;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -36,6 +40,7 @@ public class UserAccountActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     AccessUsers users=new AccessUsers();
+    AccessPages pages=new AccessPages();
     SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,21 +62,6 @@ public class UserAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Toast.makeText(UserAccountActivity.this, "Coming Iteration 3", Toast.LENGTH_SHORT).show();
-
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                        String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions,PERMISSION_CODE);
-                    }
-                    else{
-                        //access granted
-                        chooseImage();
-                    }
-                }
-                else{
-                    //ose is less than marshmallow
-                    chooseImage();
-                }
             }
         });
         submitPass.setOnClickListener(new View.OnClickListener() {
@@ -101,27 +91,14 @@ public class UserAccountActivity extends AppCompatActivity {
         submitUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userName=newUserName.getText().toString();
-                if(userName.isEmpty()){
+
+                String newUName=newUserName.getText().toString();
+                if(newUName.isEmpty()){
                     Toast.makeText(UserAccountActivity.this, "Enter a new Username", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    //call similar functions as in loginACtivity
-                    preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-                    //update username in sharedPrefernces
-                    try {
-                        users.updateUsername(users.getUser(preferences.getString("username",null)),userName);
-                        SharedPreferences.Editor editor=preferences.edit();
-                        editor.remove("username");
-                        editor.putString("username",userName);
-                        editor.apply();
-                        Toast.makeText(UserAccountActivity.this, "Username successfully updated", Toast.LENGTH_SHORT).show();
-                    } catch (DBUsernameExistsException | ChangeUsernameException | UserNotFoundException | DBUsernameNotFoundException e) {
-                        Toast.makeText(UserAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
+                else {
+                    Toast.makeText(UserAccountActivity.this, "Not implemented yet!!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -141,38 +118,6 @@ public class UserAccountActivity extends AppCompatActivity {
             }
         });
     }
-    public void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    chooseImage();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied!!",Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
-            //we will save the uri.getPath to the db
-            //create a picture post and insert it to database
-
-            Uri uri=data.getData();
-            //put the uri in page
-        }
-    }
-
     @Override
     public void onBackPressed() {
         goToHome();

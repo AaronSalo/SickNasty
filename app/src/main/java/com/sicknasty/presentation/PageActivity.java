@@ -96,7 +96,9 @@ public class PageActivity extends AppCompatActivity {
         following.setText(""+(int)(100*Math.random()));
         PostAdapter postAdapter = null;
         try {
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(pages.getPage(pageName)));
+            Log.d("HELLO SIR", pageName);
+            Page page = pages.getPage(pageName);
+            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
         } catch (DBPageNameNotFoundException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NoValidPageException e) {
@@ -136,12 +138,13 @@ public class PageActivity extends AppCompatActivity {
         Intent intent=getIntent();
         try {
 
-            if(isLoggedUser(curUserName))
+            if(isLoggedUser(curUserName)) {
+                Log.e("hello", curUserName);
                 curUser = users.getUser(curUserName);
-            else{
+            }else{
                 curUser=users.getUser(intent.getStringExtra("user"));
             }
-            pageName+= curUser.getUsername();
+            pageName = curUser.getUsername();
             ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());
 
         } catch (UserNotFoundException | DBUsernameNotFoundException e) {
@@ -185,6 +188,7 @@ public class PageActivity extends AppCompatActivity {
         }
     }
     private boolean isLoggedUser(String loggedInUser){
+        Log.d("AAAAAA",loggedInUser.equals(getIntent().getStringExtra("user"))+"");
         return loggedInUser.equals(getIntent().getStringExtra("user"));
     }
 }

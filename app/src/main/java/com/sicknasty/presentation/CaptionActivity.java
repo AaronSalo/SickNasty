@@ -66,7 +66,6 @@ public class CaptionActivity extends AppCompatActivity {
                     updated="something";
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
-                        Log.d("AAAAAAAAAAAAA::::",newPost.getText());
                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
                     } catch (DBPostIDExistsException e) {
                         // if this gets tripped, you have done something wrong
@@ -78,6 +77,7 @@ public class CaptionActivity extends AppCompatActivity {
                     Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
                     intent.putExtra("user",finalCurUser.getUsername());
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -111,6 +111,7 @@ public class CaptionActivity extends AppCompatActivity {
             Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
             intent.putExtra("user",curUser.getUsername());
             startActivity(intent);
+            finish();
         }
     }
 }

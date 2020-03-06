@@ -2,6 +2,7 @@ package com.sicknasty.business;
 
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Page;
@@ -29,7 +30,7 @@ public class AccessPostsTest {
     }
 
     @Test
-    public void testGetPostsByPage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testGetPostsByPage() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
@@ -46,7 +47,7 @@ public class AccessPostsTest {
     }
 
     @Test
-    public void testPostInsert() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testPostInsert() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
@@ -54,7 +55,7 @@ public class AccessPostsTest {
     }
 
     @Test
-    public void testPostDelete() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testPostDelete() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);

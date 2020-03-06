@@ -22,7 +22,6 @@ import org.junit.runners.Suite;
         AccessPagesTest.class,
         AccessPostsTest.class
 })
-public class AllTests
+public class UnitTests
 {
-
 }
