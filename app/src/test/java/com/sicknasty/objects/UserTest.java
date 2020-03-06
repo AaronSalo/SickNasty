@@ -1,5 +1,11 @@
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -15,6 +21,33 @@ public class UserTest {
         testUsernameChange();
     }
 
+
+    @Test(expected = PasswordErrorException.class)
+    public void passTooShortTest() throws PasswordErrorException{
+        String longPass = "";
+        for(int i = 0; i < User.MIN_PASS_LENGTH+1; i++) {
+            longPass+= "f";
+        }
+
+        String shortPass = "short";
+        assert(shortPass.length() < User.MIN_PASS_LENGTH);
+
+        try {
+            User goodUser = new User("thisIsAName", "userName", longPass);
+            User badUser = new User( "thisName", "another", shortPass);
+            fail(); //if we get here; fail the test
+        } catch (PasswordErrorException e) {
+            System.out.println("yello");
+            throw new PasswordErrorException("Somethign went wrong");
+        } catch (ChangeUsernameException e){
+            e.printStackTrace();
+        } catch (ChangeNameException e) {
+            e.printStackTrace();
+        } catch (UserCreationException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * check that password changing works
      * creates a user, tries changing the password, and making sure we can correctly log in with
@@ -24,10 +57,15 @@ public class UserTest {
     public void testPassChange() {
         String oldPass = "thisisabadpass1";
         String newPass = "thisisasecurepass2";
-        User user1 = new User("whatevre","Mr. BOB", oldPass);
-        assertTrue(user1.changePassword(newPass));//change to a new password
-        assertFalse(user1.checkPasswordCorrect(oldPass)); //the old password should NOT work
-        assertTrue(user1.checkPasswordCorrect(newPass)); //the new password should work fine
+        try {
+            User user1 = new User("whatevre", "Mr. BOB", oldPass);
+            user1.changePassword(newPass);//change to a new password
+            assertFalse(user1.checkPasswordCorrect(oldPass)); //the old password should NOT work
+            assertTrue(user1.checkPasswordCorrect(newPass)); //the new password should work fine
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
 
     /**
@@ -35,22 +73,18 @@ public class UserTest {
      */
     @Test
     public void testUsernameChange() {
-        User user = new User("vmsmadvvmadmh","username", "123");
-        assertTrue(user.changeUsername("newUsername"));
+        try {
+            String oldUsername = "username";
+            String newUsername = "newUsername";
+            User user = new User("vmsmadvvmadmh", oldUsername, "123");
+            user.changeUsername(newUsername);
+            assert (user.getUsername() != oldUsername);
+            assert (user.getUsername() == newUsername);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
 
-
-    @Test
-    public void addFollower() {
-    }
-
-    @Test
-    public void follow(){   //case for checking if you follow yourself, you get added to your followers list
-                            //doesn't work. could make it so we don't allow the user to follow themself as a test
-
-        User user1 = new User("bdamd damm","Mr. BOBob", "1234");
-
-        user1.follow(user1);
-
-    }
+    
 }
