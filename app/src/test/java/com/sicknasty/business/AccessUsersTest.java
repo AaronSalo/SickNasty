@@ -11,8 +11,7 @@ import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.persistence.stubs.UserPersistenceStub;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import static org.junit.Assert.*;
 
 public class AccessUsersTest {
@@ -21,18 +20,20 @@ public class AccessUsersTest {
     @Test
     public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
 
-        User newUser=new User("Jay K","jay1","1234567");
+        User newUser = new User("Jay K", "jay1", "1234567");
         assertNotNull(userPersistence.insertNewUser(newUser));
 
-        assertNotNull(new User("Aaron Solo","aaron","abcdefg"));
+        assertNotNull(new User("Aaron Solo", "aaron", "abcdefg"));
+    }
 
     @Test
     public void testInsertUsers() {
 
-        assertNotNull(userPersistence.insertNewUser(new User("Aaron Solo","aaron","abcdefg")));
+            assertNotNull(userPersistence.insertNewUser(new User("Aaron Solo", "aaron", "abcdefg")));
 
-        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("jay1")));
-        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("aaron")));
+            assertTrue("user not deleted", userPersistence.deleteUser(userPersistence.getUser("jay1")));
+            assertTrue("user not deleted", userPersistence.deleteUser(userPersistence.getUser("aaron")));
+    }
 
     @Test(expected = DBUsernameExistsException.class)
     public void testUsernameExistsException() throws DBUsernameExistsException {
