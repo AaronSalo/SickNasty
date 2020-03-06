@@ -71,5 +71,5 @@ public class AccessPostsTest {
         assertFalse("deleted a post that was not inserted to the db", postStub.deletePost(aDifferentPost));
     }
 
-     */
+
 }

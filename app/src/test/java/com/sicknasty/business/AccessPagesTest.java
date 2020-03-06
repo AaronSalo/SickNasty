@@ -33,7 +33,7 @@ public class AccessPagesTest {
 
 
         assertTrue("object exist but not deleted",pages.deletePage("jay"));
-
+        try {
             assertFalse("object not found but deleted", pages.deletePage("jay"));
 
             assertFalse("object not found but deleted", pages.deletePage("aaron"));
