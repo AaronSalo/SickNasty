@@ -53,22 +53,22 @@ This layer contains three persistence interfaces that save the DSOs and their in
 |         PRESENTATION         |           BUSINESS           |         PERSISTENCE          |
 |                              |                              |                              |
 +--------------------------------------------------------------------------------------------+
-|          Login+---------------------------+                 |                              |
-|                              |            v                 |  UserPersistence             |
-|                     +------------------>AccessUsers+---------> +->UserPersistenceStub      |
-|          UserAccount+        |            ^  ^              |  +->UserPersistenceHSQLDB    |
-|                              |       +----+  |              |                              |
-|                +---------------------+       |              |                              |
-|          Search+             |  +------------+              |  PagePersistence             |
-|                  +--------------+       AccessPages+---------> +->PagePersistenceStub      |
-|                  |           |           ^                  |  +->PagePersistenceHSQLDB    |
-|          Register+-----------------------+                  |                              |
-|                              |                              |                              |
-|                              |                              |                              |
-|          Caption             |                              |  PostPersistence             |
-|                              |          AccessPosts+---------> +->PostPersistenceStub      |
-|                              |                              |  +->PostPersistenceHSQLDB    |
-|          Page                |                              |                              |
+|    +-----------------------------------------+              |                              |
+|    |     Login+--------------------------->  v              |  UserPersistence             |
+|    |                +------------------>AccessUsers+---------> +->UserPersistenceStub      |
+|    |     UserAccount+        |            ^  ^              |  +->UserPersistenceHSQLDB    |
+|    |                         |       +----+  |              |                              |
+|    |           +---------------------+       |              |                              |
+|    |     Search+             |  +------------+              |  PagePersistence             |
+|    |             +--------------+       AccessPages+---------> +->PagePersistenceStub      |
+|    |             |           |           ^    ^             |  +->PagePersistenceHSQLDB    |
+|    |     Register+-----------------------+    |             |                              |
+|    |                         |                |             |                              |
+|    |        +---------------------------------+             |                              |
+|    +----+Page|               |                              |  PostPersistence             |
+|    ^         +------------------------->AccessPosts+---------> +->PostPersistenceStub      |
+|    |                         |              ^               |  +->PostPersistenceHSQLDB    |
+|    +-----Caption+---------------------------+               |                              |
 |                              |                              |                              |
 +------+-----------------------+------------------------------+------------------------------+
 | DSOs |                                                                                     |
