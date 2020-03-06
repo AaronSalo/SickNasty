@@ -78,8 +78,8 @@ public class AccessUsersIT {
             User user1 = new User("Jay K",username,"abcmmdef");
             users.insertUser(user1);
             users.updateUsername(user1, newUsername);
-            user1 = users.getUser(username);
-            assert(user1.getName() == username);
+            user1 = users.getUser(newUsername);
+            assert(user1.getUsername() != username);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             fail();
@@ -89,11 +89,12 @@ public class AccessUsersIT {
     @Test
     public void testUpdatesInPassword(){
         try {
-            User jay = new User("Jay K", "jay", "abcmmdef");
+            String username = "jay";
+            User jay = new User("Jay K", username, "abcmmdef");
             users.insertUser(jay);
 
-            users.updateUserPassword("jay",  "234567819");
-
+            users.updateUserPassword( username,  "234567819");
+            jay = users.getUser(username);
             assertFalse("password is still the old password", jay.checkPasswordCorrect("abcmmdef"));
             assertTrue("the new password didnt work", jay.checkPasswordCorrect("234567819"));
         } catch (Exception e) {
