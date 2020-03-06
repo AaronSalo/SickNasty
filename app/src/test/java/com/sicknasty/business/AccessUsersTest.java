@@ -1,13 +1,15 @@
 package com.sicknasty.business;
 
-import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-
-import junit.framework.TestCase;
+import com.sicknasty.persistence.stubs.UserPersistenceStub;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,43 +17,22 @@ import static org.junit.Assert.*;
 
 public class AccessUsersTest {
 
-    AccessUsers users;
+    UserPersistence userPersistence=new UserPersistenceStub();
+    @Test
+    public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
 
-    @Before public void setUp() {
-        Service.initTestDatabase();
-        users = new AccessUsers();              //use business layer
-    }
+        User newUser=new User("Jay K","jay1","1234567");
+        assertNotNull(userPersistence.insertNewUser(newUser));
+
+        assertNotNull(new User("Aaron Solo","aaron","abcdefg"));
 
     @Test
     public void testInsertUsers() {
 
-        try {
-            User newUser = new User("Jay K", "jay", "23416772");
-            users.insertUser(newUser);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fail();
-        }
-    }
+        assertNotNull(userPersistence.insertNewUser(new User("Aaron Solo","aaron","abcdefg")));
 
-    @Test(expected = DBUsernameNotFoundException.class)
-    public void testDeleteUsers() throws DBUsernameNotFoundException{
-        try {
-            User newUser = new User("Jay K", "jay", "23416772");
-            users.insertUser(newUser);
-            users.deleteUser("Jay K");
-        } catch (Exception e) {
-            fail();
-        }
-
-        try {
-            users.getUser("Jay K"); //should throw an exception
-        } catch (DBUsernameNotFoundException e) {
-            throw e;
-        } catch (UserNotFoundException e) {
-            fail();
-        }
-    }
+        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("jay1")));
+        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("aaron")));
 
     @Test(expected = DBUsernameExistsException.class)
     public void testUsernameExistsException() throws DBUsernameExistsException {
@@ -67,38 +48,42 @@ public class AccessUsersTest {
             fail();
         }
     }
+    @Test(expected = DBUsernameExistsException.class)
+    public void testDuplicateUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
+        User newUser=new User("Jay K","jay1","1234567");
+        assertNotNull(userPersistence.insertNewUser(newUser));
+        assertNull("duplicated  added!!!Error",userPersistence.insertNewUser(new User("Jay K","jay1","abcmmdef")));
 
 
-    @Test
-    public void testUpdatesInUsername(){
-        String username = "jay";
-        String newUsername = "aaron";
-        try {
-            User user1 = new User("Jay K",username,"abcmmdef");
-            users.insertUser(user1);
-            users.updateUsername(user1, newUsername);
-            user1 = users.getUser(username);
-            assert(user1.getName() == username);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fail();
-        }
+        assertFalse("item not found but still deleted!!error",userPersistence.deleteUser(userPersistence.getUser("aaron")));
+        assertTrue("existing user not deleted !!error",userPersistence.deleteUser(userPersistence.getUser("jay")));
+    }
+    @Test(expected = DBUsernameExistsException.class)
+    public void testUpdatesInUsername() throws DBUsernameNotFoundException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException {
+        User user1=new User("Jay K","jay","abcmmdef");
+
+
+        assertNotNull("user not added",userPersistence.insertNewUser(user1));
+        assertTrue("username not changed even though it was available",userPersistence.updateUsername("jay","aaron"));
+
+        assertNotNull("nd nad",userPersistence.getUser("aaron"));
+        assertNotNull("user not added",userPersistence.insertNewUser(user1));
+        assertNull("duplicated  added!!!Error",userPersistence.insertNewUser(new User("Jay K","jay","abcmmdef")));
+
+        assertTrue(" not deleted!!error",userPersistence.deleteUser(userPersistence.getUser("aaron")));
+        assertTrue("existing user not deleted !!error",userPersistence.deleteUser(userPersistence.getUser("jay")));
     }
 
     @Test
-    public void testUpdatesInPassword(){
-        try {
-            User jay = new User("Jay K", "jay", "abcmmdef");
-            users.insertUser(jay);
+    public void testUpdatesInPassword() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
+        User jay=new User("Jay K","jay","abcmmdef");
 
-            users.updateUserPassword("jay", "abcmmdef", "234567819");
+        assertNotNull("user not added",userPersistence.insertNewUser(jay));
 
-            assertFalse("password is still the old password", jay.checkPasswordCorrect("abcmmdef"));
-            assertTrue("the new password didnt work", jay.checkPasswordCorrect("234567819"));
-        } catch (Exception e) {
-            fail();
-        }
+        userPersistence.updatePassword(jay,"1234556777");
+        assertFalse("password not change",jay.checkPasswordCorrect("abcmmdef"));
+        assertTrue("password not changed",jay.checkPasswordCorrect("1234556777"));
+
+        userPersistence.deleteUser(jay);
     }
-
-
 }

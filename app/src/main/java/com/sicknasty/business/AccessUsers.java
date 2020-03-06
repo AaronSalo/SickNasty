@@ -9,6 +9,8 @@ import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
+import java.util.ArrayList;
+
 /** @author jay
         * wrapper for the user db
         * passes info from UI to the db and vise versa
@@ -25,17 +27,19 @@ public class AccessUsers {
         return userHandler.insertNewUser(user);
     }
 
-    public void updateUserPassword(String username,String oldPassword,String newPassword) throws DBUsernameNotFoundException, PasswordErrorException {
-        try {
-            User user = this.userHandler.getUser(username);
-            // update local copy and the database copy
-            // note that order here is not important
-            user.changePassword(newPassword);
-            this.userHandler.updatePassword(user, newPassword);
-        } catch (DBUsernameNotFoundException ex) {
-            throw ex; //rethrow the exception, handle it in the UI layer
-        } catch (PasswordErrorException ex) {
-            throw ex;
+    public void updateUserPassword(String username,String newPassword) throws Exception {
+        User user = this.userHandler.getUser(username);
+
+        if (user == null) {
+            throw new PasswordErrorException("User not found. Cannot change password.");
+        } else {
+            try {
+                // update local copy and the database copy
+                // note that order here is not important
+                this.userHandler.updatePassword(user, newPassword);
+            } catch (Exception ex) {
+                throw ex; //rethrow the exception, handle it in the UI layer
+            }
         }
     }
 
@@ -46,7 +50,6 @@ public class AccessUsers {
      */
     public void updateUsername(User user,String newUsername) throws ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
         try {
-            user.changeUsername(newUsername);
             this.userHandler.updateUsername(user.getUsername(), newUsername);
         } catch (ChangeUsernameException | DBUsernameExistsException | DBUsernameNotFoundException e) {
             throw e;
@@ -76,5 +79,14 @@ public class AccessUsers {
             userHandler.deleteUser(user);
         else
             throw new UserNotFoundException("Could not find the specified user");
+    }
+
+    /**
+
+     * @return  all the users in DB so that user can search for a particular user
+     */
+
+    public ArrayList<String> getUsersByUsername(){
+        return userHandler.getAllUsers();
     }
 }

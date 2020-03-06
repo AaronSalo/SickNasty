@@ -49,7 +49,7 @@ class HSQLDBInitializer {
             "CREATE TABLE IF NOT EXISTS PagePosts (" +
                 "p_id INTEGER NOT NULL," +
                 "pg_name VARCHAR(32) NOT NULL," +
-                "FOREIGN KEY(p_id) REFERENCES Posts(p_id) ON DELETE CASCADE," +
+                "FOREIGN KEY(p_id) REFERENCES POSTS(p_id) ON DELETE CASCADE," +
                 "FOREIGN KEY(pg_name) REFERENCES Pages(pg_name) ON DELETE CASCADE" +
             ")"
         );

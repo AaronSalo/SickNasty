@@ -2,7 +2,6 @@
 abstract class for post
  */
 package com.sicknasty.objects;
-
 public class Post {
 
     private String text;
@@ -16,6 +15,8 @@ public class Post {
     private int likes;
     private int dislikes;
 
+    private boolean liked;
+
     private String path;
 
     public Post(String text, User userId, String path, int likes, int dislikes, Page page) {
@@ -26,6 +27,7 @@ public class Post {
         this.timeCreated = System.currentTimeMillis();
         this.likes = likes;
         this.dislikes = dislikes;
+        liked = false;
     }
 
     public Page getPageId() {
