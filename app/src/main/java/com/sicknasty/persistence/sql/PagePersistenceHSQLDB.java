@@ -195,9 +195,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
 			return stmt.executeUpdate() == 1;
 		} catch (SQLException e) {
-			throw new DBGenericException(e)
+			throw new DBGenericException(e);
 		}
-
-		return false;
 	}
 }

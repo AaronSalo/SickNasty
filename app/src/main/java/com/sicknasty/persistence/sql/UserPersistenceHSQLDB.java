@@ -9,6 +9,7 @@ import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -206,9 +207,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             } else {
                 throw new DBGenericException(e);
             }
-        } catch (DBPageNamenotFoundException e) {
-			throw new DBGenericException(e);
-		}
+        }
     }
 
     @Override

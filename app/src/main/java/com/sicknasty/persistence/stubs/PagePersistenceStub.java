@@ -87,7 +87,7 @@ public class PagePersistenceStub implements PagePersistence {
 
 	@Override
 	public boolean changeName(String oldName, String newName) {
-		if (this.pages.get(oldName)) {
+		if (this.pages.containsKey(oldName)) {
 			Page oldPage = this.pages.get(oldName);
 			oldPage.changePageName(newName);
 
