@@ -11,7 +11,8 @@ import java.sql.SQLException;
 // - Lucas
 class HSQLDBInitializer {
     static void setupTables(Connection db) throws SQLException {
-        Log.e("INNER SQL", "Setting up tables");
+        Log.d("INNER SQL", "Setting up tables");
+
         PreparedStatement stmt = db.prepareStatement(
             "CREATE TABLE IF NOT EXISTS Users (" +
                 "username VARCHAR(32) PRIMARY KEY," +
@@ -63,6 +64,7 @@ class HSQLDBInitializer {
             ")"
         );
         stmt.execute();
-        Log.e("INNER SQL", "Finished tables");
+
+        Log.d("INNER SQL", "Finished tables");
     }
 }
