@@ -1,71 +1,103 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AccessUsersTest {
 
-    AccessUsers users=new AccessUsers();              //use business layer
+    AccessUsers users;
+
+    @Before public void setUp() {
+        Service.initTestDatabase();
+        users = new AccessUsers();              //use business layer
+    }
+
     @Test
     public void testInsertUsers() {
 
-        assertNotNull(users.insertUser("Jay K","jay","23416772"));
-        assertNotNull("user not found in the database",users.validNewUsername("jay"));
-        assertTrue("wrong password found for jay",users.validNewUsername("jay").checkPasswordCorrect("23416772"));
-
-        assertNotNull(new User("Aaron Solo","aaron","abcdefg"));
-
-
-        assertNotNull(users.insertUser("Aaron Solo","aaron","abcdefg"));
-        assertNull("user not created found in the database",users.validNewUsername("aaron1"));
-
-        assertTrue("user not deleted",users.deleteUser("jay"));
-        assertTrue("user not deleted",users.deleteUser("aaron"));
-
+        try {
+            User newUser = new User("Jay K", "jay", "23416772");
+            users.insertUser(newUser);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
-    @Test
-    public void testDuplicateUsers(){
-        assertNotNull("user not added",users.insertUser("Jay K","jay","abcmmdef"));
-        assertNull("duplicated  added!!!Error",users.insertUser("Jay K","jay","abcmmdef"));
 
+    @Test(expected = DBUsernameNotFoundException.class)
+    public void testDeleteUsers() throws DBUsernameNotFoundException{
+        try {
+            User newUser = new User("Jay K", "jay", "23416772");
+            users.insertUser(newUser);
+            users.deleteUser("Jay K");
+        } catch (Exception e) {
+            fail();
+        }
 
-        assertFalse("item not found but still deleted!!error",users.deleteUser("aaron"));
-        assertTrue("existing user not deleted !!error",users.deleteUser("jay"));
+        try {
+            users.getUser("Jay K"); //should throw an exception
+        } catch (DBUsernameNotFoundException e) {
+            throw e;
+        } catch (UserNotFoundException e) {
+            fail();
+        }
     }
+
+    @Test(expected = DBUsernameExistsException.class)
+    public void testUsernameExistsException() throws DBUsernameExistsException {
+
+        try {
+            User newUser = new User("Jay K", "jay", "23416772");
+            User sameUser = new User("Jay K", "jay", "23416772");
+            users.insertUser(newUser);
+            users.insertUser(sameUser);
+        } catch (DBUsernameExistsException e) {
+            throw new DBUsernameExistsException("Username already Exists");
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+
     @Test
     public void testUpdatesInUsername(){
-        User user1=users.insertUser("Jay K","jay","abcmmdef");
-
-        assertNotNull("user not added",user1);
-        assertTrue("username not changed even though it was available",users.updateUsername(user1,"aaron"));
-
-        assertEquals("nd nad",user1.getUsername(),"aaron");
-        assertNotNull("user not added",users.insertUser("Jay K","jay","abcmmdef"));
-        assertNull("duplicated  added!!!Error",users.insertUser("Jay K","jay","abcmmdef"));
-
-        assertTrue(" not deleted!!error",users.deleteUser("aaron"));
-        assertTrue("existing user not deleted !!error",users.deleteUser("jay"));
+        String username = "jay";
+        String newUsername = "aaron";
+        try {
+            User user1 = new User("Jay K",username,"abcmmdef");
+            users.insertUser(user1);
+            users.updateUsername(user1, newUsername);
+            user1 = users.getUser(username);
+            assert(user1.getName() == username);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
 
     @Test
     public void testUpdatesInPassword(){
-        User jay=users.insertUser("Jay K","jay","abcmmdef");
+        try {
+            User jay = new User("Jay K", "jay", "abcmmdef");
+            users.insertUser(jay);
 
-        assertNotNull("user not added",jay);
-        assertTrue("username not changed even though it was available",users.updateUserPassword("jay","abcmmdef","234567819"));
+            users.updateUserPassword("jay", "abcmmdef", "234567819");
 
-        assertFalse("password not change",jay.checkPasswordCorrect("abcmmdef"));
-        assertTrue("password not change",jay.checkPasswordCorrect("234567819"));
-
-
-        assertTrue(" not deleted!!error",users.deleteUser("jay"));
-
+            assertFalse("password is still the old password", jay.checkPasswordCorrect("abcmmdef"));
+            assertTrue("the new password didnt work", jay.checkPasswordCorrect("234567819"));
+        } catch (Exception e) {
+            fail();
+        }
     }
 
 

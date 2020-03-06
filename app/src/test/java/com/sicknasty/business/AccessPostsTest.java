@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class AccessPostsTest {
-
+    /*
     AccessPosts access;
 
     public AccessPostsTest (){
@@ -71,4 +71,6 @@ public class AccessPostsTest {
         //try to delete a post that has not been added
         assertFalse("deleted a post that was not inserted to the db", access.deletePost(aDifferentPost));
     }
+
+     */
 }

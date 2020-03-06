@@ -13,38 +13,48 @@ public class AccessPagesTest {
 
     @Test
     public void testInsertPage(){
-        User jay=new User("Jay K","jay","abcmmdef");
+        try {
+            User jay = new User("Jay K", "jay", "abcmmdef");
 
-        PersonalPage page = new PersonalPage(jay);
+            PersonalPage page = new PersonalPage(jay);
 
-        assertTrue("page not added",pages.insertNewPage(page));
-        assertEquals("username is different",pages.getPage("jay").getPageName(),"jay");
+            assertTrue("page not added", pages.insertNewPage(page));
+            assertEquals("username is different", pages.getPage("jay").getPageName(), "jay");
 
-        assertNotNull("",pages.getPage("jay"));
+            assertNotNull("", pages.getPage("jay"));
 
-        page=new PersonalPage(jay);
-        assertFalse("two pages with same username added",pages.insertNewPage(page));
-        assertTrue("object exist but not deleted",pages.deletePage("jay"));
+            page = new PersonalPage(jay);
+            assertFalse("two pages with same username added", pages.insertNewPage(page));
+            assertTrue("object exist but not deleted", pages.deletePage("jay"));
 
-        assertFalse("object not found but deleted",pages.deletePage("jay"));
+            assertFalse("object not found but deleted", pages.deletePage("jay"));
 
-        assertFalse("object not found but deleted",pages.deletePage("aaron"));
-
+            assertFalse("object not found but deleted", pages.deletePage("aaron"));
+        } catch (Exception e ){
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
+
+    //this test is 100% useless. WILL DELETE
     @Test
     public void testNullPages(){
         PersonalPage page =null;
 
-        assertFalse("page not added",pages.insertNewPage(page));
-        assertEquals("page does not exist",pages.getPage("jay"),null);
+        try {
+            assertFalse("page not added", pages.insertNewPage(page));
+            assertEquals("page does not exist", pages.getPage("jay"), null);
 
-        User user=null;
-        PersonalPage page1 = new PersonalPage(user);
+            User user = null;
+            PersonalPage page1 = new PersonalPage(user);
 
-        assertFalse("null user's page created and added",pages.insertNewPage(page1));
+            assertFalse("null user's page created and added", pages.insertNewPage(page1));
 
-        assertEquals("null user's page created and added",pages.getPage(page1.getPageName()),null);
+            assertEquals("null user's page created and added", pages.getPage(page1.getPageName()), null);
 
-        assertFalse("object exist but not deleted",pages.deletePage(page1.getPageName()));
+            assertFalse("object exist but not deleted", pages.deletePage(page1.getPageName()));
+        }catch (Exception e){
+            fail();
+        }
     }
 }

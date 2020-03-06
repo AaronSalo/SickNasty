@@ -25,20 +25,17 @@ public class AccessUsers {
         return userHandler.insertNewUser(user);
     }
 
-    public void updateUserPassword(String username,String oldPassword,String newPassword) throws Exception {
-        User user = this.userHandler.getUser(username);
-
-        if (user == null) {
-            throw new PasswordErrorException("User not found. Cannot change password.");
-        } else {
-            try {
-                // update local copy and the database copy
-                // note that order here is not important
-                user.changePassword(newPassword);
-                this.userHandler.updatePassword(user, newPassword);
-            } catch (Exception ex) {
-                throw ex; //rethrow the exception, handle it in the UI layer
-            }
+    public void updateUserPassword(String username,String oldPassword,String newPassword) throws DBUsernameNotFoundException, PasswordErrorException {
+        try {
+            User user = this.userHandler.getUser(username);
+            // update local copy and the database copy
+            // note that order here is not important
+            user.changePassword(newPassword);
+            this.userHandler.updatePassword(user, newPassword);
+        } catch (DBUsernameNotFoundException ex) {
+            throw ex; //rethrow the exception, handle it in the UI layer
+        } catch (PasswordErrorException ex) {
+            throw ex;
         }
     }
 

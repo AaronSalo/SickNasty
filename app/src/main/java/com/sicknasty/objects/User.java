@@ -32,7 +32,7 @@ public class User {
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 
     //password restrictions; public in case UI wants to display this value
-    public final int MIN_PASS_LENGTH = 6;
+    public static final int MIN_PASS_LENGTH = 6;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
