@@ -48,22 +48,9 @@ public class UserAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_account);
 
         Button submitPass=findViewById(R.id.submitPassword);
-        Button submitUser=findViewById(R.id.submitUsername);
 
-        final EditText newUserName=findViewById(R.id.newUserNameText);
         final EditText newPass=findViewById(R.id.newPasswordText);
-
-        TextView profilePicture=findViewById(R.id.changeProfilePicture);
-
         Button logout=findViewById(R.id.logout);
-
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(UserAccountActivity.this, "Coming Iteration 3", Toast.LENGTH_SHORT).show();
-            }
-        });
         submitPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,19 +72,6 @@ public class UserAccountActivity extends AppCompatActivity {
                             Toast.makeText(UserAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-            }
-        });
-        submitUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String newUName=newUserName.getText().toString();
-                if(newUName.isEmpty()){
-                    Toast.makeText(UserAccountActivity.this, "Enter a new Username", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(UserAccountActivity.this, "Not implemented yet!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

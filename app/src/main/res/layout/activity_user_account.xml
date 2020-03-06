@@ -7,28 +7,6 @@
     tools:context=".presentation.UserAccountActivity">
 
     <TextView
-        android:id="@+id/changeProfilePicture"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="120dp"
-        android:text="Change Profile Picture"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
-
-    <TextView
-        android:id="@+id/changeUsername"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="120dp"
-        android:text="Change Username"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/changePassword"
-        tools:layout_editor_absoluteX="30dp" />
-
-    <TextView
         android:id="@+id/changePassword"
         android:layout_width="match_parent"
         android:layout_height="65dp"
@@ -65,18 +43,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/changePassword" />
 
-    <EditText
-        android:id="@+id/newUserNameText"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/edit_text_border"
-        android:ems="10"
-        android:hint="New Username"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/newPasswordText"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
-
     <Button
         android:id="@+id/submitPassword"
         android:layout_width="wrap_content"
@@ -87,18 +53,6 @@
         android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/changePassword" />
-
-    <Button
-        android:id="@+id/submitUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="132dp"
-        android:background="@color/colorAccent"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/submitPassword"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
