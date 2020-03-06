@@ -187,7 +187,13 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             stmt.setString(2, oldUsername);
 
             // same as deleteUser, will return 1 or 0 rows affected
-            return stmt.executeUpdate() == 1;
+            if (stmt.executeUpdate() == 1) {
+				PagePersistenceHSQLDB pageDB = new PagePersistenceHSQLDB();
+
+				return true;
+			} else {
+				return false;
+			}
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
                 throw new DBUsernameExistsException(newUsername);

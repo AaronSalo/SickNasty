@@ -8,7 +8,7 @@ Along side the three layers, we also have Domain Specific Objects (DSOs) that ge
 ## Presentation Layer
 This layer contains three different activities:  
 1. PageActivity
-    - This activity contains all the Posts that were posted to a Page and displays it
+    - This activity loads the personal page of the user
 2. LoginActivity
     - This activity is the landing zone for new or returning users. Existing users will login here
 3. RegistrationActivity
@@ -17,6 +17,10 @@ This layer contains three different activities:
     - This activity will give the user the ability to change their personal details pertaining to their user account
 4. adapter/PostAdapter
     - This adapter class provides the translation from the Post object into it's correct view object. This class figures out whether to display an image or video from the Post object
+5. CaptionActivity
+    - This activity is responsible to for accepting a potential caption from the user after they select media from their device to post
+5. SearchActivity
+    - This activity allows the user to search for users by username and 
   
 ## Business
 This layer contains three different managing classes that act as the middlemen for Presentation and Persistence:  
@@ -49,30 +53,30 @@ This layer contains three persistence interfaces that save the DSOs and their in
 |         PRESENTATION         |           BUSINESS           |         PERSISTENCE          |
 |                              |                              |                              |
 +--------------------------------------------------------------------------------------------+
+|          Login+---------------------------+                 |                              |
+|                              |            v                 |  UserPersistence             |
+|                     +------------------>AccessUsers+---------> +->UserPersistenceStub      |
+|          UserAccount+        |            ^  ^              |  +->UserPersistenceHSQLDB    |
+|                              |       +----+  |              |                              |
+|                +---------------------+       |              |                              |
+|          Search+             |  +------------+              |  PagePersistence             |
+|                  +--------------+       AccessPages+---------> +->PagePersistenceStub      |
+|                  |           |           ^                  |  +->PagePersistenceHSQLDB    |
+|          Register+-----------------------+                  |                              |
 |                              |                              |                              |
-|                              |                         +------>PagePersistence             |
-|                              |                         |    |  ++                          |
-|         PageActivity+-----------+----->AccessPages+----+    |   +->PagePersistenceStub     |
-|                              |  |                           |                              |
-|                              |  |                           |                              |
-|                              |  |                           |                              |
-|        LoginActivity+------+ |  +-+--->AccessPosts+----------->PostPersistence             |
-|                            | |    |                         |  ++                          |
-|                            | |    |                         |   +->PostPeristenceStub      |
-|                            | |    |                         |                              |
-|     RegistrationActivity+--+------+--->AccessUsers+----+    |                              |
-|                              |                         +------>UserPersistence             |
-|                              |                              |  ++                          |
-|                              |                              |   +->UserPersistenceStub     |
 |                              |                              |                              |
+|          Caption             |                              |  PostPersistence             |
+|                              |          AccessPosts+---------> +->PostPersistenceStub      |
+|                              |                              |  +->PostPersistenceHSQLDB    |
+|          Page                |                              |                              |
 |                              |                              |                              |
 +------+-----------------------+------------------------------+------------------------------+
 | DSOs |                                                                                     |
-+------+       User              Page+-->CommunityPage        Post+-->VideoPost              |
-|                                    |                            |                          |
-|              Password              +-->PersonalPage             +-->PicturePost            |
-|                                                                 |                          |
-|                                                                 +-->TextPost               |
++------+       User              Page                         Post                           |
+|                                +->CommunityPage                                            |
+|                                +->PersonalPage                                             |
+|                                                                                            |
+|                                                                                            |
 |                                                                                            |
 +--------------------------------------------------------------------------------------------+
 ```
