@@ -12,7 +12,11 @@ This layer contains three different activities:
 2. LoginActivity
     - This activity is the landing zone for new or returning users. Existing users will login here
 3. RegistrationActivity
-    - This activity is can be launched from the LoginActivity. This is where new users come to create a new account  
+    - This activity is can be launched from the LoginActivity. This is where new users come to create a new account
+3. UserAccountActivity
+    - This activity will give the user the ability to change their personal details pertaining to their user account
+4. adapter/PostAdapter
+    - This adapter class provides the translation from the Post object into it's correct view object. This class figures out whether to display an image or video from the Post object
   
 ## Business
 This layer contains three different managing classes that act as the middlemen for Presentation and Persistence:  
@@ -26,11 +30,17 @@ This layer contains three different managing classes that act as the middlemen f
 ## Persistence
 This layer contains three persistence interfaces that save the DSOs and their information:
 1. PagePersistence
-    - As of right now, this persistence contains one stub implementation named PagePersistenceStub
+    - This persistence contains two concrete implementations of this interface:
+        - PagePersistenceStub that contains a fake implementation of Pages using a HashMap
+        - PagePersistenceHSQLDB that contains calls to the HSQLDB driver that modifies a persistent database
 2. PostPersistence
-    - As with PagePersistence, there is one implementation named PostPersistenceStub
+    - As with PagePersistence, there are two concrete implementations:
+        - PostPersistenceStub that contains a fake implementation
+        - PostPersistenceHSQLDB that contains the real calls to a persistent database
 3. UserPersistence
-    - Same with the previous two, there is one implementation stub named UserPersistenceStub  
+    - Same with the previous two, there are two concrete implementations:
+        - UserPersistenceStub that contains fake implementation
+        - UserPersistenceHSQLDB that contains real calls to the persistent database  
   
 ## Diagram  
 ```
