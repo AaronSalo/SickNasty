@@ -5,13 +5,14 @@ import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
-import com.sicknasty.objects.Page;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class AccessPostsIT {
         pages=new AccessPages();
     }
     @Test
-    public void testInsertPost() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
+    public void testInsertPost() throws UserNotFoundException, DBUsernameNotFoundException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
 
         System.out.println("Starting insertPostTest::");
         User user1=new User("Jay K","jay1","1234567");
@@ -57,6 +58,7 @@ public class AccessPostsIT {
         assertEquals(newPost.getUserId(),user1);
 
         assertTrue(posts.deletePost(newPost));
+        users.deleteUser("jay1");
         System.out.println("Finished insertPostTest");
     }
 
@@ -151,7 +153,6 @@ public class AccessPostsIT {
     @After
     public void tearDown(){
         //destroy database file
-
     }
 
 

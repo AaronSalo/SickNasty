@@ -29,6 +29,9 @@ public class CaptionActivity extends AppCompatActivity {
     AccessPosts posts=new AccessPosts();
     AccessUsers users=new AccessUsers();
 
+    String updated=null;
+    User curUser=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class CaptionActivity extends AppCompatActivity {
         Uri uri1 = Uri.parse(uri);
         imageView.setImageURI(uri1);
 
-        User curUser=null;
+
         try {
             curUser = users.getUser(intent.getStringExtra("pageName"));
         } catch (UserNotFoundException | DBUsernameNotFoundException e) {
@@ -59,7 +62,7 @@ public class CaptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String captionText=caption.getText().toString();
                 if(validateInput(captionText)){
-
+                    updated="something";
                     Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
                     Log.d("AAAAAAAAAAAAA::::",newPost.getText());
                     try {
@@ -93,5 +96,18 @@ public class CaptionActivity extends AppCompatActivity {
             toast.show();
         }
         return result;
+    }
+
+    @Override
+    public void onBackPressed() {
+        goToHome();
+    }
+
+    private void goToHome(){
+        if(updated==null && curUser!=null){
+            Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
+            intent.putExtra("user",curUser.getUsername());
+            startActivity(intent);
+        }
     }
 }

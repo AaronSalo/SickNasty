@@ -148,7 +148,7 @@ public class PageActivity extends AppCompatActivity {
     }
     public void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("*/*");
+        intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
     }
 
@@ -179,7 +179,6 @@ public class PageActivity extends AppCompatActivity {
             newIntent.putExtra("pageName",pageName);            //put Uri
             newIntent.putExtra("URI",uri.toString());
             startActivity(newIntent);
-            finish();
         }
     }
     private boolean isLoggedUser(String loggedInUser){

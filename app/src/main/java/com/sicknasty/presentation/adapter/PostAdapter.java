@@ -59,25 +59,16 @@ public class PostAdapter extends ArrayAdapter<Post> {
         Uri postUri;
         if (post != null) {
             postUri = Uri.parse(post.getPath());
-            String ifVideo=getContext().getContentResolver().getType(postUri);      //get the format of uri
-            String[] splitUri=ifVideo.split("/");                             //try to see if a video or an image
-
-            if(splitUri[splitUri.length-2].equals("image")){
-                ((ImageView)(viewHolder.ivImage)).setImageURI(postUri);             //this is working
-            }
-            else if(splitUri[splitUri.length-2].equals("video")){
-                ((VideoView)(viewHolder.ivImage)).setVideoURI(postUri);             //i have not tested this
-            }
+            viewHolder.ivImage.setImageURI(postUri);             //this is working
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
-            Log.d("AAAAAAAAAAAAA::::",post.getText());
         }
 
         return view;
     }
 }
 class ViewHolder{
-    View ivImage;
+    ImageView ivImage;
     TextView textView;
     TextView userName;
 }

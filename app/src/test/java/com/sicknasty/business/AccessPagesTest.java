@@ -41,15 +41,15 @@ public class AccessPagesTest {
     }
     @Test
     public void testNullPages() throws DBPageNameExistsException, DBPageNameNotFoundException {
-        PersonalPage page =null;
+        PersonalPage page1 =null;
 
-        assertFalse("page not added",pages.insertNewPage(page));
+        assertFalse("page not added",pages.insertNewPage(page1));
 
         User user=null;
-        PersonalPage page1 = new PersonalPage(user);
+        PersonalPage page2 = new PersonalPage(user);
 
-        assertEquals("null user's page created and added",pages.getPage(page1.getPageName()),null);
+        assertNull("null user's page created and added",pages.getPage(page2.getPageName()));
 
-        assertFalse("object exist but not deleted",pages.deletePage(page1.getPageName()));
+        assertFalse("object exist but not deleted",pages.deletePage(page2.getPageName()));
     }
 }

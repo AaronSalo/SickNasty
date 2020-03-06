@@ -55,6 +55,9 @@ public class UserAccountActivity extends AppCompatActivity {
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Toast.makeText(UserAccountActivity.this, "Coming Iteration 3", Toast.LENGTH_SHORT).show();
+
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                     if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
                         String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -177,6 +180,7 @@ public class UserAccountActivity extends AppCompatActivity {
 
     public void goToHome(){
         Intent intent=new Intent(UserAccountActivity.this,PageActivity.class);
+        preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
         intent.putExtra("user",preferences.getString("username",null));
         startActivity(intent);
         finish();
