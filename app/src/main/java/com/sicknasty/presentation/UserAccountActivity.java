@@ -35,6 +35,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+//i have to change the structure of this whole class
 public class UserAccountActivity extends AppCompatActivity {
 
     private static final int IMAGE_PICK_CODE = 1000;

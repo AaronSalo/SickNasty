@@ -57,6 +57,8 @@ public class PageActivity extends AppCompatActivity {
 
         final String loggedInUser=getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         curUserName=loggedInUser;
+
+        //i(Jay) have to change this
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,11 +81,12 @@ public class PageActivity extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
-        //update Profile Photo or not!!!
+        //update Profile Photo or not!!! store a variable
         //fetch followers,following... and display on the page
         getData();              //fetch the user data and display page accordingly
 
 
+        //update this
         followers.setText(""+(int)(100*Math.random()));
         numberOfPosts.setText(""+(int)(100*Math.random()));
         following.setText(""+(int)(100*Math.random()));
@@ -116,7 +119,7 @@ public class PageActivity extends AppCompatActivity {
                         //ose is less than marshmallow
                         chooseImage();
                     }
-                }
+                }       //also update this following post condition
                 else{
                     Toast.makeText(PageActivity.this,"You cannot post to other account", Toast.LENGTH_SHORT).show();
                 }

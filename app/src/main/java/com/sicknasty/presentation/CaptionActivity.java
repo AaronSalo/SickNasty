@@ -42,11 +42,11 @@ public class CaptionActivity extends AppCompatActivity {
         Button postButton=findViewById(R.id.captionPost);
         ImageView imageView=findViewById(R.id.postImage);
 
-        Intent intent=getIntent();
+        Intent intent=getIntent();                              //get the intent from last activity
 
         final String uri=intent.getStringExtra("URI");          //this is what is displaying selected image when choosing
         Uri uri1 = Uri.parse(uri);
-        imageView.setImageURI(uri1);
+        imageView.setImageURI(uri1);                                    //display selected image
 
 
         try {
@@ -56,13 +56,13 @@ public class CaptionActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }
 
-        final User finalCurUser = curUser;
+        final User finalCurUser = curUser;          //user account post is being posted to
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String captionText=caption.getText().toString();
                 if(validateInput(captionText)){
-                    updated="something";
+                    updated="something";            //this so we know that input is valid and we are posting post
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
