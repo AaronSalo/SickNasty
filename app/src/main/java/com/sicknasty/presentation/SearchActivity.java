@@ -26,7 +26,6 @@ public class SearchActivity extends AppCompatActivity {
         mySearchView=findViewById(R.id.search_view);
         listOfSearches=findViewById(R.id.search_user);
 
-
         adapter=new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
         listOfSearches.setAdapter(adapter);
         listOfSearches.setOnItemClickListener(new AdapterView.OnItemClickListener() {

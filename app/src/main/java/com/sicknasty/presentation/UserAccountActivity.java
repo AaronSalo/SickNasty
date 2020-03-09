@@ -73,17 +73,11 @@ public class UserAccountActivity extends AppCompatActivity {
                     Toast.makeText(UserAccountActivity.this, "Enter a new Password", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    //call similar functions
-                    if(pass.length()<6)         //i did this bcz i didn't know how fn behaves
-                        Toast.makeText(UserAccountActivity.this, "Enter a Password minimum 6 characters", Toast.LENGTH_SHORT).show();
-                    else{
-
-                        try {
+                    try {
                             users.updateUserPassword(preferences.getString("username",null),pass);
                             Toast.makeText(UserAccountActivity.this, "Password successfully updated", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
+                    } catch (Exception e) {
                             Toast.makeText(UserAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
                     }
                 }
             }
@@ -97,6 +91,8 @@ public class UserAccountActivity extends AppCompatActivity {
                     Toast.makeText(UserAccountActivity.this, "Enter a new Username", Toast.LENGTH_SHORT).show();
                 }
                 else {
+
+                    //update username and update shared preferences and
                     Toast.makeText(UserAccountActivity.this, "Not implemented yet!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -126,7 +122,7 @@ public class UserAccountActivity extends AppCompatActivity {
     public void goToHome(){
         Intent intent=new Intent(UserAccountActivity.this,PageActivity.class);
         preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-        intent.putExtra("user",preferences.getString("username",null));
+        intent.putExtra("user",preferences.getString("username",null));     //put username to switch between activities
         startActivity(intent);
         finish();
     }

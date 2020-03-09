@@ -2,7 +2,6 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -14,9 +13,7 @@ import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
-import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
-import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
@@ -25,18 +22,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class PageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
@@ -52,7 +44,7 @@ public class PageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_page);
+        setContentView(R.layout.activity_user_page);
 
         ListView lvPost=findViewById(R.id.lvPost);         //listView of posts
         TextView followers=findViewById(R.id.followers);
@@ -91,17 +83,15 @@ public class PageActivity extends AppCompatActivity {
         //fetch followers,following... and display on the page
         getData();              //fetch the user data and display page accordingly
 
+
         followers.setText(""+(int)(100*Math.random()));
         numberOfPosts.setText(""+(int)(100*Math.random()));
         following.setText(""+(int)(100*Math.random()));
         PostAdapter postAdapter = null;
         try {
-            Log.d("HELLO SIR", pageName);
             Page page = pages.getPage(pageName);
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-        } catch (DBPageNameNotFoundException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (NoValidPageException e) {
+        } catch (DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -139,7 +129,6 @@ public class PageActivity extends AppCompatActivity {
         try {
 
             if(isLoggedUser(curUserName)) {
-                Log.e("hello", curUserName);
                 curUser = users.getUser(curUserName);
             }else{
                 curUser=users.getUser(intent.getStringExtra("user"));
@@ -188,7 +177,6 @@ public class PageActivity extends AppCompatActivity {
         }
     }
     private boolean isLoggedUser(String loggedInUser){
-        Log.d("AAAAAA",loggedInUser.equals(getIntent().getStringExtra("user"))+"");
         return loggedInUser.equals(getIntent().getStringExtra("user"));
     }
 }

@@ -44,8 +44,7 @@ public class CaptionActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
 
-
-        final String uri=intent.getStringExtra("URI");
+        final String uri=intent.getStringExtra("URI");          //this is what is displaying selected image when choosing
         Uri uri1 = Uri.parse(uri);
         imageView.setImageURI(uri1);
 
@@ -67,11 +66,9 @@ public class CaptionActivity extends AppCompatActivity {
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
-                    } catch (DBPostIDExistsException e) {
+                    } catch (DBPostIDExistsException | NoValidPageException e) {
                         // if this gets tripped, you have done something wrong
                         // -Lucas
-                        Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    } catch (NoValidPageException e) {
                         Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
@@ -82,7 +79,7 @@ public class CaptionActivity extends AppCompatActivity {
             }
         });
     }
-
+    //function that checks for valid input
     private boolean validateInput(String caption){
         String infoText = "";
         boolean result=true;
