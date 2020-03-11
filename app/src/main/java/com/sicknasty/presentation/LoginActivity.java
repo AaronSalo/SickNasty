@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             prefEditor.putBoolean("isLogin",true);
                             prefEditor.putString("username",inputUsername);
+                            prefEditor.putString("password",inputPassword);
                             prefEditor.apply();
                             Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
                             startIntent.putExtra("user",  inputUsername);

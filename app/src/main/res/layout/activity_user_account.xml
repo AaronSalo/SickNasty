@@ -6,99 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".presentation.UserAccountActivity">
 
-    <TextView
-        android:id="@+id/changeProfilePicture"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="120dp"
-        android:text="Change Profile Picture"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
-
-    <TextView
-        android:id="@+id/changeUsername"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="120dp"
-        android:text="Change Username"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/changePassword"
-        tools:layout_editor_absoluteX="30dp" />
-
-    <TextView
-        android:id="@+id/changePassword"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="100dp"
-        android:text="Change Password"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-
     <Button
         android:id="@+id/logout"
-        android:layout_width="291dp"
-        android:layout_height="60dp"
-        android:background="@color/colorAccent"
+        android:layout_width="345dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="168dp"
+        android:background="@drawable/button_border"
         android:text="Log Out"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.804" />
-
-    <EditText
-        android:id="@+id/newPasswordText"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/edit_text_border"
-        android:ems="10"
-        android:hint="New Password"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changePassword" />
-
-    <EditText
-        android:id="@+id/newUserNameText"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/edit_text_border"
-        android:ems="10"
-        android:hint="New Username"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/newPasswordText"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
+        app:layout_constraintStart_toStartOf="@+id/updatePassword"
+        app:layout_constraintTop_toBottomOf="@+id/updateInfo" />
 
     <Button
-        android:id="@+id/submitPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="148dp"
-        android:background="@color/colorAccent"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changePassword" />
+        android:id="@+id/updateInfo"
+        android:layout_width="129dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="124dp"
+        android:background="@drawable/button_border"
+        android:text="Update"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/updatePassword"
+        app:layout_constraintTop_toBottomOf="@+id/updatePassword" />
 
-    <Button
-        android:id="@+id/submitUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="132dp"
-        android:background="@color/colorAccent"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/submitPassword"
-        app:layout_constraintTop_toBottomOf="@+id/changeUsername" />
+    <EditText
+        android:id="@+id/updatePassword"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="5"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/updateUsername"
+        app:layout_constraintTop_toBottomOf="@+id/updateUsername" />
+
+    <EditText
+        android:id="@+id/updateUsername"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="164dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Username"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/passwordShow"
+        android:layout_width="192dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:text="Show Password"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/updatePassword"
+        app:layout_constraintTop_toBottomOf="@+id/updatePassword" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="168dp"
+        android:text="Username"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="72dp"
+        android:text="Password"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
