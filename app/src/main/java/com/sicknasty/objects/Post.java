@@ -1,7 +1,7 @@
-/*
-abstract class for post
- */
+
 package com.sicknasty.objects;
+
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 
 public class Post {
 
@@ -15,12 +15,16 @@ public class Post {
     private long timeCreated;
     private int likes;
     private int dislikes;
+
     private boolean liked;
 
     private String path;
 
-    public Post(String text, User userId, String path, int likes, int dislikes, Page page) {
-        this.pageId = page;
+    public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException{
+        if(page != null)
+            this.pageId = page;
+        else
+            throw new NoValidPageException("Could not find a page to post to");
         this.text = text;
         this.userId = userId;
         this.path=path;
@@ -34,10 +38,6 @@ public class Post {
         return pageId;
     }
 
-    public void incrementLike(){
-        likes++;
-    }
-
     public int getPostID() {
         return postID;
     }
@@ -48,10 +48,6 @@ public class Post {
 
     public String getText(){
         return text;
-    }
-
-    public void setLiked(){         //checks to see if post has already been liked by certain user
-        liked = true;
     }
 
     public String getPath() {

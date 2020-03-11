@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -42,63 +43,33 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
-            viewHolder.likes = view.findViewById(R.id.likes);
-            /*
-            ImageButton button = viewHolder.like_button;
 
-            button = view.findViewById(R.id.like_button);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-                }
-            });
-
-
-            //viewHolder.like_button = view.findViewById(R.id.like_button);
-
-*/
             view.setTag(viewHolder);
         }else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        Post post =getItem(position);           //give a post position in layout
+        Post post =getItem(getCount()-position-1);           //give a post position in layout(now it displays the most recent one)
 
 
         //get the path from the post and display it
         //lucas check the following code(setImageUri accepts an URI)
 
-
-        Uri postUri =Uri.parse(post.getPath());
-        Log.d(TAG, getContext().getContentResolver().getType(postUri));
-
-        viewHolder.ivImage.setImageURI(postUri);            //will update this for video later en just stick to images
-        viewHolder.userName.setText(post.getUserId().getUsername());
-        viewHolder.textView.setText(post.getText());
-        viewHolder.likes.setText(String.valueOf(post.getNumberOfLikes()));
-
+        Uri postUri;
+        if (post != null) {
+            postUri = Uri.parse(post.getPath());
+            viewHolder.ivImage.setImageURI(postUri);             //this is working
+            viewHolder.userName.setText(post.getUserId().getUsername());
+            viewHolder.textView.setText(post.getText());
+        }
 
         return view;
     }
-
-//    public void liked(View view) {
-//
-//
-//
-//    }
 }
-
-
 class ViewHolder{
     ImageView ivImage;
     TextView textView;
     TextView userName;
-    TextView likes;
-   // ImageButton like_button;
 }
 

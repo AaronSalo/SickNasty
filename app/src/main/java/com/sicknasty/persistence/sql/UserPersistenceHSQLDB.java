@@ -1,5 +1,7 @@
 package com.sicknasty.persistence.sql;
 
+import android.util.Log;
+
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
@@ -7,6 +9,7 @@ import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -176,6 +179,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 
         // try to change username, see if we fail any constraints
         usr.changeUsername(newUsername);
+        //update
         try {
             // this will update the username of the user
             Connection db = this.getConnection();
@@ -183,13 +187,22 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             PreparedStatement stmt = db.prepareStatement(
                 "UPDATE Users SET username = ? WHERE username = ? LIMIT 1"
             );
-            stmt.setString(1, newUsername);
+            stmt.setString(1,newUsername);
             stmt.setString(2, oldUsername);
 
             // same as deleteUser, will return 1 or 0 rows affected
-            return stmt.executeUpdate() == 1;
+            if (stmt.executeUpdate() == 1) {
+				PagePersistenceHSQLDB pageDB = new PagePersistenceHSQLDB(this.path);
+
+				pageDB.changeName(oldUsername, newUsername);
+
+				return true;
+			} else {
+				return false;
+			}
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
+                Log.d("AAAAAAAA",e.getSQLState());
                 throw new DBUsernameExistsException(newUsername);
             } else {
                 throw new DBGenericException(e);

@@ -39,6 +39,8 @@ public abstract class Page {
         return this.pageName;
     }
 
+    public void changePageName(String newName) {this.pageName = newName; }
+
     public ArrayList<User> getFollowers() {
         return followers;
     }

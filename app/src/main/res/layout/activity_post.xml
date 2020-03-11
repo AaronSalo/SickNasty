@@ -11,20 +11,25 @@
     <TextView
         android:id="@+id/userName"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="36dp"
         android:text="TextView"
+        android:textAlignment="center"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
-        android:layout_height="299dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="12dp"
         android:baselineAligned="false"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
@@ -32,37 +37,13 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:text="TextView"
+        android:layout_marginTop="20dp"
+        android:textAlignment="viewStart"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivImage" />
-
-    <ImageButton
-        android:id="@+id/like_button"
-        android:layout_width="70dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="28dp"
-        android:scaleType="fitCenter"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/like_button_"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/likes"
-        android:layout_width="95dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="36dp"
-        android:text="likes"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
-        app:layout_constraintStart_toEndOf="@+id/like_button"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
