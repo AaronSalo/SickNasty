@@ -40,7 +40,8 @@ class HSQLDBInitializer {
             "CREATE TABLE IF NOT EXISTS Pages (" +
                 "pg_name VARCHAR(32) NOT NULL PRIMARY KEY," +
                 "creator_username VARCHAR(32) NOT NULL," +
-                "type TINYINT NOT NULL" +
+                "type TINYINT NOT NULL," +
+                "FOREIGN KEY(creator_username) REFERENCES Users(username) ON DELETE CASCADE" +
             ")"
         );
         stmt.execute();
