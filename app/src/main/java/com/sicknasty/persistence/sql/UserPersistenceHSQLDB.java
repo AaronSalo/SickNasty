@@ -259,8 +259,10 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                 User sender = this.getUser(result.getString("sender"));
                 User receiver = this.getUser(result.getString("receiver"));
 
+                String message = result.getString("message");
+
                 Message msg = new Message(
-                    result.getString("message"),
+                    message,
                     sender,
                     receiver
                 );
