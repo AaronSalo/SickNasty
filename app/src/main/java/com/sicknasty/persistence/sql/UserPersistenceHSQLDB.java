@@ -1,15 +1,14 @@
 package com.sicknasty.persistence.sql;
 
-import android.util.Log;
-
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.MessageException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
+import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -202,7 +201,6 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 			}
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
-                Log.d("AAAAAAAA",e.getSQLState());
                 throw new DBUsernameExistsException(newUsername);
             } else {
                 throw new DBGenericException(e);
@@ -230,6 +228,70 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 
             // same as deleteUser, will return 1 or 0 rows affected
             return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Message> getMessages(User user1, User user2) {
+        ArrayList<Message> rtnMessage = new ArrayList<Message>();
+
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                 "SELECT * FROM Messages " +
+                     "WHERE " +
+                         "(sender = ? AND receiver = ?) " +
+                         "OR " +
+                         "(sender = ? AND receiver = ?) " +
+                     "ORDER BY time_sent ASC"
+            );
+            stmt.setString(1, user1.getUsername());
+            stmt.setString(2, user2.getUsername());
+            stmt.setString(3, user2.getUsername());
+            stmt.setString(4, user1.getUsername());
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                User sender = this.getUser(result.getString("sender"));
+                User receiver = this.getUser(result.getString("receiver"));
+
+                Message msg = new Message(
+                    result.getString("message"),
+                    sender,
+                    receiver
+                );
+
+                rtnMessage.add(msg);
+            }
+        } catch (SQLException | DBUsernameNotFoundException | MessageException e) {
+            throw new DBGenericException(e);
+        }
+
+        return rtnMessage;
+    }
+
+    @Override
+    public boolean addMessage(Message message) {
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                "INSERT INTO Messages VALUES(?, ?, ?, ?, NULL)"
+            );
+
+            String senderUsername = message.getMessenger().getUsername();
+            String recvUsername = message.getReceiver().getUsername();
+
+            stmt.setString(1, senderUsername);
+            stmt.setString(2, recvUsername);
+            stmt.setLong(3, message.getTimeSent());
+            stmt.execute();
+
+            return true;
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }
