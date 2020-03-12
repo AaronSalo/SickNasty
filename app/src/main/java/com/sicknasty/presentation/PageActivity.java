@@ -59,6 +59,7 @@ public class PageActivity extends AppCompatActivity {
         TextView following= findViewById(R.id.following);
         TextView numberOfPosts= findViewById(R.id.posts);
         Button postButton=findViewById(R.id.postButton);
+        Button messageButton = findViewById(R.id.messageButton);
 
         Button searchButton=findViewById(R.id.searchButton);
         ImageView settings=findViewById(R.id.settings);
@@ -79,6 +80,26 @@ public class PageActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isLoggedUser(loggedInUser)){
+                    Intent newIntent=new Intent(PageActivity.this,MessageActivity.class);
+                    startActivity(newIntent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(PageActivity.this,"You cannot message yourself", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
