@@ -90,5 +90,7 @@ public class Message {
         return timeSent;
     }
 
-
+    public void setTimeSent(long timeSent) {        //need exception for correct time here
+        this.timeSent = timeSent;
+    }
 }

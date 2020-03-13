@@ -27,7 +27,6 @@ public class MessageActivity extends AppCompatActivity {
 
     AccessUsers users=new AccessUsers();
 
-    public Chat chat;
     String updated=null;
     User curUser=null;
     User sendingtoUser=null;
@@ -45,8 +44,6 @@ public class MessageActivity extends AppCompatActivity {
             TextView chatName = findViewById(R.id.chatname);             //chatname at the top of each chat
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
-
-            final String loggedInUser=getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null); //current user is
 
             try {
                 curUser = users.getUser(intent.getStringExtra("pageName"));
