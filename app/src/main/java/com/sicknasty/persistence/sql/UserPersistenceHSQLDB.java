@@ -266,6 +266,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
                     sender,
                     receiver
                 );
+                msg.setTimeSent(result.getLong("time_sent"));
 
                 rtnMessage.add(msg);
             }
