@@ -4,6 +4,7 @@ import com.sicknasty.application.Service;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
+import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
@@ -88,5 +89,16 @@ public class AccessUsers {
 
     public ArrayList<String> getUsersByUsername(){
         return userHandler.getAllUsers();
+    }
+
+    public ArrayList<Message> getMessages(User user1, User user2){
+
+        return userHandler.getMessages(user1, user2);
+    }
+
+    public boolean addMessage(Message message){
+
+        return userHandler.addMessage(message);
+
     }
 }

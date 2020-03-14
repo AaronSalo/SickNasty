@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ public class MessageActivity extends AppCompatActivity {
     String updated=null;
     User curUser=null;
     User sendingtoUser=null;
+    ArrayAdapter<Message> adapter;
 
 
         @Override
@@ -45,6 +47,11 @@ public class MessageActivity extends AppCompatActivity {
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
 
+            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1,users.getMessages(curUser, sendingtoUser));
+
+
+
+
             try {
                 curUser = users.getUser(intent.getStringExtra("pageName"));
             } catch (UserNotFoundException | DBUsernameNotFoundException e) {
@@ -53,22 +60,19 @@ public class MessageActivity extends AppCompatActivity {
             }
 
             final User finalCurUser = curUser;
+            sendingtoUser = curUser;
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     String messageinput = message.getText().toString();
                     if(validateMsg(messageinput)) {
-                        Intent intent=getIntent();
-
-                        sendingtoUser = curUser;
 
                         updated="accessed";
 
                         try{
                             Message message1 = new Message(messageinput,finalCurUser,sendingtoUser);
-
-
+                            users.addMessage(message1);
 
                         }catch (MessageException e){
 
@@ -77,14 +81,13 @@ public class MessageActivity extends AppCompatActivity {
                         }
 
 
-                        Intent intent1 = new Intent(MessageActivity.this, PageActivity.class);
-                        intent.putExtra("user", finalCurUser.getUsername());
-                        startActivity(intent1);
-                        finish();
                     }
 
                 }
             });
+
+            lvMessages.setAdapter(adapter);             //adapter to show messages in array list from database
+
         }
 
 
@@ -114,7 +117,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void goToHome(){
-        if(updated==null && curUser!=null){
+        if(curUser!=null){
             Intent intent=new Intent(MessageActivity.this,PageActivity.class);
             intent.putExtra("user",curUser.getUsername());
             startActivity(intent);
