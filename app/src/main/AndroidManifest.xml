@@ -16,6 +16,7 @@
         <activity android:name=".presentation.UserAccountActivity" />
         <activity android:name=".presentation.PageActivity" />
         <activity android:name=".presentation.RegistrationActivity" />
+        <activity android:name=".presentation.MessageActivity" />
         <activity android:name=".presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
