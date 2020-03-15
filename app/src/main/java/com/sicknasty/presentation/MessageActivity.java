@@ -18,10 +18,13 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Chat;
 import com.sicknasty.objects.Exceptions.MessageException;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
+import com.sicknasty.presentation.adapter.MessageAdapter;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -30,6 +33,7 @@ public class MessageActivity extends AppCompatActivity {
     User curUser=null;
     User loggedInUser = null;
     ArrayAdapter<Message> adapter;
+    MessageAdapter messageAdapter = null;
 
 
         @Override
@@ -62,14 +66,26 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
-            ListView lvMessages = findViewById(R.id.messages_view);      //lists messages
+            final ListView lvMessages = findViewById(R.id.messages_view);      //lists messages
             TextView chatName = findViewById(R.id.chatname);             //chatname at the top of each chat
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
 
-            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1, users.getMessages(loggedInUser, curUser));
 
-            lvMessages.setAdapter(adapter);             //adapter to show messages in array list from database
+
+           // adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1, users.getMessages(loggedInUser, curUser));
+
+
+            try {
+                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagereceived,users.getMessages(loggedInUser, curUser));
+
+
+            } catch (Exception e) {
+                Log.d("messageAdapter problem", message.toString());
+            }
+
+
+            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,7 +100,22 @@ public class MessageActivity extends AppCompatActivity {
                             Log.d("inside of database",(users.getMessages(loggedInUser, curUser).get(0).getMsg()));
                             Log.d("user1 Name",(loggedInUser.getName()));
                             Log.d("user2 Name",(curUser.getName()));
-                            adapter.notifyDataSetChanged();
+
+                            try {
+                                if(message1.getMessenger().getName().equals(loggedInUser.getName())){
+                                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagesent,users.getMessages(loggedInUser, curUser));
+                                }else{
+                                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagereceived,users.getMessages(curUser, loggedInUser));
+
+                                }
+
+
+                            } catch (Exception e) {
+                                Log.d("messageAdapter problem", message.toString());
+                            }
+                            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
+
+                            messageAdapter.notifyDataSetChanged();
                             message.getText().clear();
 
                         }catch (MessageException e){
@@ -98,8 +129,9 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
             });
+            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
 
-            adapter.notifyDataSetChanged();
+            messageAdapter.notifyDataSetChanged();
 
 
 
