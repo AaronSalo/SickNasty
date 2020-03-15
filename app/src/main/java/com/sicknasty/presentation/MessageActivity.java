@@ -67,7 +67,7 @@ public class MessageActivity extends AppCompatActivity {
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
 
-            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1,users.getMessages(loggedInUser, curUser));
+            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1, users.getMessages(loggedInUser, curUser));
 
             lvMessages.setAdapter(adapter);             //adapter to show messages in array list from database
             sendButton.setOnClickListener(new View.OnClickListener() {
