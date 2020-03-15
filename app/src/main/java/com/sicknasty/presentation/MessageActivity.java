@@ -27,10 +27,8 @@ public class MessageActivity extends AppCompatActivity {
 
 
     AccessUsers users=new AccessUsers();
-
-    String updated=null;
     User curUser=null;
-    User sendingtoUser=null;
+    User loggedInUser = null;
     ArrayAdapter<Message> adapter;
 
 
@@ -39,28 +37,39 @@ public class MessageActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_chat);
 
-
             Intent intent=getIntent();
+
+            Bundle extras;
+
+
+            extras = intent.getExtras();
+
+            try {
+                curUser = users.getUser(extras.getString("currentUser"));
+                Log.d("currentUser",(curUser.getName()));
+            } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                String errorMsg = e.getMessage();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            }
+
+            try {
+                loggedInUser = users.getUser(extras.getString("loggedInUser"));
+                Log.d("loggedinuser",(loggedInUser.getName()));
+            } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                String errorMsg = e.getMessage();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            }
+
+
 
             ListView lvMessages = findViewById(R.id.messages_view);      //lists messages
             TextView chatName = findViewById(R.id.chatname);             //chatname at the top of each chat
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
 
-            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1,users.getMessages(curUser, sendingtoUser));
+            adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1,users.getMessages(loggedInUser, curUser));
 
-
-
-
-            try {
-                curUser = users.getUser(intent.getStringExtra("pageName"));
-            } catch (UserNotFoundException | DBUsernameNotFoundException e) {
-                String errorMsg = e.getMessage();
-                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-            }
-
-            final User finalCurUser = curUser;
-            sendingtoUser = curUser;
+            lvMessages.setAdapter(adapter);             //adapter to show messages in array list from database
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,11 +77,15 @@ public class MessageActivity extends AppCompatActivity {
                     String messageinput = message.getText().toString();
                     if(validateMsg(messageinput)) {
 
-                        updated="accessed";
-
                         try{
-                            Message message1 = new Message(messageinput,finalCurUser,sendingtoUser);
+                            Message message1 = new Message(messageinput,loggedInUser,curUser);
                             users.addMessage(message1);
+                            Log.d("actual message",(message1.getMsg()));
+                            Log.d("inside of database",(users.getMessages(loggedInUser, curUser).get(0).getMsg()));
+                            Log.d("user1 Name",(loggedInUser.getName()));
+                            Log.d("user2 Name",(curUser.getName()));
+                            adapter.notifyDataSetChanged();
+                            message.getText().clear();
 
                         }catch (MessageException e){
 
@@ -86,7 +99,10 @@ public class MessageActivity extends AppCompatActivity {
                 }
             });
 
-            lvMessages.setAdapter(adapter);             //adapter to show messages in array list from database
+            adapter.notifyDataSetChanged();
+
+
+
 
         }
 
@@ -125,13 +141,4 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-//    public void sendMessage(View view) {                    //should create message and add it to list view. when arrow is clicked
-//        String message = editText.getText().toString();
-//        if (message.length() > 0) {
-//            editText.getText().clear();
-//        }
-//    }
 }

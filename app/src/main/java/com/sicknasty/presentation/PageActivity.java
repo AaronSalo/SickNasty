@@ -88,6 +88,8 @@ public class PageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!isLoggedUser(loggedInUser)){
                     Intent newIntent=new Intent(PageActivity.this,MessageActivity.class);
+                    newIntent.putExtra("loggedInUser", loggedInUser);
+                    newIntent.putExtra("currentUser", pageName);
                     startActivity(newIntent);
                     finish();
                 }
@@ -164,6 +166,7 @@ public class PageActivity extends AppCompatActivity {
                 curUser = users.getUser(curUserName);
             }else{
                 curUser=users.getUser(intent.getStringExtra("user"));
+                Log.e("hello000000000000000000", curUserName);
             }
             pageName = curUser.getUsername();
             ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());
@@ -209,7 +212,7 @@ public class PageActivity extends AppCompatActivity {
         }
     }
     private boolean isLoggedUser(String loggedInUser){
-        Log.d("AAAAAA",loggedInUser.equals(getIntent().getStringExtra("user"))+"");
+        //Log.d("AAAAAA",loggedInUser.equals(getIntent().getStringExtra("user"))+"");
         return loggedInUser.equals(getIntent().getStringExtra("user"));
     }
 }
