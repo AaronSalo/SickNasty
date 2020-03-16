@@ -28,12 +28,11 @@ import com.sicknasty.presentation.adapter.MessageAdapter;
 
 public class MessageActivity extends AppCompatActivity {
 
-
     AccessUsers users=new AccessUsers();
     User curUser=null;
     User loggedInUser = null;
-    ArrayAdapter<Message> adapter;
     MessageAdapter messageAdapter = null;
+    private int temp = 0;
 
 
         @Override
@@ -44,8 +43,6 @@ public class MessageActivity extends AppCompatActivity {
             Intent intent=getIntent();
 
             Bundle extras;
-
-
             extras = intent.getExtras();
 
             try {
@@ -66,7 +63,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
-            final ListView lvMessages = findViewById(R.id.messages_view);      //lists messages
+            final ListView lvMessages = (ListView) findViewById(R.id.messages_view);      //lists messages
             TextView chatName = findViewById(R.id.chatname);             //chatname at the top of each chat
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
@@ -77,7 +74,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
             try {
-                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagereceived,users.getMessages(loggedInUser, curUser));
+                    messageAdapter = new MessageAdapter(MessageActivity.this,users.getMessages(loggedInUser,curUser), loggedInUser, curUser);
 
 
             } catch (Exception e) {
@@ -101,14 +98,10 @@ public class MessageActivity extends AppCompatActivity {
                             Log.d("user1 Name",(loggedInUser.getName()));
                             Log.d("user2 Name",(curUser.getName()));
 
+                            temp++;
                             try {
-                                if(message1.getMessenger().getName().equals(loggedInUser.getName())){
-                                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagesent,users.getMessages(loggedInUser, curUser));
-                                }else{
-                                    messageAdapter = new MessageAdapter(MessageActivity.this, R.layout.messagereceived,users.getMessages(curUser, loggedInUser));
 
-                                }
-
+                                    messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
 
                             } catch (Exception e) {
                                 Log.d("messageAdapter problem", message.toString());
@@ -124,18 +117,12 @@ public class MessageActivity extends AppCompatActivity {
 
                         }
 
-
                     }
-
                 }
             });
             lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
 
             messageAdapter.notifyDataSetChanged();
-
-
-
-
         }
 
 
@@ -151,8 +138,12 @@ public class MessageActivity extends AppCompatActivity {
                 returnVal = false;
 
             }
+            if(message.length()>255){
+                returnText = "message cannot excede 256 characters";
+                returnVal = false;
+            }
 
-            if(returnText.length() > 0) {
+            if(!returnVal) {
                 Toast toast = Toast.makeText(MessageActivity.this, returnText, Toast.LENGTH_SHORT);
                 toast.show();
             }
