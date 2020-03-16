@@ -64,6 +64,8 @@ public class PageActivity extends AppCompatActivity {
         Button searchButton=findViewById(R.id.searchButton);
         ImageView settings=findViewById(R.id.settings);
 
+        Button communityList = (Button) findViewById(R.id.communityList);// create by ian
+
         final String loggedInUser=getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         curUserName=loggedInUser;
         settings.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +155,16 @@ public class PageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        communityList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("True!");
+                startActivity(new Intent(PageActivity.this, CommunityPageActivity.class));
+            }
+        });
     }
+
 
     private void getData() {
         Intent intent=getIntent();

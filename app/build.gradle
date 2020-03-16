@@ -32,4 +32,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha04'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:19.0.0'
 }
