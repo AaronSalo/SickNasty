@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -16,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sicknasty.R;
 import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.Chat;
 import com.sicknasty.objects.Exceptions.MessageException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
@@ -32,7 +29,6 @@ public class MessageActivity extends AppCompatActivity {
     User curUser=null;
     User loggedInUser = null;
     MessageAdapter messageAdapter = null;
-    private int temp = 0;
 
 
         @Override
@@ -67,19 +63,13 @@ public class MessageActivity extends AppCompatActivity {
             TextView chatName = findViewById(R.id.chatname);             //chatname at the top of each chat
             ImageButton sendButton = findViewById(R.id.sendMessage);     //button that will send the message after entered
             final EditText message = findViewById(R.id.messageEntered);        //message to be sent to the listview
-
+            chatName.setText(curUser.getName());                            //implements chatname
 
 
            // adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1, users.getMessages(loggedInUser, curUser));
 
+            messageAdapter = new MessageAdapter(MessageActivity.this,users.getMessages(loggedInUser,curUser), loggedInUser, curUser);
 
-            try {
-                    messageAdapter = new MessageAdapter(MessageActivity.this,users.getMessages(loggedInUser,curUser), loggedInUser, curUser);
-
-
-            } catch (Exception e) {
-                Log.d("messageAdapter problem", message.toString());
-            }
 
 
             lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
@@ -98,14 +88,11 @@ public class MessageActivity extends AppCompatActivity {
                             Log.d("user1 Name",(loggedInUser.getName()));
                             Log.d("user2 Name",(curUser.getName()));
 
-                            temp++;
-                            try {
 
                                     messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
 
-                            } catch (Exception e) {
                                 Log.d("messageAdapter problem", message.toString());
-                            }
+
                             lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
 
                             messageAdapter.notifyDataSetChanged();
@@ -113,7 +100,7 @@ public class MessageActivity extends AppCompatActivity {
 
                         }catch (MessageException e){
 
-                            //add exception message
+                            Toast.makeText(MessageActivity.this, "Invalid message ", Toast.LENGTH_SHORT).show();
 
                         }
 

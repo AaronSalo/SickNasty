@@ -53,7 +53,6 @@ public class PageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_page);
-
         ListView lvPost=findViewById(R.id.lvPost);         //listView of posts
         TextView followers=findViewById(R.id.followers);
         TextView following= findViewById(R.id.following);
@@ -83,13 +82,14 @@ public class PageActivity extends AppCompatActivity {
 
 
 
+
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isLoggedUser(loggedInUser)){
+                if(!isLoggedUser(loggedInUser)){        //so you can not message yourself
                     Intent newIntent=new Intent(PageActivity.this,MessageActivity.class);
-                    newIntent.putExtra("loggedInUser", loggedInUser);
-                    newIntent.putExtra("currentUser", pageName);
+                    newIntent.putExtra("loggedInUser", loggedInUser);       //sends whos logged in to message activity
+                    newIntent.putExtra("currentUser", pageName);            //sends the person being sent the message to message activity
                     startActivity(newIntent);
                     finish();
                 }

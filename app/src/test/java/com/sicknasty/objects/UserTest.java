@@ -85,4 +85,42 @@ public class UserTest {
             fail();
         }
     }
+
+    @Test
+    public void testCorrectReceiver(){
+        try{
+            User user1 = new User("bobbington", "Mr. BOB", "password");
+            User user2 = new User("bobbington", "Mr. NOTBOB", "password");
+            User user3 = new User("bobbington", "Mr. NOTNOTBOB", "password");
+
+            Message msg = new Message("hey bud, hows it goin",user1,user2);
+
+            assertEquals(msg.getReceiver(),user2);
+            assertFalse(msg.getReceiver().getName().equals(user3.getName()));
+        }catch (Exception e){
+            fail();
+        }
+    }
+
+
+
+
+    @Test
+    public void testMessageIncorrectLength(){           //testing to long message and no character message when initially making them
+        try{
+            User user1 = new User("bobbington", "Mr. BOB", "password");
+            User user2 = new User("bobbington", "Mr. NOTBOB", "password");
+            Message msg = new Message("",user1,user2);
+            Message msg1 = new Message("1234567890123456789212345678931234567890423598345982357" +
+                    "982395823985982379823938923873498237438934289982398472398749827947923798472897498" +
+                    "793749329439832977429739793243095809348509834095098080328098dsjhkjdbbkjsdbdkjdskjdnn" +
+                    "jksdnfnsd,fn,dsnfnksdknskdnfkjnsd3fkjsd3fjkjdsfkjhsdkdhfkjdshkfhsk3dhfkjhs3jfdhkjsdh432",user1,user2);
+
+        }catch (Exception e){           //should be catching message exception
+            fail();
+        }
+
+    }
+
+
 }
