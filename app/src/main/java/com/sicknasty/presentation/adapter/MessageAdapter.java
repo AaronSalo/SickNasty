@@ -3,6 +3,7 @@ package com.sicknasty.presentation.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class MessageAdapter extends BaseAdapter {
         messages1 = messages;
         user = curUser;
         loggedin = loggedInUser;
+        Log.d("message num: ", Integer.toString(messages.size()));
 
     }
     @Override
@@ -52,12 +54,14 @@ public class MessageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Message messageHold = messages1.get(position);
-        if(convertView==null){
 
             LayoutInflater mInflater = (LayoutInflater) context1
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-            if(messages1.get(position).getMessenger().getName().equals(loggedin.getName())){
+
+
+
+            if(messageHold.getMessenger().getName().equals(loggedin.getName())){
                 convertView = mInflater.inflate(R.layout.messagereceived,
                         null);
 
@@ -69,11 +73,11 @@ public class MessageAdapter extends BaseAdapter {
 //                ImageView profile = convertView.findViewById(R.id.profilePic);        //for profile pic if added
 //                profile.setImageURI(urii);
 
-            }else if(messages1.get(position).getMessenger().getName().equals(user.getName())){
+            }else if(messageHold.getMessenger().getName().equals(user.getName())){
                 convertView = mInflater.inflate(R.layout.messagesent,
                         null);
             }
-        }
+
         TextView msg = (TextView) convertView.findViewById(R.id.message_body);         //adds whatever is in edittext to the text view of the message layout
         msg.setText(messageHold.getMsg());
 

@@ -38,10 +38,10 @@ public class MessageActivity extends AppCompatActivity {
 
             Intent intent=getIntent();
 
-            Bundle extras;
+            Bundle extras;                  //useds to get current user and logged in user from previous activity
             extras = intent.getExtras();
 
-            try {
+            try {                              //gets current user (person being messaged) and puts it into curUser var
                 curUser = users.getUser(extras.getString("currentUser"));
                 Log.d("currentUser",(curUser.getName()));
             } catch (UserNotFoundException | DBUsernameNotFoundException e) {
@@ -49,9 +49,9 @@ public class MessageActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
 
-            try {
+            try {                               //gets Logged in user and puts it into curUser var
                 loggedInUser = users.getUser(extras.getString("loggedInUser"));
-                Log.d("loggedinuser",(loggedInUser.getName()));
+                Log.d("loggedInUser",(loggedInUser.getName()));
             } catch (UserNotFoundException | DBUsernameNotFoundException e) {
                 String errorMsg = e.getMessage();
                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
@@ -66,12 +66,8 @@ public class MessageActivity extends AppCompatActivity {
             chatName.setText(curUser.getName());                            //implements chatname
 
 
-           // adapter = new ArrayAdapter<>(MessageActivity.this,android.R.layout.simple_list_item_1, users.getMessages(loggedInUser, curUser));
-
+            //creates custom adapter so message text displays speacial way
             messageAdapter = new MessageAdapter(MessageActivity.this,users.getMessages(loggedInUser,curUser), loggedInUser, curUser);
-
-
-
             lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,20 +79,18 @@ public class MessageActivity extends AppCompatActivity {
                         try{
                             Message message1 = new Message(messageinput,loggedInUser,curUser);
                             users.addMessage(message1);
-                            Log.d("actual message",(message1.getMsg()));
-                            Log.d("inside of database",(users.getMessages(loggedInUser, curUser).get(0).getMsg()));
-                            Log.d("user1 Name",(loggedInUser.getName()));
-                            Log.d("user2 Name",(curUser.getName()));
 
+                            messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
 
-                                    messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
+                            Log.d("messageAdapter problem", message.toString());
 
-                                Log.d("messageAdapter problem", message.toString());
-
-                            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
+                            lvMessages.setAdapter(messageAdapter);             //adapter set here so list view updates right after a message is sent
 
                             messageAdapter.notifyDataSetChanged();
-                            message.getText().clear();
+                            lvMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);       //used to make the added message at the bottom of the list
+                                                                                                        // view and scrolls up when a new item is added
+                            lvMessages.setStackFromBottom(true);
+                            message.getText().clear();                      //clears message edittext when message is entered
 
                         }catch (MessageException e){
 
@@ -107,9 +101,17 @@ public class MessageActivity extends AppCompatActivity {
                     }
                 }
             });
-            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database
-
+            lvMessages.setAdapter(messageAdapter);             //adapter to show messages in array list from database,
+                                                                // here so if message isnt added. messages still show up
             messageAdapter.notifyDataSetChanged();
+
+            lvMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);       //used to make the added message at the bottom of the list
+                                                                                        // view and scrolls up when a new item is added
+            lvMessages.setStackFromBottom(true);
+
+
+
+
         }
 
 
@@ -138,7 +140,7 @@ public class MessageActivity extends AppCompatActivity {
         }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {           //used to go back to previous activity when back button is pressed
         goToHome();
     }
 
@@ -150,5 +152,8 @@ public class MessageActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+
 
 }

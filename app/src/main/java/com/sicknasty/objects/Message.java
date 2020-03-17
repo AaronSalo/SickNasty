@@ -20,14 +20,10 @@ public class Message {
     private ArrayList<User> group;  //if its a group, group messsage sent to
 
 
-    private final int MAX_LENGTH = 255;
-    private final int MIN_LENGTH = 1;
+    private final int MAX_LENGTH = 255;     //max size of message
+    private final int MIN_LENGTH = 1;       //min size of message allowed
 
-
-    /*
-        for private messages constructor, gets current time, message from user, and the users involved
-     */
-    public Message(String msg, User messenger, User receiver) throws MessageException {     //need to add exception for max and min length here
+    public Message(String msg, User messenger, User receiver) throws MessageException {     //makes a new messages for a private chat
 
 
         if(msg.length() <= MAX_LENGTH){
@@ -47,7 +43,7 @@ public class Message {
     /*
 
      */
-    public Message(String msg, User messenger, ArrayList<User> group) throws MessageException{     //need to add exception for max and min length here
+    public Message(String msg, User messenger, ArrayList<User> group) throws MessageException{  //creates a new message for a group
 
         if(msg.length() <= MAX_LENGTH){
             if(msg.length() >= MIN_LENGTH){
