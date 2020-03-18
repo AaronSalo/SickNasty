@@ -40,9 +40,9 @@ public class Message {
         }
     }
 
-    /*
 
-     */
+
+
     public Message(String msg, User messenger, ArrayList<User> group) throws MessageException{  //creates a new message for a group
 
         if(msg.length() <= MAX_LENGTH){
@@ -59,6 +59,8 @@ public class Message {
         }
 
     }
+
+
 
     public void viewed(){               //to be implemented. if we want to show if the person receiving the message has seen message sent
 

@@ -22,10 +22,12 @@ import java.util.List;
 
 public class MessageAdapter extends BaseAdapter {
 
+
     private Context context1;               //used to connect layouts
     private List<Message>  messages1;       //array of messages
     private User user;                      //user being sent messages
     private User loggedin;                  //user sending messages
+
 
     public MessageAdapter(@NonNull Context context, List<Message> messages, User curUser, User loggedInUser) {
         context1 = context;
@@ -35,6 +37,7 @@ public class MessageAdapter extends BaseAdapter {
         Log.d("message num: ", Integer.toString(messages.size()));
 
     }
+
     @Override
     public int getCount() {                     //needed to extend base adapter
         return messages1.size();
@@ -50,14 +53,13 @@ public class MessageAdapter extends BaseAdapter {
         return position;
     }
 
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         Message messageHold = messages1.get(position);
-
-            LayoutInflater mInflater = (LayoutInflater) context1
-                    .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
+            LayoutInflater mInflater = (LayoutInflater) context1.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
 
 
@@ -78,8 +80,12 @@ public class MessageAdapter extends BaseAdapter {
                         null);
             }
 
+
+
         TextView msg = (TextView) convertView.findViewById(R.id.message_body);         //adds whatever is in edittext to the text view of the message layout
         msg.setText(messageHold.getMsg());
+
+
 
         return convertView;
     }
