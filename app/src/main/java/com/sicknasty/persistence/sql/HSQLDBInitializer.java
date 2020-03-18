@@ -6,9 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-// no, I did not forget to include a keyword as a part of the class signature
-// blame Java for being stupid
-// - Lucas
 class HSQLDBInitializer {
     static void setupTables(Connection db) throws SQLException {
         Log.d("INNER SQL", "Setting up tables");
@@ -98,7 +95,9 @@ class HSQLDBInitializer {
                 "commenter VARCHAR(32) NOT NULL," +
                 "p_id VARCHAR(32) NOT NULL," +
                 "contents VARCHAR(1024) NOT NULL" +
-                "time_sent BIGINT NOT NULL," +
+                "time_created BIGINT NOT NULL," +
+                "likes INTEGER NOT NULL," +
+                "dislikes INTEGER NOT NULL," +
                 "FOREIGN KEY(commenter) REFERENCES Users(username)" +
                     "ON DELETE CASCADE " +
                     "ON UPDATE CASCADE," +
