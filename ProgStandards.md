@@ -6,7 +6,7 @@ This document outlines basic programming standards for this project.
 
 1. _Anything_ gets done.... **PUSH IT**
     - If we finish anything, no matter how small. Just push it and merge with dev
-    - 
+     
 2. Use Variables
     - For long get calls, operations from other functions, or anything really... even if it seems obvious
     _create a variable_... its a simple thing but can make your code much _much_ more readable. (Especially if we
@@ -14,7 +14,7 @@ This document outlines basic programming standards for this project.
 
 3. UI message displaying (or other message displaying?)
     - Only have _ONE_ display call. Set a string called 'message' or something and pass it to the display function.
-    - 
+     
 4. **NO** huge blocks of code.
     - Space things out... we have room.
     - As a general rule, break blocks of code up into steps. For example;<br>
