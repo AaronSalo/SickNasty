@@ -18,6 +18,8 @@ import com.sicknasty.R;
 import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MessageAdapter extends BaseAdapter {
@@ -81,9 +83,24 @@ public class MessageAdapter extends BaseAdapter {
             }
 
 
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        Date resultdate = new Date(messageHold.getTimeSent());
+
+
+
+
+
+
+        //Log.d("Message: ",messageHold.getMsg());
+       // Log.d("|Time sent message\n\n",sdf.format(resultdate));
+
 
         TextView msg = (TextView) convertView.findViewById(R.id.message_body);         //adds whatever is in edittext to the text view of the message layout
         msg.setText(messageHold.getMsg());
+
+
+        TextView time = (TextView) convertView.findViewById(R.id.timeStamp);
+        time.setText(resultdate.toString());
 
 
 

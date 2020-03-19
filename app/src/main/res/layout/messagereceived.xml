@@ -38,4 +38,15 @@
         android:textSize="18dp"
         android:text="roses are red, violets are blue, this is a message, i cant rhyme :)."
         />
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_body"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="2dp"
+        android:text="TextView"
+        android:textColor="@android:color/darker_gray" />
 </RelativeLayout>
