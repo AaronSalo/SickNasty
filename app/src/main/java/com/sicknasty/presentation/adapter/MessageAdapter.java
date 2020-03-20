@@ -88,9 +88,6 @@ public class MessageAdapter extends BaseAdapter {
 
 
 
-
-
-
         //Log.d("Message: ",messageHold.getMsg());
        // Log.d("|Time sent message\n\n",sdf.format(resultdate));
 

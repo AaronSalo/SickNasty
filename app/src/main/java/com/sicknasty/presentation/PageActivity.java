@@ -59,6 +59,7 @@ public class PageActivity extends AppCompatActivity {
         TextView numberOfPosts= findViewById(R.id.posts);
         Button postButton=findViewById(R.id.postButton);
         Button messageButton = findViewById(R.id.messageButton);
+        Button homeButton = findViewById(R.id.home);
 
         Button searchButton=findViewById(R.id.searchButton);
         ImageView settings=findViewById(R.id.settings);
@@ -80,6 +81,31 @@ public class PageActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(!isLoggedUser(loggedInUser)) {
+
+                    try {
+                        Intent startIntent=new Intent(PageActivity.this, PageActivity.class);
+                        startIntent.putExtra("user", loggedInUser);
+                        startActivity(startIntent);
+                        finish();
+
+                    } catch (Exception e) {
+                        //do something here
+                    }
+
+                }else{
+                    Toast.makeText(PageActivity.this,"You are already Home", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
 
 
 
