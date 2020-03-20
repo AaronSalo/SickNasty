@@ -3,9 +3,12 @@ package com.sicknasty.objects;
 
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 
+import java.util.ArrayList;
+
 public class Post {
 
     private String text;
+    private ArrayList<Comment> comments;
     private User userId;                        //user id kept so we know which who owns this post
                                                 //can discuss redundantcy later during refactoring, useful when posting to communities//so we can trace back to the users personal page.
 
@@ -76,6 +79,12 @@ public class Post {
 
     public void setPostID(int id) {
         this.postID = id;
+    }
+
+    public ArrayList<Comment> getComments() { return comments; }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
 }

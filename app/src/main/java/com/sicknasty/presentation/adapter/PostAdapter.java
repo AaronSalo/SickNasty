@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
@@ -22,8 +23,9 @@ import android.widget.VideoView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class PostAdapter extends ArrayAdapter<Post> {
+public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
+    private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
 
     public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
         super(context,resource,posts);
@@ -43,6 +45,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
+            viewHolder.commentView = view.findViewById(R.id.commentView);
 
             view.setTag(viewHolder);
         }else{
@@ -62,6 +65,26 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage.setImageURI(postUri);             //this is working
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
+
+            ArrayList<Comment> comments = post.getComments();
+
+            if(!comments.isEmpty()) { //if we have comments on the post
+
+                String commentText = "";
+                //insert the text from all the comments into a string
+                for(int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
+                    String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
+                    String commentContent = comments.get(i).getContent(); //get the comment itself
+                    commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
+                }
+
+                if(comments.size() > MAX_COMMENTS_PER_POST)
+                    commentText += "See all " + comments.size() + " comments..."; //show the user there are more comments we arent showing
+                    //TODO add link to Comment activity, where we show all the comments
+
+                //set the commentViews text
+                viewHolder.commentView.setText(commentText); //set the text in the xml
+            }
         }
 
         return view;
@@ -71,5 +94,6 @@ class ViewHolder{
     ImageView ivImage;
     TextView textView;
     TextView userName;
+    TextView commentView;
 }
 

@@ -66,7 +66,7 @@ public class CaptionActivity extends AppCompatActivity {
                     updated="something";
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
-                        posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
+                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
                     } catch (DBPostIDExistsException e) {
                         // if this gets tripped, you have done something wrong
                         // -Lucas
