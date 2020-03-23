@@ -37,6 +37,8 @@ public class OtherUserPageActivity extends AppCompatActivity {
         Button followButton = findViewById(R.id.followButton);
         Button messageButton = findViewById(R.id.messageButton);
         ListView listView = findViewById(R.id.lvOtherPost);
+        Button homeButton = findViewById(R.id.home);
+
 
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
@@ -67,6 +69,26 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    try {
+                        Intent startIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
+                        startIntent.putExtra("user", loggedInUser);
+                        startActivity(startIntent);
+                        finish();
+
+                    } catch (Exception e) {
+                        //do something here
+                    }
+            }
+        });
+
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override

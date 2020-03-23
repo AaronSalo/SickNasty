@@ -27,12 +27,21 @@ public class SearchActivity extends AppCompatActivity {
         listOfSearches = findViewById(R.id.search_user);
 
         adapter = new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
+        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
+
         listOfSearches.setAdapter(adapter);
         listOfSearches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //proceed according to the current item selected(redirect to pageActivity)
-                Intent newIntent = new Intent(SearchActivity.this, LoggedUserPageActivity.class);
+                Intent newIntent;
+                if(listOfSearches.getItemAtPosition(position).toString().equals(loggedInUser)){
+                     newIntent = new Intent(SearchActivity.this, LoggedUserPageActivity.class);
+
+                }else{
+                     newIntent = new Intent(SearchActivity.this, OtherUserPageActivity.class);
+
+                }
                 newIntent.putExtra("user",listOfSearches.getItemAtPosition(position).toString());
                 startActivity(newIntent);
             }
