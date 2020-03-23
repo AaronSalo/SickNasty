@@ -118,10 +118,6 @@ public class MessageActivity extends AppCompatActivity {
             lvMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);       //used to make the added message at the bottom of the list
             lvMessages.setStackFromBottom(true);                                        // view and scrolls up when a new item is added
 
-
-
-
-
         }
 
 
