@@ -59,22 +59,22 @@ public class UserAccountActivity extends AppCompatActivity {
                 String newUsername = password.getText().toString();
                 String message="An unexpected error has occurred";
                 try {
-                            User user = users.getUser(oldUsername);     //find user with oldUsername
-                            String updatedUsername = oldUsername;       //if it gets updates
-                            if(!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
-                                users.updateUsername(user, newUsername);    //if yes,try to update it
+                    User user = users.getUser(oldUsername);     //find user with oldUsername
+                    String updatedUsername = oldUsername;       //if it gets updates
+                    if(!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
+                        users.updateUsername(user, newUsername);    //if yes,try to update it
 
-                                //update shared preferences data
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.remove("username");
-                                editor.putString("username", newUsername);
-                                editor.apply();
-                                updatedUsername = newUsername;          //update it with new username
-                            }
-                            users.updateUserPassword(updatedUsername,newPass);      //try to update password
-                            message="Username and Password updated successfully";
+                        //update shared preferences data
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove("username");
+                        editor.putString("username", newUsername);
+                        editor.apply();
+                        updatedUsername = newUsername;          //update it with new username
+                    }
+                    users.updateUserPassword(updatedUsername,newPass);      //try to update password
+                    message="Username and Password updated successfully";
                 } catch (Exception e) {
-                            message = e.getMessage();
+                    message = e.getMessage();
                 } finally {
                     Toast.makeText(UserAccountActivity.this, message, Toast.LENGTH_SHORT).show();
                 }

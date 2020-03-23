@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         Button searchButton = findViewById(R.id.searchButton);
         ImageView settings = findViewById(R.id.settings);
 
+
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         curUserName = loggedInUser;
 
@@ -69,7 +71,6 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 }
             }
         });
-
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +130,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 curUser = users.getUser(curUserName);
             }else{
                 curUser=users.getUser(intent.getStringExtra("user"));
+                Log.e("hello000000000000000000", curUserName);
             }
             pageName = curUser.getUsername();
             ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());

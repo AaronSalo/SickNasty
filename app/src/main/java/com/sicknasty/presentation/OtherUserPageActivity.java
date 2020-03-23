@@ -39,8 +39,9 @@ public class OtherUserPageActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.lvOtherPost);
 
         Intent intent = getIntent();
-        String userName = intent.getStringExtra("user");
+        final String userName = intent.getStringExtra("user");
         String message = "Unknown error happened!";
+        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
 
         PostAdapter postAdapter = null;
         try {
@@ -70,7 +71,11 @@ public class OtherUserPageActivity extends AppCompatActivity {
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent newIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
+                newIntent.putExtra("loggedInUser", loggedInUser);       //sends whos logged in to message activity
+                newIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
+                startActivity(newIntent);
+                finish();
             }
         });
     }
