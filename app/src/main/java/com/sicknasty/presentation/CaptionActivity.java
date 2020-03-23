@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,25 +12,22 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
-import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
-import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class CaptionActivity extends AppCompatActivity {
 
-    AccessPosts posts=new AccessPosts();
-    AccessUsers users=new AccessUsers();
+    AccessPosts posts = new AccessPosts();
+    AccessUsers users = new AccessUsers();
 
-    String updated=null;
-    User curUser=null;
+    String updated = null;
+    User curUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +67,7 @@ public class CaptionActivity extends AppCompatActivity {
                         // -Lucas
                         Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
+                    Intent intent=new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
                     intent.putExtra("user",finalCurUser.getUsername());
                     startActivity(intent);
                     finish();
@@ -105,7 +101,7 @@ public class CaptionActivity extends AppCompatActivity {
 
     private void goToHome(){
         if(updated==null && curUser!=null){
-            Intent intent=new Intent(CaptionActivity.this,PageActivity.class);
+            Intent intent=new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
             intent.putExtra("user",curUser.getUsername());
             startActivity(intent);
             finish();

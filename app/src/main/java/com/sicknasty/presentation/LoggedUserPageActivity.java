@@ -30,54 +30,50 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PageActivity extends AppCompatActivity {
+public class LoggedUserPageActivity extends AppCompatActivity {
+
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
     AccessUsers users = new AccessUsers();
-    AccessPages pages=new AccessPages();
+    AccessPages pages = new AccessPages();
     AccessPosts posts = new AccessPosts();
-    String curUserName=null;
+
+    String curUserName = null;
     public User curUser;
-    public String pageName="";
+    public String pageName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_user_page);
 
-        ListView lvPost=findViewById(R.id.lvPost);         //listView of posts
-        TextView followers=findViewById(R.id.followers);
-        TextView following= findViewById(R.id.following);
-        TextView numberOfPosts= findViewById(R.id.posts);
-        Button postButton=findViewById(R.id.postButton);
+        ListView lvPost = findViewById(R.id.lvPost);         //listView of posts
+        TextView followers = findViewById(R.id.followers);
+        TextView following = findViewById(R.id.following);
+        TextView numberOfPosts = findViewById(R.id.posts);
+        Button postButton = findViewById(R.id.postButton);
 
-        Button searchButton=findViewById(R.id.searchButton);
-        ImageView settings=findViewById(R.id.settings);
+        Button searchButton = findViewById(R.id.searchButton);
+        ImageView settings = findViewById(R.id.settings);
 
-        final String loggedInUser=getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
-        curUserName=loggedInUser;
+        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
+        curUserName = loggedInUser;
 
-        //i(Jay) have to change this
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLoggedUser(loggedInUser)){
-                    Intent newIntent=new Intent(PageActivity.this,UserAccountActivity.class);
+                if(isLoggedUser(loggedInUser)) {
+                    Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
                     startActivity(newIntent);
-                    finish();
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "You don't have permission for that", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent=new Intent(PageActivity.this,SearchActivity.class);
+                Intent newIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
                 startActivity(newIntent);
             }
         });
@@ -87,9 +83,9 @@ public class PageActivity extends AppCompatActivity {
 
 
         //update this
-        followers.setText(""+(int)(100*Math.random()));
-        numberOfPosts.setText(""+(int)(100*Math.random()));
-        following.setText(""+(int)(100*Math.random()));
+//        followers.setText(""+(int)(100*Math.random()));
+//        numberOfPosts.setText(""+(int)(100*Math.random()));
+//        following.setText(""+(int)(100*Math.random()));
         PostAdapter postAdapter = null;
         try {
             Page page = pages.getPage(pageName);
@@ -100,7 +96,8 @@ public class PageActivity extends AppCompatActivity {
 
         lvPost.setAdapter(postAdapter);
 
-        //remember to use separators(horizontal line) ---- reminder for JAY
+
+        //also filter by post!! UI
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +116,6 @@ public class PageActivity extends AppCompatActivity {
                         //ose is less than marshmallow
                         chooseImage();
                     }
-                }       //also update this following post condition
-                else{
-                    Toast.makeText(PageActivity.this,"You cannot post to other account", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -144,7 +138,8 @@ public class PageActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }
     }
-    public void chooseImage() {
+
+    private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
@@ -167,16 +162,18 @@ public class PageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
-            //we will save the uri.getPath to the db
-            //create a picture post and insert it to database
+        if (requestCode == IMAGE_PICK_CODE) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
+                //we will save the uri.getPath to the db
+                //create a picture post and insert it to database
 
-            Uri uri=data.getData();
+                Uri uri = data.getData();
 
-            Intent newIntent=new Intent(PageActivity.this,CaptionActivity.class);
-            newIntent.putExtra("pageName",pageName);            //put Uri
-            newIntent.putExtra("URI",uri.toString());
-            startActivity(newIntent);
+                Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                newIntent.putExtra("pageName", pageName);            //put Uri
+                newIntent.putExtra("URI", uri.toString());
+                startActivity(newIntent);
+            }
         }
     }
     private boolean isLoggedUser(String loggedInUser){

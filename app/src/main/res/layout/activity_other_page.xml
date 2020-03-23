@@ -5,68 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_light"
-    tools:context=".presentation.PageActivity">
+    tools:context=".presentation.LoggedUserPageActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="300dp"
+        android:id="@+id/linearLayout3"
+        android:layout_width="399dp"
         android:layout_height="50dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/otherImageView"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/Followers"
-            android:layout_width="wrap_content"
+            android:id="@+id/OtherFollowers"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Followers" />
+            android:text="Followers"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/Following"
-            android:layout_width="wrap_content"
+            android:id="@+id/OtherFollowing"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Following" />
+            android:text="Following"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/Posts"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:text="Posts" />
+            android:text="Posts"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="300dp"
+        android:id="@+id/linearLayout4"
+        android:layout_width="399dp"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <TextView
-            android:id="@+id/followers"
-            android:layout_width="wrap_content"
+            android:id="@+id/Otherfollowers"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/following"
-            android:layout_width="wrap_content"
+            android:id="@+id/Otherfollowing"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/Otherposts"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/otherProfileName"
+        android:layout_width="159dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/otherImageView"
+        app:layout_constraintTop_toBottomOf="@+id/otherImageView" />
+
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/otherImageView"
         android:layout_width="131dp"
         android:layout_height="129dp"
         android:layout_marginStart="36dp"
@@ -76,52 +93,42 @@
         app:srcCompat="@drawable/ic_action_profile" />
 
     <ListView
-        android:id="@+id/lvPost"
-        android:layout_width="602dp"
-        android:layout_height="534dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
-
-    <ImageView
-        android:id="@+id/settings"
-        android:layout_width="87dp"
-        android:layout_height="113dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_action_settings" />
-
-    <TextView
-        android:id="@+id/profileName"
-        android:layout_width="159dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/postButton"
-        android:layout_width="181dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:background="@android:color/black"
-        android:text="Post!!"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/profileName" />
-
-    <Button
-        android:id="@+id/searchButton"
+        android:id="@+id/lvOtherPost"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="128dp"
-        android:text="Search"
+        android:layout_height="500dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/followButton"
+        app:layout_constraintVertical_bias="0.187" />
+
+    <Button
+        android:id="@+id/followButton"
+        android:layout_width="175dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="228dp"
+        android:background="@drawable/button_border"
+        android:text="Follow"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/otherProfileName"
+        app:layout_constraintTop_toTopOf="@+id/otherProfileName" />
+
+    <Button
+        android:id="@+id/messageButton"
+        android:layout_width="175dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@android:color/darker_gray"
+        android:text="Message"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/followButton"
+        app:layout_constraintTop_toTopOf="@+id/followButton" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,7 +74,7 @@ public class UserAccountActivity extends AppCompatActivity {
                             users.updateUserPassword(updatedUsername,newPass);      //try to update password
                             message="Username and Password updated successfully";
                 } catch (Exception e) {
-                            message=e.getMessage();
+                            message = e.getMessage();
                 } finally {
                     Toast.makeText(UserAccountActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
@@ -102,7 +102,7 @@ public class UserAccountActivity extends AppCompatActivity {
     }
 
     private void goToHome(){
-        Intent intent = new Intent(UserAccountActivity.this,PageActivity.class);
+        Intent intent = new Intent(UserAccountActivity.this, LoggedUserPageActivity.class);
         preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);
         intent.putExtra("user",preferences.getString("username",null));     //put username to switch between activities
         startActivity(intent);
