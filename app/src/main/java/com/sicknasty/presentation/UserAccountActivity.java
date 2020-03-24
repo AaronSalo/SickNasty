@@ -103,8 +103,6 @@ public class UserAccountActivity extends AppCompatActivity {
 
     private void goToHome(){
         Intent intent = new Intent(UserAccountActivity.this, LoggedUserPageActivity.class);
-        preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-        intent.putExtra("user",preferences.getString("username",null));     //put username to switch between activities
         startActivity(intent);
         finish();
     }

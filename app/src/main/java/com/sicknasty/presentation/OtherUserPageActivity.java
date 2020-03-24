@@ -42,16 +42,18 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
-        String message = "Unknown error happened!";
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
+        String message;
+        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);       //this is necessary for message
 
         PostAdapter postAdapter = null;
         try {
-            Page page = pages.getPage(userName);
+            Page page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
         } catch (DBPageNameNotFoundException | NoValidPageException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            message = e.getMessage();
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
+
 
         listView.setAdapter(postAdapter);
 
@@ -61,6 +63,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
             User this_user = users.getUser(userName);
         } catch (UserNotFoundException | DBUsernameNotFoundException e) {
             message =  e.getMessage();
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
 
         followButton.setOnClickListener(new View.OnClickListener() {

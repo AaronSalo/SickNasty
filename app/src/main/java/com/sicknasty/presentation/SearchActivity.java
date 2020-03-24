@@ -34,13 +34,13 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //proceed according to the current item selected(redirect to pageActivity)
+                String user = listOfSearches.getItemAtPosition(position).toString();
                 Intent newIntent;
-                if(listOfSearches.getItemAtPosition(position).toString().equals(loggedInUser)){
+                if(user.equals(loggedInUser)){
                      newIntent = new Intent(SearchActivity.this, LoggedUserPageActivity.class);
-
                 }else{
                      newIntent = new Intent(SearchActivity.this, OtherUserPageActivity.class);
-
+                     //let's keep this if statement for now -Jay
                 }
                 newIntent.putExtra("user",listOfSearches.getItemAtPosition(position).toString());
                 startActivity(newIntent);

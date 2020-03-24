@@ -40,8 +40,8 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     AccessPages pages = new AccessPages();
     AccessPosts posts = new AccessPosts();
 
-    String curUserName = null;
     public User curUser;
+    Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
     public String pageName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +54,37 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         TextView following = findViewById(R.id.following);
         TextView numberOfPosts = findViewById(R.id.posts);
         Button postButton = findViewById(R.id.postButton);
-
+        TextView name = findViewById(R.id.profileName);
         Button searchButton = findViewById(R.id.searchButton);
+        ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
         ImageView settings = findViewById(R.id.settings);
 
 
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
-        curUserName = loggedInUser;
+        pageName = loggedInUser;
+        PostAdapter postAdapter = null;
+        try {
+            curUser = users.getUser(loggedInUser);
+            Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
+            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
+        } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        //name.setText(curUser.getName());
+        //update this
+//        followers.setText(""+(int)(100*Math.random()));
+//        numberOfPosts.setText(""+(int)(100*Math.random()));
+//        following.setText(""+(int)(100*Math.random()));
+        lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLoggedUser(loggedInUser)) {
-                    Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
-                    startActivity(newIntent);
-                }
+                Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
+                startActivity(newIntent);
             }
         });
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,69 +92,41 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
-        //update Profile Photo or not!!! store a variable
-        //fetch followers,following... and display on the page
-        getData();              //fetch the user data and display page accordingly
-
-
-        //update this
-//        followers.setText(""+(int)(100*Math.random()));
-//        numberOfPosts.setText(""+(int)(100*Math.random()));
-//        following.setText(""+(int)(100*Math.random()));
-        PostAdapter postAdapter = null;
-        try {
-            Page page = pages.getPage(pageName);
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-        } catch (DBPageNameNotFoundException | NoValidPageException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        lvPost.setAdapter(postAdapter);
-
-
         //also filter by post!! UI
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLoggedUser(loggedInUser)){
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                            String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                            requestPermissions(permissions,PERMISSION_CODE);
-                        }
-                        else{
-                            //access granted
-                            chooseImage();
-                        }
-                    }
-                    else{
-                        //ose is less than marshmallow
-                        chooseImage();
-                    }
-                }
+                chooseImageHelper();
             }
         });
+
+        profilePicEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editProfilePic = true;
+                chooseImageHelper();
+            }
+        });
+
     }
 
-    private void getData() {
-        Intent intent=getIntent();
-        try {
-
-            if(isLoggedUser(curUserName)) {
-                curUser = users.getUser(curUserName);
-            }else{
-                curUser=users.getUser(intent.getStringExtra("user"));
-                Log.e("hello000000000000000000", curUserName);
+    private void chooseImageHelper()
+    {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions,PERMISSION_CODE);
             }
-            pageName = curUser.getUsername();
-            ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());
-
-        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
-            String errorMsg = e.getMessage();
-            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            else{
+                //access granted
+                chooseImage();
+            }
+        }
+        else {
+            //ose is less than marshmallow
+            chooseImage();
         }
     }
-
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -171,14 +157,18 @@ public class LoggedUserPageActivity extends AppCompatActivity {
 
                 Uri uri = data.getData();
 
-                Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
-                newIntent.putExtra("pageName", pageName);            //put Uri
-                newIntent.putExtra("URI", uri.toString());
-                startActivity(newIntent);
+                if(editProfilePic){
+                    //we know we have to update profile pic and not upload a post
+                    //save the uri      -Reminder for lucas to add a uri field in page table
+
+                }
+                else {
+                    Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                    newIntent.putExtra("pageName", pageName);
+                    newIntent.putExtra("URI", uri.toString());
+                    startActivity(newIntent);
+                }
             }
         }
-    }
-    private boolean isLoggedUser(String loggedInUser){
-        return loggedInUser.equals(getIntent().getStringExtra("user"));
     }
 }

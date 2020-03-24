@@ -38,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         //page already exists (toast from where????)
         if(saveLoginDetails.getBoolean("isLogin",false)){
             Intent startIntent=new Intent(LoginActivity.this, LoggedUserPageActivity.class);
-            startIntent.putExtra("user", saveLoginDetails.getString("username",null));
+            String loggedInUser = saveLoginDetails.getString("username",null);
+            startIntent.putExtra("user", loggedInUser);
             startActivity(startIntent);
             finish();
         }
