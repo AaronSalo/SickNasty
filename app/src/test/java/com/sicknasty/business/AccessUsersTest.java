@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 public class AccessUsersTest {
 
-    private UserPersistence userPersistence=new UserPersistenceStub();
+    private UserPersistence userPersistence = new UserPersistenceStub();
     private AccessUsers users = new AccessUsers(userPersistence);
     @Test
     public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
