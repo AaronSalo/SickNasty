@@ -3,6 +3,7 @@ package com.sicknasty.presentation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ public class SearchActivity extends AppCompatActivity {
     AccessUsers users=new AccessUsers();            //for fetching all users
     ListView listOfSearches;
     ArrayAdapter<String> adapter;
+    SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +28,8 @@ public class SearchActivity extends AppCompatActivity {
         mySearchView = findViewById(R.id.search_view);
         listOfSearches = findViewById(R.id.search_user);
 
-        adapter = new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
+        adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, users.getUsersByUsername());
+        final String loggedInUser = sharedPreferences.getString("username",null);
 
         listOfSearches.setAdapter(adapter);
         listOfSearches.setOnItemClickListener(new AdapterView.OnItemClickListener() {

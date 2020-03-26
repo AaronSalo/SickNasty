@@ -24,9 +24,9 @@ public class UserAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_account);
 
-        preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);
+        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
 
-        final EditText username=findViewById(R.id.updateUsername);
+        final EditText username = findViewById(R.id.updateUsername);
         final EditText password=findViewById(R.id.updatePassword);
         Button update = findViewById(R.id.updateInfo);
         CheckBox showPass = findViewById(R.id.passwordShow);
@@ -37,7 +37,7 @@ public class UserAccountActivity extends AppCompatActivity {
         username.setText(oldUsername);      //this allows user to see their oldUsername
         password.setText(oldPassword);      //and oldPassword
 
-        Button logout=findViewById(R.id.logout);
+        Button logout = findViewById(R.id.logout);
 
         //this is used to show user their password
         showPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

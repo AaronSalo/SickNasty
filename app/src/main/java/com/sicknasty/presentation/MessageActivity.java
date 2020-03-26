@@ -161,7 +161,7 @@ public class MessageActivity extends AppCompatActivity {
     
     private void goToHome(){
         if(curUser!=null){
-            Intent intent=new Intent(MessageActivity.this,OtherUserPageActivity.class);
+            Intent intent = new Intent(MessageActivity.this, OtherUserPageActivity.class);
             intent.putExtra("user",curUser.getUsername());
             startActivity(intent);
             finish();

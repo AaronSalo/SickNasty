@@ -30,14 +30,14 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences saveLoginDetails=getSharedPreferences("MY_PREFS",MODE_PRIVATE);           //saving user details so that
         final SharedPreferences.Editor prefEditor=saveLoginDetails.edit();                                //they don't have to login everytime they open app
 
-        final EditText userName=findViewById(R.id.userName);
-        final EditText password=findViewById(R.id.password);
-        Button login =findViewById(R.id.Login);
+        final EditText userName = findViewById(R.id.userName);
+        final EditText password = findViewById(R.id.password);
+        Button login = findViewById(R.id.Login);
         Button register=findViewById(R.id.signUp);
 
         //page already exists (toast from where????)
         if(saveLoginDetails.getBoolean("isLogin",false)){
-            Intent startIntent=new Intent(LoginActivity.this, LoggedUserPageActivity.class);
+            Intent startIntent = new Intent(LoginActivity.this, LoggedUserPageActivity.class);
             String loggedInUser = saveLoginDetails.getString("username",null);
             startIntent.putExtra("user", loggedInUser);
             startActivity(startIntent);
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                             prefEditor.putString("username",inputUsername);
                             prefEditor.putString("password",inputPassword);
                             prefEditor.apply();
-                            Intent startIntent=new Intent(LoginActivity.this, LoggedUserPageActivity.class);
+                            Intent startIntent = new Intent(LoginActivity.this, LoggedUserPageActivity.class);
                             startIntent.putExtra("user",  inputUsername);
                             startActivity(startIntent);
                             infoText = "Login Successful";

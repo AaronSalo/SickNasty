@@ -38,9 +38,9 @@ public class CaptionActivity extends AppCompatActivity {
         Button postButton=findViewById(R.id.captionPost);
         ImageView imageView=findViewById(R.id.postImage);
 
-        Intent intent=getIntent();                              //get the intent from last activity
+        Intent intent = getIntent();                              //get the intent from last activity
 
-        final String uri=intent.getStringExtra("URI");          //this is what is displaying selected image when choosing
+        final String uri = intent.getStringExtra("URI");          //this is what is displaying selected image when choosing
         Uri uri1 = Uri.parse(uri);
         imageView.setImageURI(uri1);                                    //display selected image
 
@@ -58,7 +58,7 @@ public class CaptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String captionText=caption.getText().toString();
                 if(validateInput(captionText)){
-                    updated="something";            //this so we know that input is valid and we are posting post
+                    updated = "something";            //this so we know that input is valid and we are posting post
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
                         posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
@@ -67,7 +67,7 @@ public class CaptionActivity extends AppCompatActivity {
                         // -Lucas
                         Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    Intent intent=new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
+                    Intent intent = new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
                     intent.putExtra("user",finalCurUser.getUsername());
                     startActivity(intent);
                     finish();
@@ -101,7 +101,7 @@ public class CaptionActivity extends AppCompatActivity {
 
     private void goToHome(){
         if(updated==null && curUser!=null){
-            Intent intent=new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
+            Intent intent = new Intent(CaptionActivity.this, LoggedUserPageActivity.class);
             intent.putExtra("user",curUser.getUsername());
             startActivity(intent);
             finish();

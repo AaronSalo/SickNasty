@@ -1,6 +1,7 @@
 package com.sicknasty.presentation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
@@ -28,7 +29,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
     AccessUsers users = new AccessUsers();
     AccessPages pages = new AccessPages();
     AccessPosts posts = new AccessPosts();
-
+    SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
         String message;
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);       //this is necessary for message
+        final String loggedInUser = sharedPreferences.getString("username",null);       //this is necessary for message
 
         PostAdapter postAdapter = null;
         try {
@@ -60,7 +61,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         //also set all the things we did in userPage(followers ,following and posts)
         try {
-            User this_user = users.getUser(userName);
+            User thisUser = users.getUser(userName);
         } catch (UserNotFoundException | DBUsernameNotFoundException e) {
             message =  e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -72,10 +73,6 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +88,6 @@ public class OtherUserPageActivity extends AppCompatActivity {
                     }
             }
         });
-
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
