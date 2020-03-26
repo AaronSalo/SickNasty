@@ -3,7 +3,6 @@ package com.sicknasty.presentation;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import com.sicknasty.R;
 import com.sicknasty.application.Service;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
-import com.sicknasty.objects.Page;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -39,8 +37,9 @@ public class LoginActivity extends AppCompatActivity {
 
         //page already exists (toast from where????)
         if(saveLoginDetails.getBoolean("isLogin",false)){
-            Intent startIntent=new Intent(LoginActivity.this, PageActivity.class);
-            startIntent.putExtra("user", saveLoginDetails.getString("username",null));
+            Intent startIntent=new Intent(LoginActivity.this, LoggedUserPageActivity.class);
+            String loggedInUser = saveLoginDetails.getString("username",null);
+            startIntent.putExtra("user", loggedInUser);
             startActivity(startIntent);
             finish();
         }
@@ -69,8 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             prefEditor.putBoolean("isLogin",true);
                             prefEditor.putString("username",inputUsername);
+                            prefEditor.putString("password",inputPassword);
                             prefEditor.apply();
-                            Intent startIntent=new Intent(LoginActivity.this,PageActivity.class);
+                            Intent startIntent=new Intent(LoginActivity.this, LoggedUserPageActivity.class);
                             startIntent.putExtra("user",  inputUsername);
                             startActivity(startIntent);
                             infoText = "Login Successful";

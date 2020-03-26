@@ -23,17 +23,25 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mySearchView=findViewById(R.id.search_view);
-        listOfSearches=findViewById(R.id.search_user);
+        mySearchView = findViewById(R.id.search_view);
+        listOfSearches = findViewById(R.id.search_user);
 
+        adapter = new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
+        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
 
-        adapter=new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
         listOfSearches.setAdapter(adapter);
         listOfSearches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //proceed according to the current item selected(redirect to pageActivity)
-                Intent newIntent=new Intent(SearchActivity.this,PageActivity.class);
+                String user = listOfSearches.getItemAtPosition(position).toString();
+                Intent newIntent;
+                if(user.equals(loggedInUser)){
+                     newIntent = new Intent(SearchActivity.this, LoggedUserPageActivity.class);
+                }else{
+                     newIntent = new Intent(SearchActivity.this, OtherUserPageActivity.class);
+                     //let's keep this if statement for now -Jay
+                }
                 newIntent.putExtra("user",listOfSearches.getItemAtPosition(position).toString());
                 startActivity(newIntent);
             }

@@ -1,77 +1,82 @@
 package com.sicknasty.presentation;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
-import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.Exceptions.ChangeUsernameException;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
-import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
-import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 public class UserAccountActivity extends AppCompatActivity {
-
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
     AccessUsers users=new AccessUsers();
-    AccessPages pages=new AccessPages();
     SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_account);
 
-        Button submitPass=findViewById(R.id.submitPassword);
+        preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);
 
-        final EditText newPass=findViewById(R.id.newPasswordText);
+        final EditText username=findViewById(R.id.updateUsername);
+        final EditText password=findViewById(R.id.updatePassword);
+        Button update = findViewById(R.id.updateInfo);
+        CheckBox showPass = findViewById(R.id.passwordShow);
+
+        final String oldUsername = preferences.getString("username",null);      //retrieve old data
+        final String oldPassword = preferences.getString("password",null);
+
+        username.setText(oldUsername);      //this allows user to see their oldUsername
+        password.setText(oldPassword);      //and oldPassword
+
         Button logout=findViewById(R.id.logout);
-        submitPass.setOnClickListener(new View.OnClickListener() {
+
+        //this is used to show user their password
+        showPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else {
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-                String pass=newPass.getText().toString();
-                if(pass.isEmpty()){
-                    Toast.makeText(UserAccountActivity.this, "Enter a new Password", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    //call similar functions
-                    if(pass.length()<6)         //i did this bcz i didn't know how fn behaves
-                        Toast.makeText(UserAccountActivity.this, "Enter a Password minimum 6 characters", Toast.LENGTH_SHORT).show();
-                    else{
 
-                        try {
-                            users.updateUserPassword(preferences.getString("username",null),pass);
-                            Toast.makeText(UserAccountActivity.this, "Password successfully updated", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(UserAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                String newPass = username.getText().toString();
+                String newUsername = password.getText().toString();
+                String message="An unexpected error has occurred";
+                try {
+                    User user = users.getUser(oldUsername);     //find user with oldUsername
+                    String updatedUsername = oldUsername;       //if it gets updates
+                    if(!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
+                        users.updateUsername(user, newUsername);    //if yes,try to update it
+
+                        //update shared preferences data
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove("username");
+                        editor.putString("username", newUsername);
+                        editor.apply();
+                        updatedUsername = newUsername;          //update it with new username
                     }
+                    users.updateUserPassword(updatedUsername,newPass);      //try to update password
+                    message="Username and Password updated successfully";
+                } catch (Exception e) {
+                    message = e.getMessage();
+                } finally {
+                    Toast.makeText(UserAccountActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -79,14 +84,13 @@ public class UserAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-                SharedPreferences.Editor editor=preferences.edit();
+                SharedPreferences.Editor editor = preferences.edit();
                 editor.remove("username");
                 editor.remove("password");
                 editor.remove("isLogin");
                 editor.apply();
 
-                Intent newIntent=new Intent(UserAccountActivity.this,LoginActivity.class);
+                Intent newIntent = new Intent(UserAccountActivity.this,LoginActivity.class);
                 startActivity(newIntent);
                 finish();
             }
@@ -97,10 +101,8 @@ public class UserAccountActivity extends AppCompatActivity {
         goToHome();
     }
 
-    public void goToHome(){
-        Intent intent=new Intent(UserAccountActivity.this,PageActivity.class);
-        preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-        intent.putExtra("user",preferences.getString("username",null));
+    private void goToHome(){
+        Intent intent = new Intent(UserAccountActivity.this, LoggedUserPageActivity.class);
         startActivity(intent);
         finish();
     }

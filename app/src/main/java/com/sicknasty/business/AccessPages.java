@@ -5,6 +5,7 @@ import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.stubs.PagePersistenceStub;
 
 /** @author aaron
  * wrapper for the page db
@@ -14,11 +15,21 @@ import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 public class AccessPages {
 
     private PagePersistence pageHandler;
-//    private Page page;
 
+    /**
+     * this constructor is to get the hsql db
+     *
+     */
     public AccessPages() {
         pageHandler = Service.getPageData();
     }
+
+    /**this is for Unit Test
+      *this is for unit test with fake database / stub
+       *test are performed through business layer
+       *-Jay
+     */
+    public AccessPages(final PagePersistence pagePersistence){ pageHandler = pagePersistence; }
 
     /**
      * @param pageName name of the page we want to get
