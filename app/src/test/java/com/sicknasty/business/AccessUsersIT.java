@@ -1,12 +1,20 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+<<<<<<< HEAD
+import com.sicknasty.objects.Exceptions.ChangeNameException;
+import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+=======
 import com.sicknasty.objects.Exceptions.MessageException;
+>>>>>>> dev
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
+import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -19,10 +27,12 @@ import static org.junit.Assert.*;
 public class AccessUsersIT {
 
     AccessUsers users;
+    AccessPages pages;
 
     @Before public void setUp() {
         Service.initTestDatabase();
         users = new AccessUsers();              //use business layer
+        pages=new AccessPages();
     }
 
     @Test
@@ -74,19 +84,22 @@ public class AccessUsersIT {
 
 
     @Test
-    public void testUpdatesInUsername(){
+    public void testUpdatesInUsername() throws DBPageNameNotFoundException, DBUsernameNotFoundException, DBUsernameExistsException, ChangeUsernameException, UserNotFoundException, DBPageNameExistsException, PasswordErrorException, ChangeNameException, UserCreationException {
         String username = "jay";
         String newUsername = "aaron";
-        try {
+//        try {
             User user1 = new User("Jay K",username,"abcmmdef");
             users.insertUser(user1);
+            pages.insertNewPage(user1.getPersonalPage());
+            //users.getUser("aaron");
             users.updateUsername(user1, newUsername);
+            pages.deletePage(username);
             user1 = users.getUser(newUsername);
             assert(user1.getUsername() != username);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fail();
-        }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            fail();
+//        }
     }
 
     @Test (expected = PasswordErrorException.class)

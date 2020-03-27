@@ -39,11 +39,7 @@ public class UserTest {
         } catch (PasswordErrorException e) {
             System.out.println("yello");
             throw new PasswordErrorException("Somethign went wrong");
-        } catch (ChangeUsernameException e){
-            e.printStackTrace();
-        } catch (ChangeNameException e) {
-            e.printStackTrace();
-        } catch (UserCreationException e) {
+        } catch (ChangeUsernameException | UserCreationException | ChangeNameException e){
             e.printStackTrace();
         }
     }
