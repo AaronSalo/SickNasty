@@ -29,7 +29,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
     AccessUsers users = new AccessUsers();
     AccessPages pages = new AccessPages();
     AccessPosts posts = new AccessPosts();
-    SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +44,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
         String message;
+        sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUser = sharedPreferences.getString("username",null);       //this is necessary for message
 
         PostAdapter postAdapter = null;
