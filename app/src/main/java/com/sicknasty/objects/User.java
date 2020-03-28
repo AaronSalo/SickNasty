@@ -30,7 +30,7 @@ public class User {
 
     //password restrictions; public in case UI wants to display this value
     public static final int MIN_PASS_LENGTH = 6;
-	public static final int MIX_PASS_LENGTH = 32;
+    public static final int MIX_PASS_LENGTH = 32;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
@@ -75,7 +75,7 @@ public class User {
         input = input.trim(); //get the whitespace off the ends
         if(input != null) {
             if (!input.contains(" ")) {
-				int passwordLength = input.length();
+                int passwordLength = input.length();
 
                 if (passwordLength >= MIN_PASS_LENGTH && passwordLength <= MAX_PASS_LENGTH) {
                     password = input;
