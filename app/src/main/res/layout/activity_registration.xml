@@ -31,11 +31,12 @@
 
     <EditText
         android:id="@+id/signUpName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
         android:layout_marginTop="88dp"
         android:drawableLeft="@drawable/ic_action_face"
         android:ems="10"
+        android:background="@drawable/edit_text_border"
         android:hint="Enter your name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/title"
@@ -45,10 +46,11 @@
 
     <EditText
         android:id="@+id/signUpUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
         android:layout_marginTop="60dp"
         android:drawableLeft="@drawable/ic_action_name"
+        android:background="@drawable/edit_text_border"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
@@ -58,9 +60,10 @@
 
     <EditText
         android:id="@+id/signUpPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
         android:layout_marginTop="60dp"
+        android:background="@drawable/edit_text_border"
         android:drawableLeft="@drawable/ic_action_password"
         android:ems="10"
         android:hint="Password"
@@ -75,7 +78,7 @@
         android:layout_width="106dp"
         android:layout_height="40dp"
         android:layout_marginTop="80dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button_border"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="@+id/signUpPassword"
         app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
@@ -97,7 +100,7 @@
         android:layout_height="40dp"
         android:text="Sign in"
         android:textSize="18sp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button_border"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 

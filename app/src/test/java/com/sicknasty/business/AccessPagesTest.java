@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class AccessPagesTest {
 
-    PagePersistence pages=new PagePersistenceStub();
+    private AccessPages pages = new AccessPages(new PagePersistenceStub());
 
     @Test
     public void testInsertPage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPageNameExistsException, DBPageNameNotFoundException {

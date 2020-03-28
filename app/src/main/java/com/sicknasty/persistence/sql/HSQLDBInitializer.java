@@ -77,7 +77,7 @@ class HSQLDBInitializer {
             "CREATE TABLE IF NOT EXISTS Messages (" +
                 "sender VARCHAR(32) NOT NULL," +
                 "receiver VARCHAR(32) NOT NULL," +
-                "message VARCHAR(1024) NOT NULL" +
+                "message VARCHAR(1024) NOT NULL," +
                 "time_sent BIGINT NOT NULL," +
                 "time_seen BIGINT," +
                 "FOREIGN KEY(sender) REFERENCES Users(username)" +
