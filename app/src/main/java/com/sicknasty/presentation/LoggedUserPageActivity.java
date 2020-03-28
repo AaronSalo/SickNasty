@@ -59,6 +59,8 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
         ImageView settings = findViewById(R.id.settings);
 
+        Button communityListButton = findViewById(R.id.communityListButton);
+
 
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         pageName = loggedInUser;
@@ -105,6 +107,15 @@ public class LoggedUserPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editProfilePic = true;
                 chooseImageHelper();
+            }
+        });
+
+
+        communityListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
+                startActivity(newIntent);
             }
         });
 

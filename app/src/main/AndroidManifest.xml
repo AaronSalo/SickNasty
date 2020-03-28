@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sicknasty">
+package="com.sicknasty">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/logo"
-        android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".presentation.OtherUserPageActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".presentation.CaptionActivity"
-            android:label="@string/caption"/>
+<application
+    android:allowBackup="true"
+    android:icon="@drawable/logo"
+    android:label="@string/app_name"
+    android:roundIcon="@drawable/logo"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+    <activity
+        android:name=".presentation.OtherUserPageActivity"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+    <activity android:name=".presentation.CaptionActivity"
+        android:label="@string/caption"/>
 
-        <activity android:name=".presentation.SearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".presentation.MessageActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".presentation.UserAccountActivity" />
-        <activity android:name=".presentation.LoggedUserPageActivity" />
-        <activity android:name=".presentation.RegistrationActivity"
-            android:label="@string/register"/>
-        <activity android:name=".presentation.LoginActivity"
-            android:label="@string/title_activity_login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <activity android:name=".presentation.CommunityListPageActivity"/>
+    <activity android:name=".presentation.SearchActivity"
+        android:theme="@style/AppTheme.NoActionBar"/>
+    <activity android:name=".presentation.MessageActivity"
+        android:windowSoftInputMode="adjustPan" />
+    <activity android:name=".presentation.UserAccountActivity" />
+    <activity android:name=".presentation.LoggedUserPageActivity" />
+    <activity android:name=".presentation.RegistrationActivity"
+        android:label="@string/register"/>
+    <activity android:name=".presentation.LoginActivity"
+        android:label="@string/title_activity_login">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+</application>
 
 </manifest>
