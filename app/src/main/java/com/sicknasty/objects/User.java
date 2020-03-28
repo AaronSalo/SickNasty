@@ -25,6 +25,9 @@ public class User {
 
     PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
 
+    public final int MAX_NAME_LENGTH = 15;
+    public final int MIN_NAME_LENGTH = 2;
+
     private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 

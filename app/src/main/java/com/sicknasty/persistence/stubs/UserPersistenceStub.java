@@ -2,9 +2,9 @@ package com.sicknasty.persistence.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
-import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
@@ -12,11 +12,9 @@ import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class UserPersistenceStub implements UserPersistence {
     private HashMap<String, User> users;
-    private ArrayList<Message> messages;
 
     public UserPersistenceStub() {
         this.users = new HashMap<String, User>();
-        this.messages = new ArrayList<Message>();
     }
 
     @Override
@@ -86,33 +84,6 @@ public class UserPersistenceStub implements UserPersistence {
         if (usr == null) throw new DBUsernameNotFoundException("");
 
         usr.changePassword(password);
-
-        return true;
-    }
-
-    @Override
-    public ArrayList<Message> getMessages(User user1, User user2) {
-        ArrayList<Message> rtnMessages = new ArrayList<Message>();
-
-        for (Message m : this.messages) {
-            String senderUsername = m.getMessenger().getUsername();
-            String revUsername = m.getReceiver().getUsername();
-
-            // this if statement checks if either the sender or receiver is user1 or user2
-            if (
-                (senderUsername.equals(user1.getUsername()) && revUsername.equals(user2.getUsername())) ||
-                (senderUsername.equals(user2.getUsername()) && revUsername.equals(user1.getUsername()))
-            ) {
-                rtnMessages.add(m);
-            }
-        }
-
-        return rtnMessages;
-    }
-
-    @Override
-    public boolean addMessage(Message message) {
-        this.messages.add(message);
 
         return true;
     }
