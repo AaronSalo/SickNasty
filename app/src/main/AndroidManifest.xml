@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".presentation.DrawerActivity" />
         <activity android:name=".presentation.CaptionActivity" />
         <activity android:name=".presentation.SearchActivity" />
@@ -19,6 +20,25 @@
         <activity android:name=".presentation.RegistrationActivity" />
         <activity android:name=".presentation.CommunityPageActivity"/>
         <activity android:name=".presentation.LoginActivity">
+=======
+        <activity
+            android:name=".presentation.OtherUserPageActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".presentation.CaptionActivity"
+            android:label="@string/caption"/>
+        <activity android:name=".presentation.CommunityListPageActivity"/>
+
+        <activity android:name=".presentation.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".presentation.MessageActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".presentation.UserAccountActivity" />
+        <activity android:name=".presentation.LoggedUserPageActivity" />
+        <activity android:name=".presentation.RegistrationActivity"
+            android:label="@string/register"/>
+        <activity android:name=".presentation.LoginActivity"
+            android:label="@string/title_activity_login">
+>>>>>>> dev-community
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

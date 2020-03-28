@@ -1,5 +1,4 @@
 package com.sicknasty.persistence.sql;
-
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.MessageException;
