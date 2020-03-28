@@ -30,10 +30,9 @@
 
     <EditText
         android:id="@+id/userName"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
-        android:background="@drawable/edit_text_border"
         android:drawableLeft="@drawable/ic_action_name"
         android:ems="10"
         android:hint="Username"
@@ -45,10 +44,9 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
-        android:background="@drawable/edit_text_border"
         android:drawableLeft="@drawable/ic_action_password"
         android:ems="10"
         android:hint="Password"
@@ -65,7 +63,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="44dp"
-        android:background="@drawable/button_border"
+        android:background="@color/colorAccent"
         android:text="Login"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/password"
@@ -78,7 +76,7 @@
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/button_border"
+        android:background="@color/colorAccent"
         android:text="SignUp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/password"

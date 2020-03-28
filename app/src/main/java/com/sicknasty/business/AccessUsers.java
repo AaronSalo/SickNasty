@@ -4,7 +4,6 @@ import com.sicknasty.application.Service;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
-import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
@@ -19,19 +18,9 @@ import java.util.ArrayList;
 public class AccessUsers {
     private UserPersistence userHandler;
 
-    /**
-     * this constructor is to get the hsql db
-     *
-     */
     public AccessUsers(){
-        userHandler= Service.getUserData();             //get the HSQL database
+        userHandler= Service.getUserData();             //get the dataStub
     }
-
-    /** this is for Unit Test
-     *test are performed through business layer
-     *-Jay
-     */
-    public AccessUsers(final UserPersistence userPersistence){ userHandler = userPersistence; }
 
     //insert a user to the db
     public User insertUser(User user) throws DBUsernameExistsException {
@@ -75,6 +64,14 @@ public class AccessUsers {
             throw new UserNotFoundException("Could not find a user with that username");
     }
 
+    /**
+     * Checks to see if a given username is available for use
+     * @param username  the username we want to check
+     * @return  false if the username is taken and true if it is available
+     */
+    public boolean validNewUsername(String username) throws DBUsernameNotFoundException {
+        return userHandler.getUser(username) != null;
+    }
 
     public void deleteUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
         User user = userHandler.getUser(username);
@@ -85,21 +82,11 @@ public class AccessUsers {
     }
 
     /**
+
      * @return  all the users in DB so that user can search for a particular user
      */
 
     public ArrayList<String> getUsersByUsername(){
         return userHandler.getAllUsers();
-    }
-
-    public ArrayList<Message> getMessages(User user1, User user2){
-
-        return userHandler.getMessages(user1, user2);
-    }
-
-    public boolean addMessage(Message message){
-
-        return userHandler.addMessage(message);
-
     }
 }

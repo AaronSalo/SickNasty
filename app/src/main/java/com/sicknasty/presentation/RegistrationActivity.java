@@ -45,7 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     newUser = new User(name, username, password);
                     infoText = "Sign Up Successful";
                     users.insertUser(newUser);          //if the user was created without error, insert to db
-                    pages.insertNewPage(newUser.getPersonalPage());         //redundant?
+                    pages.insertNewPage(newUser.getPersonalPage());
                     onBackPressed(); //I don't know what this does. Please comment
                 } catch(Exception e) {
                     infoText = e.getMessage(); //get the error message and display it

@@ -2,7 +2,6 @@ package com.sicknasty.persistence;
 
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
-import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
@@ -62,21 +61,4 @@ public interface UserPersistence {
      * @throws  PasswordErrorException thrown when password requirements are not met
      */
      public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException;
-
-    /**
-     * Gets all the messages sent between two users
-     *
-     * @param   user1 one of the participants
-     * @param   user2 the other participant
-     * @returns returns an ArrayList of Message objects ordered by timestamp in ASC order
-     */
-    public ArrayList<Message> getMessages(User user1, User user2);
-
-    /**
-     * Add a message to the database to save
-     *
-     * @param   message the message object
-     * @returns returns true if inserted successfully
-     */
-    public boolean addMessage(Message message);
 }
