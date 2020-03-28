@@ -23,6 +23,13 @@ public abstract class Page {
         }
     }
 
+    public Page(String name){
+        followers=new ArrayList<>();
+        this.pageName = name;
+        postList=new ArrayList<>();
+    }
+
+
     public void setPostList(ArrayList<Post> postList){
         this.postList = postList;
     }

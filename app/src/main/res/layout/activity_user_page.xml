@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_light"
-    tools:context=".presentation.PageActivity">
+    tools:context=".presentation.LoggedUserPageActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="300dp"
+        android:layout_width="399dp"
         android:layout_height="50dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
@@ -19,28 +19,31 @@
 
         <TextView
             android:id="@+id/Followers"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Followers" />
+            android:text="Followers"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/Following"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Following" />
+            android:text="Following"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/Posts"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:text="Posts" />
+            android:text="Posts"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="300dp"
+        android:layout_width="399dp"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
         android:orientation="horizontal"
@@ -49,20 +52,23 @@
 
         <TextView
             android:id="@+id/followers"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/following"
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <ImageView
@@ -77,12 +83,15 @@
 
     <ListView
         android:id="@+id/lvPost"
-        android:layout_width="602dp"
-        android:layout_height="534dp"
+        android:layout_width="0dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintTop_toBottomOf="@+id/searchButton"
+        app:layout_constraintVertical_bias="0.255" />
 
     <ImageView
         android:id="@+id/settings"
@@ -105,23 +114,54 @@
 
     <Button
         android:id="@+id/postButton"
-        android:layout_width="181dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="21dp"
-        android:background="@android:color/black"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/cardview_dark_background"
         android:text="Post!!"
+        android:textAlignment="center"
+
         android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.183"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
+
     <Button
         android:id="@+id/searchButton"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="48dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@android:color/darker_gray"
+        android:text="Search"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/postButton" />
+
+    <ImageButton
+        android:id="@+id/profilePicUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="128dp"
-        android:text="Search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/holo_blue_light"
+        android:tint="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/update_profile_picture" />
 
+    <Button
+        android:id="@+id/communityListButton"
+        android:layout_width="204dp"
+        android:layout_height="59dp"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/lvPost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
