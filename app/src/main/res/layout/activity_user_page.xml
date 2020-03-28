@@ -156,17 +156,7 @@
         app:srcCompat="@drawable/update_profile_picture" />
 
     <Button
-<<<<<<< HEAD:app/src/main/res/layout/activity_page.xml
-        android:id="@+id/communityList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="community"
-        app:layout_constraintBottom_toTopOf="@+id/lvPost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profileName"
-        app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
-=======
         android:id="@+id/communityListButton"
         android:layout_width="204dp"
         android:layout_height="59dp"
@@ -175,5 +165,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postButton" />
->>>>>>> dev-community:app/src/main/res/layout/activity_user_page.xml
+
 </androidx.constraintlayout.widget.ConstraintLayout>
