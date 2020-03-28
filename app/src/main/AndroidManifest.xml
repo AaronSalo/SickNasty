@@ -16,6 +16,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".presentation.CaptionActivity"
             android:label="@string/caption"/>
+        <activity android:name=".presentation.CommunityListPageActivity"/>
 
         <activity android:name=".presentation.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
