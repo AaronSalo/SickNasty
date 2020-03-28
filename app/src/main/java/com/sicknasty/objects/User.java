@@ -30,6 +30,7 @@ public class User {
 
     //password restrictions; public in case UI wants to display this value
     public static final int MIN_PASS_LENGTH = 6;
+	public static final int MIX_PASS_LENGTH = 32;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
@@ -37,7 +38,7 @@ public class User {
         changeUsername(username);
         changePassword(password);
         personalPage = new PersonalPage(this); //create a personal page for this user
-        follows=new ArrayList<>();
+        follows = new ArrayList<>();
     }//end of constructor
 
 
@@ -74,10 +75,12 @@ public class User {
         input = input.trim(); //get the whitespace off the ends
         if(input != null) {
             if (!input.contains(" ")) {
-                if (input.length() >= MIN_PASS_LENGTH) {
+				int passwordLength = input.length();
+
+                if (passwordLength >= MIN_PASS_LENGTH && passwordLength <= MAX_PASS_LENGTH) {
                     password = input;
-                }else {
-                    throw new PasswordErrorException("Password must be longer than " + MIN_PASS_LENGTH);
+                } else {
+                    throw new PasswordErrorException("The password length must be between " + MIN_PASS_LENGTH + " and " MAX_PASS_LENGTH);
                 }
             } else
                 throw new PasswordErrorException("Password cannot contain spaces");
