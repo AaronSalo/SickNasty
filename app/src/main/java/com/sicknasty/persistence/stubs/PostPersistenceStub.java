@@ -2,6 +2,7 @@ package com.sicknasty.persistence.stubs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,18 +90,21 @@ public class PostPersistenceStub implements PostPersistence {
     public ArrayList<Comment> getCommentsByPost(Post post, final int limit, final FILTER_BY filter, boolean ascOrder) {
         ArrayList<Comment> result = new ArrayList<Comment>();
 
-        Collections.sort(this.comments, (Comment comment1, Comment comment2) -> {
-            int difference = 0;
+        Collections.sort(this.comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment comment1, Comment comment2) {
+                int difference = 0;
 
-            if (filter == TIME_CREATED) {
+                if (filter == TIME_CREATED) {
 
-            } else if (filter == AMOUNT_LIKES) {
+                } else if (filter == AMOUNT_LIKES) {
 
-            } else if (filter == AMOUNT_DISLIKES) {
+                } else if (filter == AMOUNT_DISLIKES) {
 
+                }
+
+                return difference;
             }
-
-            return difference;
         });
 
         if (limit == 0) {
