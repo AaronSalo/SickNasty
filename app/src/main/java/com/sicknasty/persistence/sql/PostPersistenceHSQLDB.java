@@ -231,43 +231,43 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         return returnPost;
     }
 
-    @Override
-    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder) {
-        ArrayList<Comment> rntResult = new ArrayList<Comment>();
-
-        try {
-            Connection db = this.getConnection();
-
-            String filterArg = "";
-            switch (filter) {
-                case TIME_CREATED:
-                    filterArg = "time_created";
-                    break;
-                case AMOUNT_LIKES:
-                    filterArg = "likes";
-                    break;
-                case AMOUNT_DISLIKES:
-                    filterArg = "dislikes";
-                    break;
-            }
-
-            PreparedStatement stmt = db.prepareStatement(
-                "SELECT * FROM Comments " +
-                    "WHERE p_id = ? " +
-                    "ORDER BY " + filterArg + " " + (ascOrder ? "ASC" : "DESC") + " LIMIT ?"
-            );
-            stmt.setInt(1, post.getPostID());
-            stmt.setInt(2, limit);
-
-            ResultSet result = stmt.executeQuery();
-
-            while (result.next()) {
-                //build comment
-            }
-
-            return rntResult;
-        } catch (SQLException e) {
-            throw new DBGenericException(e);
-        }
-    }
+//    @Override
+//    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder) {
+//        ArrayList<Comment> rntResult = new ArrayList<Comment>();
+//
+//        try {
+//            Connection db = this.getConnection();
+//
+//            String filterArg = "";
+//            switch (filter) {
+//                case TIME_CREATED:
+//                    filterArg = "time_created";
+//                    break;
+//                case AMOUNT_LIKES:
+//                    filterArg = "likes";
+//                    break;
+//                case AMOUNT_DISLIKES:
+//                    filterArg = "dislikes";
+//                    break;
+//            }
+//
+//            PreparedStatement stmt = db.prepareStatement(
+//                "SELECT * FROM Comments " +
+//                    "WHERE p_id = ? " +
+//                    "ORDER BY " + filterArg + " " + (ascOrder ? "ASC" : "DESC") + " LIMIT ?"
+//            );
+//            stmt.setInt(1, post.getPostID());
+//            stmt.setInt(2, limit);
+//
+//            ResultSet result = stmt.executeQuery();
+//
+//            while (result.next()) {
+//                //build comment
+//            }
+//
+//            return rntResult;
+//        } catch (SQLException e) {
+//            throw new DBGenericException(e);
+//        }
+//    }
 }

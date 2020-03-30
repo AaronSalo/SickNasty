@@ -56,16 +56,21 @@ public interface PostPersistence {
      */
     public boolean deletePost(Post post);
 
-    /**
-     * Fetches all comments that are under a Post
-     *
-     * @param   post the Post object to fetch comments from
-     * @param   limit the limit of posts to fetch. Set to 0 to get all comments
-     * @param   filter the filter to sort the ArrayList by
-     * @param   order whether the results get returned in ascending or descending order
-     * @return  returns an ArrayList of Comment objects sorted by filter
-     */
-    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
-
-    public void addComment(Comment comment);
+//    /**
+//     * Fetches all comments that are under a Post
+//     *
+//     * @param   post the Post object to fetch comments from
+//     * @param   limit the limit of posts to fetch. Set to 0 to get all comments
+//     * @param   filter the filter to sort the ArrayList by
+//     * @param   order whether the results get returned in ascending or descending order
+//     * @return  returns an ArrayList of Comment objects sorted by filter
+//     */
+//    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
+//
+//    /**
+//     * Add a comment to a Post
+//     *
+//     * @param   comment the comment to save
+//     */
+//    public void addComment(Comment comment);
 }
