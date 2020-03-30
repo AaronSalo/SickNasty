@@ -93,11 +93,9 @@ class HSQLDBInitializer {
         stmt = db.prepareStatement(
             "CREATE TABLE IF NOT EXISTS Comments (" +
                 "commenter VARCHAR(32) NOT NULL," +
-                "p_id VARCHAR(32) NOT NULL," +
-                "contents VARCHAR(1024) NOT NULL" +
-                "time_created BIGINT NOT NULL," +
-                "likes INTEGER NOT NULL," +
-                "dislikes INTEGER NOT NULL," +
+                "p_id INTEGER NOT NULL," +
+                "contents VARCHAR(1024) NOT NULL," +
+                "time_sent BIGINT NOT NULL," +
                 "FOREIGN KEY(commenter) REFERENCES Users(username)" +
                     "ON DELETE CASCADE " +
                     "ON UPDATE CASCADE," +
