@@ -33,11 +33,15 @@ public class OtherUserPageActivity extends AppCompatActivity {
     AccessPosts posts = new AccessPosts();
     SharedPreferences sharedPreferences;
     Page page;
-    User loggedUser;
+    User loggedUser ,thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_page);
+
+        TextView followers = findViewById(R.id.Otherfollowers);
+        TextView following = findViewById(R.id.Otherfollowing);
+        TextView numberOfPosts = findViewById(R.id.Otherposts);
 
         final Button followButton = findViewById(R.id.followButton);
         Button messageButton = findViewById(R.id.messageButton);
@@ -51,20 +55,22 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUsername = sharedPreferences.getString("username",null);       //this is necessary for message
-
+        int postSize = 0;
         PostAdapter postAdapter = null;
         try {
             loggedUser = users.getUser(loggedInUsername);
+            thisUser = users.getUser(userName);
             page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
+            postSize = posts.getPostsByPage(page).size();
         } catch (DBPageNameNotFoundException | NoValidPageException | UserNotFoundException | DBUsernameNotFoundException e) {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
-//        name.setText(curUser.getName());
-//        followers.setText(""+(int)(100*Math.random()));
-//        numberOfPosts.setText(""+postSize);
-//        following.setText(""+(int)(100*Math.random()));
+        name.setText(thisUser.getName());
+        followers.setText(""+(int)(100*Math.random()));
+        numberOfPosts.setText(""+postSize);
+        following.setText(""+(int)(100*Math.random()));
 
         listView.setAdapter(postAdapter);
 
