@@ -28,17 +28,6 @@ public class Service {
 
     private static String dbPath = "";
 
-    public static synchronized void initDatabase(Context context) {
-        Log.d("SQL", "Getting hidden system folder");
-
-        File dir = context.getDir("db", Context.MODE_PRIVATE);
-        File dbFile = new File(dir.toString() + "/sicknasty.script");
-
-        Service.dbPath = dbFile.toString();
-
-        Service.registerDriver();
-    }
-
     public static synchronized void initTestDatabase() {
         userData = null;
         postData = null;
@@ -47,7 +36,7 @@ public class Service {
         try {
             File tmpFile = File.createTempFile("sicknasty-", ".script");
 
-            Service.dbPath = tmpFile.toString();
+            Service.setDBPathName(tmpFile.toString());
 
             Log.d("SQL", "Creating temporary database at: " + tmpFile.toString());
         } catch (IOException e) {
@@ -55,10 +44,11 @@ public class Service {
             Log.e("SQL", e.getMessage());
         }
 
-        Service.registerDriver();
     }
 
-    private static void registerDriver() {
+    public static void setDBPathName(String path) {
+        dbPath = path;
+
         try {
             Log.d("SQL", "Linking driver class");
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
