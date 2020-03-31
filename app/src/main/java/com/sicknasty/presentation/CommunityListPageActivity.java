@@ -1,7 +1,13 @@
 package com.sicknasty.presentation;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,44 +24,71 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityListPageActivity extends AppCompatActivity {
-    private ListView lv;
+    ListView lv;
+    AccessUsers users = new AccessUsers();
+    User loggedInUser = null;
+    CommunityListAdapter adapter = null;
+    List<Page> lvPage = null;
+    User currUser;
+    SharedPreferences preferences;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_list_page);
 
-        lv = (ListView) findViewById(R.id.communityList);
-        List<Page> lvPage = new ArrayList<Page>();
 
+        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
 
-        AccessUsers users = new AccessUsers();
-        String currUserName = null;
-        User currUser = null;
-        String loggedInUser = getSharedPreferences("MY_PREFS", MODE_PRIVATE).getString("username", null);
-
-        currUserName = loggedInUser;
+        final String loggerInUser =  preferences.getString("username",null);
 
         try {
-            currUser = users.getUser(currUserName);
+            currUser = users.getUser(loggerInUser);
+            Toast.makeText(CommunityListPageActivity.this, currUser.getName(), Toast.LENGTH_LONG).show();
         } catch (UserNotFoundException e) {
             e.printStackTrace();
         } catch (DBUsernameNotFoundException e) {
             e.printStackTrace();
         }
 
+       /* try {
+            currUser = users.getUser(loggerInUser);  //gets Logged in user and puts it into curUser var
+            Toast.makeText(CommunityListPageActivity.this, currUser.getName(), Toast.LENGTH_LONG).show();
+
+        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+            String errorMsg = e.getMessage();
+            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        }
+*/
+        //System.out.println(currUser.getName() + "SSSSSS");
+
+        lv = (ListView) findViewById(R.id.communityList);
+        lvPage = new ArrayList<Page>();
+
+
+
         lvPage.add(new CommunityPage("Manitoba"));
         lvPage.add(new CommunityPage("AAA"));
         lvPage.add(new CommunityPage("BBB"));
 
 
-        CommunityListAdapter adapter = new CommunityListAdapter(this, R.layout.activity_community_tag, lvPage);
-        if (adapter != null) {
-            System.out.println("true!!!!!!");
-        } else {
-            System.out.println("false!!!!!!!");
-        }
+        adapter = new CommunityListAdapter(this, R.layout.activity_community_tag, lvPage);
+
+
         lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Page page = lvPage.get(position);
+                Toast.makeText(CommunityListPageActivity.this, page.getPageName(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
     }
 }
