@@ -82,15 +82,10 @@ public class OtherUserPageActivity extends AppCompatActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    try {
-                        Intent startIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
-                        startIntent.putExtra("user", loggedInUsername);
-                        startActivity(startIntent);
-                        finish();
-
-                    } catch (Exception e) {
-                        //do something here
-                    }
+                Intent startIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
+                startIntent.putExtra("user", loggedInUsername);
+                startActivity(startIntent);
+                finish();
             }
         });
 
