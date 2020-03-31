@@ -85,20 +85,20 @@ public class PagePersistenceStub implements PagePersistence {
         return true;
     }
 
-    @Override
-    public boolean changeName(String oldName, String newName) {
-        if (this.pages.containsKey(oldName)) {
-            Page oldPage = this.pages.get(oldName);
-            oldPage.changePageName(newName);
+	@Override
+	public boolean changeName(String oldName, String newName) {
+		if (this.pages.containsKey(oldName)) {
+			Page oldPage = this.pages.get(oldName);
+			oldPage.changePageName(newName);
 
-            this.pages.remove(oldName);
-            this.pages.put(newName, oldPage);
+			this.pages.remove(oldName);	
+			this.pages.put(newName, oldPage);	
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	@Override
     public ArrayList<String> getAllPageNames() {

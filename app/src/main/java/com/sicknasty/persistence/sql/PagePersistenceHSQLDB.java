@@ -24,8 +24,10 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
     private String path;
 
-    public PagePersistenceHSQLDB(String path) {
+    public PagePersistenceHSQLDB(String path) throws SQLException {
         this.path = path;
+
+        HSQLDBInitializer.setupTables(this.getConnection());
     }
 
     /**
@@ -94,18 +96,18 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 stmt.setString(1, page.getPageName());
                 stmt.setString(2, page.getCreator().getUsername());
 
-                /*
-                    So here, I am using instanceof. If we were to not use instanceof, we would
-                    either have to have two difference tables that contain the same data
-			        or we would have to keep a variable that keeps track of what kind of Page it is
-                    in the Page object itself.
+				/*
+					So here, I am using instanceof. If we were to not use instanceof, we would
+					either have to have two difference tables that contain the same data
+					or we would have to keep a variable that keeps track of what kind of Page it is
+					in the Page object itself.
 
-                    If we decided to have two tables, we would be violating DRY.
-                    If we had a variable to keep a "magic" value, we would still be dependent on an if/else.
-                    If we used instanceof, we would have to depend on if/else.
+					If we decided to have two tables, we would be violating DRY.
+					If we had a variable to keep a "magic" value, we would still be dependent on an if/else.
+					If we used instanceof, we would have to depend on if/else.
 
-                    Either way, we lose.
-                */
+					Either way, we lose.
+				*/
                 if (page instanceof PersonalPage) {
                     stmt.setInt(3, this.PERSONAL_PAGE);
                 } else {
@@ -178,22 +180,22 @@ public class PagePersistenceHSQLDB implements PagePersistence {
         }
     }
 
-    @Override
-    public boolean changeName(String oldName, String newName) {
-        try {
-            Connection db = this.getConnection();
+	@Override
+	public boolean changeName(String oldName, String newName) {
+		try {
+			Connection db = this.getConnection();
 
-            PreparedStatement stmt = db.prepareStatement(
-                "UPDATE Pages SET pg_name = ? WHERE pg_name = ? LIMIT 1"
-            );
-            stmt.setString(1, newName);
-            stmt.setString(2, oldName);
+			PreparedStatement stmt = db.prepareStatement(
+				"UPDATE Pages SET pg_name = ? WHERE pg_name = ? LIMIT 1"
+			);
+			stmt.setString(1, newName);
+			stmt.setString(2, oldName);	
 
-            return stmt.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new DBGenericException(e);
-        }
-    }
+			return stmt.executeUpdate() == 1;
+		} catch (SQLException e) {
+			throw new DBGenericException(e);
+		}
+	}
 
 	@Override
     public ArrayList<String> getAllPageNames() {

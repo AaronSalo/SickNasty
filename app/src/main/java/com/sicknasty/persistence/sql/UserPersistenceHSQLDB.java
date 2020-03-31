@@ -1,6 +1,4 @@
 package com.sicknasty.persistence.sql;
-import android.util.Log;
-
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.MessageException;
@@ -24,9 +22,11 @@ import java.util.ArrayList;
 public class UserPersistenceHSQLDB implements UserPersistence {
     private String path;
 
-    public UserPersistenceHSQLDB(String path) {
-        Log.d("USER", path);
+    public UserPersistenceHSQLDB(String path) throws SQLException {
+        // set the path an initialize the database tables
         this.path = path;
+
+        HSQLDBInitializer.setupTables(this.getConnection());
     }
 
     /**

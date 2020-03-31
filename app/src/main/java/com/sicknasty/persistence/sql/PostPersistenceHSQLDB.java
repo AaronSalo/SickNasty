@@ -21,8 +21,10 @@ import java.util.ArrayList;
 public class PostPersistenceHSQLDB implements PostPersistence {
     private String path;
 
-    public PostPersistenceHSQLDB(String path) {
+    public PostPersistenceHSQLDB(String path) throws SQLException {
         this.path = path;
+
+        HSQLDBInitializer.setupTables(this.getConnection());
     }
 
     /**

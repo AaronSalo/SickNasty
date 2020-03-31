@@ -1,11 +1,8 @@
 package com.sicknasty.presentation;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,11 +17,6 @@ import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class LoginActivity extends AppCompatActivity {
     AccessUsers userHandler;
@@ -34,10 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // the order here is VERY important, this should be one of the first things that get executed
-        this.copyDBToDevice();
-        this.userHandler = new AccessUsers();
 
         SharedPreferences saveLoginDetails=getSharedPreferences("MY_PREFS",MODE_PRIVATE);           //saving user details so that
         final SharedPreferences.Editor prefEditor=saveLoginDetails.edit();                                //they don't have to login everytime they open app
@@ -55,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(startIntent);
             finish();
         }
+
+        // the order here is VERY important
+        Service.initDatabase(getApplicationContext());
+        this.userHandler = new AccessUsers();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,59 +125,5 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
         }
         return result;
-    }
-
-    private void copyDBToDevice() {
-        // setting up constants
-        final String TAG = "LOGIN";
-        final String DB_NAME = "sicknasty";
-
-        Log.d(TAG, "Getting hidden system folder");
-
-        // get app context to get its private sys folder
-        Context appContext = getApplicationContext();
-
-        // find the private sys folder
-        File dir = appContext.getDir("db", Context.MODE_PRIVATE);
-        // create a new script file
-        File dbFile = new File(dir.toString() + "/" + DB_NAME + ".script");
-
-        Log.d(TAG, "Saving pathname");
-        Service.setPathName(dbFile.toString());
-
-        // only copy contents if we dont have existing file
-        if (!dbFile.exists()) {
-            Log.d(TAG, "Setting up new database");
-
-            AssetManager assets = getAssets();
-
-            try {
-                // open streams for file inputs
-                InputStream appFile = assets.open(DB_NAME + ".script");
-                InputStreamReader inputStream = new InputStreamReader(appFile);
-
-                // open stream for output
-                FileWriter outputStream = new FileWriter(dbFile);
-
-                // read in 1kb data
-                char buffer[] = new char[1024];
-                int amnt = inputStream.read(buffer);
-
-                // write until EOF
-                while (amnt != -1) {
-                    Log.d(TAG, "Writing...");
-                    outputStream.write(buffer, 0, amnt);
-
-                    amnt = inputStream.read(buffer);
-                }
-
-                inputStream.close();
-                outputStream.close();
-
-                Log.d(TAG, "Finished copying");
-            } catch (IOException e) {
-                Log.e(TAG, "Unable to copy database to device: " + e);
-            }
-        }
     }
 }
