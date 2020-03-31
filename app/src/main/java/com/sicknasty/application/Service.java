@@ -43,6 +43,7 @@ public class Service {
         userData = null;
         postData = null;
         pageData = null;
+
         try {
             File tmpFile = File.createTempFile("sicknasty-", ".script");
 
@@ -78,8 +79,6 @@ public class Service {
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
                 e.printStackTrace();
-
-                userData = new UserPersistenceStub();
             }
         }
 
@@ -94,8 +93,6 @@ public class Service {
                 Log.e("SQL", "Failed to connect to database (post data)");
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
-
-                postData = new PostPersistenceStub();
             }
         }
 
@@ -110,8 +107,6 @@ public class Service {
                 Log.e("SQL", "Failed to connect to database (page data)");
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
-
-                pageData = new PagePersistenceStub();
             }
         }
 
