@@ -100,7 +100,7 @@ public class PagePersistenceStub implements PagePersistence {
 		return false;
 	}
 
-	@Override
+    @Override
     public ArrayList<String> getAllPageNames() {
         ArrayList<String> returnResult = new ArrayList<String>();
 
