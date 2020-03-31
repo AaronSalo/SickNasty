@@ -99,4 +99,15 @@ public class PagePersistenceStub implements PagePersistence {
 
 		return false;
 	}
+
+	@Override
+    public ArrayList<String> getAllPageNames() {
+        ArrayList<String> returnResult = new ArrayList<String>();
+
+        for (String name : this.pages.keySet()) {
+            returnResult.add(name);
+        }
+
+        return returnResult;
+    }
 }
