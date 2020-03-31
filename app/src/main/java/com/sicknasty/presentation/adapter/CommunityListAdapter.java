@@ -28,7 +28,7 @@ public class CommunityListAdapter extends ArrayAdapter<Page> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
-        Page page = getItem(position);
+        Page page = getItem(getCount() - position -1);
 
         view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
         TextView nameView = (TextView)view.findViewById(R.id.communityTag);

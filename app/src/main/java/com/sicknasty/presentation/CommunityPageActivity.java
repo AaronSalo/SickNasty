@@ -41,74 +41,17 @@ public class CommunityPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_community);
 
         ListView lvPostsCommunity = findViewById(R.id.lvPostsCommunity);
-        TextView numberOfFollower =findViewById(R.id.followerComm);
-        TextView numberOfPosts= findViewById(R.id.postsCount);
-        Button postButton=findViewById(R.id.postCommunity);
-
-        final String loggedInUser = getSharedPreferences("MY_PREFS", MODE_PRIVATE).getString("username", null);
-        curUserName = loggedInUser;
-
-        getData();
-
-        numberOfFollower.setText("" + 1000);
-        numberOfPosts.setText("" + 1000);
+        TextView numberOfFollower = findViewById(R.id.followerComm);
+        TextView numberOfPosts = findViewById(R.id.postsCount);
+        TextView name = findViewById(R.id.communityName);
+        Button postButton = findViewById(R.id.postCommunity);
 
 
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isLoggedUser(loggedInUser)){
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                            String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                            requestPermissions(permissions,PERMISSION_CODE);
-                        }
-                        else{
-                            //access granted
-                            chooseImage();
-                        }
-                    }
-                    else{
-                        //ose is less than marshmallow
-                        chooseImage();
-                    }
-                }
-                else{
-                    Toast.makeText(CommunityPageActivity.this,"You cannot post to other account", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        Intent intent = getIntent();
+        String pageName = intent.getStringExtra("currentCommunityPage");
 
-    }
-
-    public void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE);
-    }
+        name.setText(pageName);
 
 
-    private boolean isLoggedUser(String loggedInUser){
-        Log.d("AAAAAA",loggedInUser.equals(getIntent().getStringExtra("user"))+"");
-        return loggedInUser.equals(getIntent().getStringExtra("user"));
-    }
-
-    private void getData() {
-        Intent intent=getIntent();
-        try {
-
-            if(isLoggedUser(curUserName)) {
-                Log.e("hello", curUserName);
-                curUser = users.getUser(curUserName);
-            }else{
-                curUser=users.getUser(intent.getStringExtra("user"));
-            }
-            currCommunityName = curUser.getUsername();
-            ((TextView) findViewById(R.id.profileName)).setText(curUser.getName());
-
-        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
-            String errorMsg = e.getMessage();
-            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-        }
     }
 }

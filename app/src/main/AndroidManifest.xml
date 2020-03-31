@@ -18,6 +18,7 @@ package="com.sicknasty">
         android:label="@string/caption"/>
 
     <activity android:name=".presentation.CommunityListPageActivity"/>
+    <activity android:name=".presentation.CommunityPageActivity"/>
     <activity android:name=".presentation.SearchActivity"
         android:theme="@style/AppTheme.NoActionBar"/>
     <activity android:name=".presentation.MessageActivity"
