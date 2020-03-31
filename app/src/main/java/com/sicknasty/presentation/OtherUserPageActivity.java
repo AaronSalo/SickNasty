@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
@@ -42,7 +43,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
         Button messageButton = findViewById(R.id.messageButton);
         ListView listView = findViewById(R.id.lvOtherPost);
         Button homeButton = findViewById(R.id.home);
-
+        TextView name = findViewById(R.id.otherProfileName);
 
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
@@ -60,7 +61,10 @@ public class OtherUserPageActivity extends AppCompatActivity {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
-
+//        name.setText(curUser.getName());
+//        followers.setText(""+(int)(100*Math.random()));
+//        numberOfPosts.setText(""+postSize);
+//        following.setText(""+(int)(100*Math.random()));
 
         listView.setAdapter(postAdapter);
 

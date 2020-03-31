@@ -63,18 +63,19 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         pageName = loggedInUser;
         PostAdapter postAdapter = null;
+        int postSize = 0;
         try {
             curUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
+            postSize = posts.getPostsByPage(page).size();
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        //name.setText(curUser.getName());
-        //update this
-//        followers.setText(""+(int)(100*Math.random()));
-//        numberOfPosts.setText(""+(int)(100*Math.random()));
-//        following.setText(""+(int)(100*Math.random()));
+        name.setText(curUser.getName());
+        followers.setText(""+(int)(100*Math.random()));
+        numberOfPosts.setText(""+postSize);
+        following.setText(""+(int)(100*Math.random()));
         lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {

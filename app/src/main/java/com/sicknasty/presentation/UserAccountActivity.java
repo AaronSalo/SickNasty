@@ -55,8 +55,8 @@ public class UserAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String newPass = username.getText().toString();
-                String newUsername = password.getText().toString();
+                String newPass = password.getText().toString();
+                String newUsername = username.getText().toString();
                 String message="An unexpected error has occurred";
                 try {
                     User user = users.getUser(oldUsername);     //find user with oldUsername
