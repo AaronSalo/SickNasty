@@ -80,7 +80,7 @@ class HSQLDBInitializer {
             "CREATE TABLE IF NOT EXISTS Messages (" +
                 "sender VARCHAR(32) NOT NULL," +
                 "receiver VARCHAR(32) NOT NULL," +
-                "message VARCHAR(1024) NOT NULL" +
+                "message VARCHAR(1024) NOT NULL," +
                 "time_sent BIGINT NOT NULL," +
                 "time_seen BIGINT," +
                 "FOREIGN KEY(sender) REFERENCES Users(username)" +
@@ -96,8 +96,8 @@ class HSQLDBInitializer {
         stmt = db.prepareStatement(
             "CREATE TABLE IF NOT EXISTS Comments (" +
                 "commenter VARCHAR(32) NOT NULL," +
-                "p_id VARCHAR(32) NOT NULL," +
-                "contents VARCHAR(1024) NOT NULL" +
+                "p_id INTEGER NOT NULL," +
+                "contents VARCHAR(1024) NOT NULL," +
                 "time_sent BIGINT NOT NULL," +
                 "FOREIGN KEY(commenter) REFERENCES Users(username)" +
                     "ON DELETE CASCADE " +

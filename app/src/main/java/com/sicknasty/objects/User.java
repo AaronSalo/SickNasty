@@ -25,14 +25,12 @@ public class User {
 
     PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
 
-    public final int MAX_NAME_LENGTH = 15;
-    public final int MIN_NAME_LENGTH = 2;
-
     private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
 
     //password restrictions; public in case UI wants to display this value
     public static final int MIN_PASS_LENGTH = 6;
+    public static final int MAX_PASS_LENGTH = 32;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
@@ -40,7 +38,7 @@ public class User {
         changeUsername(username);
         changePassword(password);
         personalPage = new PersonalPage(this); //create a personal page for this user
-        follows=new ArrayList<>();
+        follows = new ArrayList<>();
     }//end of constructor
 
 
@@ -77,10 +75,12 @@ public class User {
         input = input.trim(); //get the whitespace off the ends
         if(input != null) {
             if (!input.contains(" ")) {
-                if (input.length() >= MIN_PASS_LENGTH) {
+                int passwordLength = input.length();
+
+                if (passwordLength >= MIN_PASS_LENGTH && passwordLength <= MAX_PASS_LENGTH) {
                     password = input;
-                }else {
-                    throw new PasswordErrorException("Password must be longer than " + MIN_PASS_LENGTH);
+                } else {
+                    throw new PasswordErrorException("The password length must be between " + MIN_PASS_LENGTH + " and " + MAX_PASS_LENGTH);
                 }
             } else
                 throw new PasswordErrorException("Password cannot contain spaces");

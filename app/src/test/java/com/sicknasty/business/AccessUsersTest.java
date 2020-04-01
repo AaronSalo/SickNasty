@@ -12,62 +12,80 @@ import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.persistence.stubs.UserPersistenceStub;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class AccessUsersTest {
 
-    UserPersistence userPersistence=new UserPersistenceStub();
+    private UserPersistence userPersistence = new UserPersistenceStub();
+    private AccessUsers users = new AccessUsers(userPersistence);
     @Test
-    public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
+    public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
 
         User newUser=new User("Jay K","jay1","1234567");
-        assertNotNull(userPersistence.insertNewUser(newUser));
+        assertNotNull(users.insertUser(newUser));
 
-        assertNotNull(new User("Aaron Solo","aaron","abcdefg"));
+        assertNotNull(users.insertUser(new User("Aaron Solo","aaron","abcdefg")));
 
-
-        assertNotNull(userPersistence.insertNewUser(new User("Aaron Solo","aaron","abcdefg")));
-
-        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("jay1")));
-        assertTrue("user not deleted",userPersistence.deleteUser(userPersistence.getUser("aaron")));
+        users.deleteUser(users.getUser("jay1").getUsername());
+        users.deleteUser(users.getUser("aaron").getUsername());
 
     }
     @Test(expected = DBUsernameExistsException.class)
-    public void testDuplicateUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
+    public void testDuplicateUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
         User newUser=new User("Jay K","jay1","1234567");
-        assertNotNull(userPersistence.insertNewUser(newUser));
-        assertNull("duplicated  added!!!Error",userPersistence.insertNewUser(new User("Jay K","jay1","abcmmdef")));
+        assertNotNull(users.insertUser(newUser));
+        assertNull("duplicated  added!!!Error",users.insertUser(new User("Jay K","jay1","abcmmdef")));
 
-
-        assertFalse("item not found but still deleted!!error",userPersistence.deleteUser(userPersistence.getUser("aaron")));
-        assertTrue("existing user not deleted !!error",userPersistence.deleteUser(userPersistence.getUser("jay")));
+        users.deleteUser(users.getUser("aaron").getUsername());
+        users.deleteUser(users.getUser("jay").getUsername());
     }
     @Test(expected = DBUsernameExistsException.class)
-    public void testUpdatesInUsername() throws DBUsernameNotFoundException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException {
+    public void testUpdatesInUsername() throws DBUsernameNotFoundException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, UserNotFoundException {
         User user1=new User("Jay K","jay","abcmmdef");
 
 
-        assertNotNull("user not added",userPersistence.insertNewUser(user1));
-        assertTrue("username not changed even though it was available",userPersistence.updateUsername("jay","aaron"));
+        assertNotNull("user not added",users.insertUser(user1));
+        users.updateUsername(user1,"aaron");
 
-        assertNotNull("nd nad",userPersistence.getUser("aaron"));
-        assertNotNull("user not added",userPersistence.insertNewUser(user1));
-        assertNull("duplicated  added!!!Error",userPersistence.insertNewUser(new User("Jay K","jay","abcmmdef")));
+        assertNotNull("nd nad",users.getUser("aaron"));
+        assertNotNull("user not added",users.insertUser(user1));
+        assertNull("duplicated  added!!!Error",users.insertUser(new User("Jay K","jay","abcmmdef")));
 
-        assertTrue(" not deleted!!error",userPersistence.deleteUser(userPersistence.getUser("aaron")));
-        assertTrue("existing user not deleted !!error",userPersistence.deleteUser(userPersistence.getUser("jay")));
+        users.deleteUser(users.getUser("aaron").getUsername());
+        users.deleteUser(users.getUser("jay").getUsername());
     }
 
     @Test
-    public void testUpdatesInPassword() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
+    public void testUpdatesInPassword() throws Exception {
         User jay=new User("Jay K","jay","abcmmdef");
 
-        assertNotNull("user not added",userPersistence.insertNewUser(jay));
+        assertNotNull("user not added",users.insertUser(jay));
 
-        userPersistence.updatePassword(jay,"1234556777");
+        users.updateUserPassword("jay","1234556777");
         assertFalse("password not change",jay.checkPasswordCorrect("abcmmdef"));
         assertTrue("password not changed",jay.checkPasswordCorrect("1234556777"));
 
-        userPersistence.deleteUser(jay);
+        users.deleteUser("jay");
     }
+
+    @Test
+    public void testAllUsers() throws Exception {
+        User jay = new User("Jay K","jay","abcmmdef");
+        User aaron =  new User("Aaron Salo","aaron","abcmmdef");
+
+        assertNotNull("user not added",users.insertUser(jay));
+        assertNotNull("user not added",users.insertUser(aaron));
+
+        ArrayList<String> list = users.getUsersByUsername();
+        assertTrue("user jay was added but not found",list.contains("jay"));
+        assertTrue("user aaron was added but not found",list.contains("aaron"));
+        assertFalse("user not added but still found",list.contains("jay1"));
+
+        users.deleteUser("jay");
+        users.deleteUser("aaron");
+    }
+
 }

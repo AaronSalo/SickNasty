@@ -15,9 +15,19 @@ public class AccessPosts {
 
     private PostPersistence postHandler;
 
+    /**
+     * this constructor is to get the hsql db
+     *
+     */
     public AccessPosts() {
         postHandler = Service.getPostData();
     }
+
+    /** this is for Unit Test
+     *test are performed through business layer
+     *-Jay
+     */
+    public AccessPosts(final PostPersistence postPersistence){ postHandler = postPersistence; }
 
     /**
      * returns the posts on on a given page
