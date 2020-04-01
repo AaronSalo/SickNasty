@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+div {
+    position: relative;
+}
+
+.wrapper {
+    flex: 1;
+}
