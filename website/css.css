@@ -9,7 +9,7 @@ html, body {
 
 body {
     font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -20,4 +20,51 @@ div {
 
 .wrapper {
     flex: 1;
+}
+
+.wrapper > div:nth-child(1) {
+    padding: 5rem 15% 5rem 15%;
+}
+
+.wrapper > div {
+    padding: 2rem 15% 2rem 15%;
+}
+
+.welcome {
+    background-image: url(1024.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top 0 right 15%;
+    box-shadow: 0px 2px 5px -2px black;
+}
+
+.welcome-header {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.welcome-subtext {
+    font-size: 1.5rem;
+}
+
+.header {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.inline-horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.inline-horizontal > div {
+    flex: 1;
+    text-align: center;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 2rem 10% 2rem 10%;
+    box-shadow: 0px -2px 5px -1px black;
 }
