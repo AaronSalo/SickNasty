@@ -1,17 +1,17 @@
 package com.sicknasty.persistence.sql;
 
-import android.util.Log;
-
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// no, I did not forget to include a keyword as a part of the class signature
-// blame Java for being stupid
-// - Lucas
 class HSQLDBInitializer {
     static void setupTables(Connection db) throws SQLException {
-        Log.d("INNER SQL", "Setting up tables");
+        // get the database metadata to search for a table named USERS
+        // we will use the result at the end of the script (after creating tables)
+        DatabaseMetaData meta = db.getMetaData();
+        ResultSet result = meta.getTables(null, null, "USERS", null);
 
         PreparedStatement stmt = db.prepareStatement(
                 "CREATE TABLE IF NOT EXISTS Users (" +
@@ -107,6 +107,54 @@ class HSQLDBInitializer {
         );
         stmt.execute();
 
-        Log.d("INNER SQL", "Finished tables");
+        // this means that before creating tables, there wasnt a table named USERS already
+        // insert some user data
+        if (!result.next()) {
+            //////////////////////////////
+            // bob and his page + post
+            stmt = db.prepareStatement(
+                    "INSERT INTO Users VALUES('notbob123', 'UncleBob', 'bobsgreatpass')"
+            );
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO Pages VALUES('notbob123', 'notbob123', 0)"
+            );
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO Posts VALUES(0, 'Uncle Bob hates computer science', 'test', 0, 0, 'notbob123', ?)"
+            );
+            stmt.setLong(1, System.currentTimeMillis());
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO PagePosts VALUES(0, 'notbob123')"
+            );
+            stmt.execute();
+
+            //////////////////////////////
+            // engineer and his page + post
+            stmt = db.prepareStatement(
+                    "INSERT INTO Users VALUES('texanwits', 'TheEngineer', 'ihatespies')"
+            );
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO Pages VALUES('texanwits', 'texanwits', 0)"
+            );
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO Posts VALUES(1, 'HEAVY LOAD COMING THROUGH', 'test', 0, 0, 'texanwits', ?)"
+            );
+            stmt.setLong(1, System.currentTimeMillis());
+            stmt.execute();
+
+            stmt = db.prepareStatement(
+                    "INSERT INTO PagePosts VALUES(1, 'texanwits')"
+            );
+            stmt.execute();
+        }
     }
 }

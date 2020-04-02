@@ -1,5 +1,6 @@
 package com.sicknasty.presentation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
+import java.io.File;
+
 
 public class LoginActivity extends AppCompatActivity {
     AccessUsers userHandler;
@@ -26,6 +29,14 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // create database file
+        // the reason this is here is because getApplicationContext() is only located here
+        File dir = getApplicationContext().getDir("db", Context.MODE_PRIVATE);
+        File dbFile = new File(dir.toString() + "/sicknasty.script");
+        Service.setDBPathName(dbFile.toString());
+
+        this.userHandler = new AccessUsers();
 
         SharedPreferences saveLoginDetails=getSharedPreferences("MY_PREFS",MODE_PRIVATE);           //saving user details so that
         final SharedPreferences.Editor prefEditor=saveLoginDetails.edit();                                //they don't have to login everytime they open app
@@ -42,10 +53,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(startIntent);
             finish();
         }
-
-        // the order here is VERY important
-        Service.initDatabase(getApplicationContext());
-        this.userHandler = new AccessUsers();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
