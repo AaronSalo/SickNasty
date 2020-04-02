@@ -65,24 +65,24 @@ public class MessageActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     String messageInput = message.getText().toString();
 
-                        try{
-                            Message message1 = new Message(messageInput,loggedInUser,curUser);
-                            users.addMessage(message1);
-                            messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
+                    try{
+                        Message message1 = new Message(messageInput,loggedInUser,curUser);
+                        users.addMessage(message1);
+                        messageAdapter = new MessageAdapter(MessageActivity.this, users.getMessages(loggedInUser,curUser),loggedInUser, curUser);
 
-                            lvMessages.setAdapter(messageAdapter);             //adapter set here so list view updates right after a message is sent
+                        lvMessages.setAdapter(messageAdapter);             //adapter set here so list view updates right after a message is sent
 
-                            messageAdapter.notifyDataSetChanged();
+                        messageAdapter.notifyDataSetChanged();
 
-                            lvMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);       //used to make the added message at the bottom of the list
-                            lvMessages.setStackFromBottom(true);                                        // view and scrolls up when a new item is added
+                        lvMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);       //used to make the added message at the bottom of the list
+                        lvMessages.setStackFromBottom(true);                                        // view and scrolls up when a new item is added
 
-                            message.getText().clear();                      //clears message edittext when message is entered
+                        message.getText().clear();                      //clears message edittext when message is entered
 
 
-                        } catch (MessageException e){
-                            Toast.makeText(MessageActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    } catch (MessageException e){
+                        Toast.makeText(MessageActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
                     }
             });
