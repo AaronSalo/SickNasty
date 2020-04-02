@@ -6,9 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-// no, I did not forget to include a keyword as a part of the class signature
-// blame Java for being stupid
-// - Lucas
 class HSQLDBInitializer {
     static void setupTables(Connection db) throws SQLException {
         Log.d("INNER SQL", "Setting up tables");

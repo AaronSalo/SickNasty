@@ -44,7 +44,7 @@ public interface PostPersistence {
      * Deletes a Post specified by it's unique ID.
      * 
      * @param   id  the unique ID of the Post
-     * @return      returns true on success, otherwise return false
+     * @return  returns true on success, otherwise return false
      */
     public boolean deletePost(int id);
 
@@ -52,7 +52,25 @@ public interface PostPersistence {
      * Deletes a Post specified by a Post object.
      * 
      * @param   post a Post object to delete
-     * @return      returns true on success, otherwise return false
+     * @return  returns true on success, otherwise return false
      */
     public boolean deletePost(Post post);
+
+//    /**
+//     * Fetches all comments that are under a Post
+//     *
+//     * @param   post the Post object to fetch comments from
+//     * @param   limit the limit of posts to fetch. Set to 0 to get all comments
+//     * @param   filter the filter to sort the ArrayList by
+//     * @param   order whether the results get returned in ascending or descending order
+//     * @return  returns an ArrayList of Comment objects sorted by filter
+//     */
+//    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
+//
+//    /**
+//     * Add a comment to a Post
+//     *
+//     * @param   comment the comment to save
+//     */
+//    public void addComment(Comment comment);
 }
