@@ -2,99 +2,93 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.sicknasty.R;
-import com.sicknasty.business.AccessPages;
-import com.sicknasty.business.AccessPosts;
-import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.*;
-import com.sicknasty.objects.Exceptions.NoValidPageException;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
-import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-import com.sicknasty.presentation.adapter.PostAdapter;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoggedUserPageActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.sicknasty.R;
+import com.sicknasty.business.AccessPages;
+import com.sicknasty.business.AccessPosts;
+import com.sicknasty.business.AccessUsers;
+import com.sicknasty.objects.CommunityPage;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
+import com.sicknasty.objects.Page;
+import com.sicknasty.objects.User;
+import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
+import com.sicknasty.presentation.adapter.PostAdapter;
+
+
+public class CommunityPageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    AccessUsers users = new AccessUsers();
-    AccessPages pages = new AccessPages();
-    AccessPosts posts = new AccessPosts();
+    private User currUser;
+    private Page currPage;
+    private Boolean editProfilePic = false;
 
-    public User curUser;
-    Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
-    public String pageName = "";
+    AccessUsers users = new AccessUsers();
+    AccessPages pages=new AccessPages();
+    AccessPosts posts = new AccessPosts();
+    private SharedPreferences preferences;
+    private String pageName ="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_user_page);
-
-        ListView lvPost = findViewById(R.id.lvPost);         //listView of posts
-        TextView followers = findViewById(R.id.followers);
-        TextView following = findViewById(R.id.following);
-        TextView numberOfPosts = findViewById(R.id.posts);
-        Button postButton = findViewById(R.id.postButton);
-        TextView name = findViewById(R.id.profileName);
-        Button searchButton = findViewById(R.id.searchButton);
-        ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
-        ImageView settings = findViewById(R.id.settings);
-
-        Button communityListButton = findViewById(R.id.communityListButton);
-
-
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
-        pageName = loggedInUser;
+        setContentView(R.layout.activity_community);
         PostAdapter postAdapter = null;
+
+        ListView lvPostsCommunity = findViewById(R.id.lvPostsCommunity);
+        TextView numberOfFollower = findViewById(R.id.followerCommCount);
+        TextView numberOfPosts = findViewById(R.id.postsCount);
+        TextView name = findViewById(R.id.communityName);
+        Button postButton = findViewById(R.id.postCommunity);
+        ImageView profilePicEdit = findViewById(R.id.profilePicUpdateCommunity);
+
+        Intent intent = getIntent();
+        pageName = intent.getStringExtra("currentCommunityPage");
+
+        name.setText(pageName);
+
+        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+
+        final String loggerInUser =  preferences.getString("username",null);
+
         try {
-            curUser = users.getUser(loggedInUser);
-            Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-        } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            currUser = users.getUser(loggerInUser);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (DBUsernameNotFoundException e) {
+            e.printStackTrace();
         }
-        //name.setText(curUser.getName());
-        //update this
-//        followers.setText(""+(int)(100*Math.random()));
-//        numberOfPosts.setText(""+(int)(100*Math.random()));
-//        following.setText(""+(int)(100*Math.random()));
-        lvPost.setAdapter(postAdapter);
 
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
-                startActivity(newIntent);
-            }
-        });
+        try {
+            currPage = pages.getPage(pageName);
+            numberOfFollower.setText(currPage.getFollowers().size());
+            numberOfPosts.setText(currPage.getPostList().size());
+            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(currPage));
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
-                startActivity(newIntent);
-            }
-        });
-        //also filter by post!! UI
+        } catch (DBPageNameNotFoundException | NoValidPageException e) {
+            e.printStackTrace();
+        }
+
+        lvPostsCommunity.setAdapter(postAdapter);
+
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,16 +104,9 @@ public class LoggedUserPageActivity extends AppCompatActivity {
             }
         });
 
-
-        communityListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent newIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
-                startActivity(newIntent);
-            }
-        });
-
     }
+
+
 
     private void chooseImageHelper()
     {
@@ -174,7 +161,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                    Intent newIntent = new Intent(CommunityPageActivity.this, CaptionActivity.class);
                     newIntent.putExtra("pageName", pageName);
                     newIntent.putExtra("URI", uri.toString());
                     startActivity(newIntent);

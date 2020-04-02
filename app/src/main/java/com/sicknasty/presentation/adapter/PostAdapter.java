@@ -56,13 +56,13 @@ public class PostAdapter extends ArrayAdapter<Post> {
         //get the path from the post and display it
         //lucas check the following code(setImageUri accepts an URI)
 
-        Uri postUri;
-        if (post != null) {
-            postUri = Uri.parse(post.getPath());
-            viewHolder.ivImage.setImageURI(postUri);             //this is working
-            viewHolder.userName.setText(post.getUserId().getUsername());
-            viewHolder.textView.setText(post.getText());
-        }
+//        Uri postUri;
+//        if (post != null) {
+//            postUri = Uri.parse(post.getPath());
+//            viewHolder.ivImage.setImageURI(postUri);             //this is working
+//            viewHolder.userName.setText(post.getUserId().getUsername());
+//            viewHolder.textView.setText(post.getText());
+//        }
 
         return view;
     }
