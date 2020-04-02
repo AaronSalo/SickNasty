@@ -19,6 +19,7 @@ package="com.sicknasty">
 
     <activity android:name=".presentation.CommunityListPageActivity"/>
     <activity android:name=".presentation.CommunityPageActivity"/>
+    <activity android:name=".presentation.CreateCommunityActivity"/>
     <activity android:name=".presentation.SearchActivity"
         android:theme="@style/AppTheme.NoActionBar"/>
     <activity android:name=".presentation.MessageActivity"

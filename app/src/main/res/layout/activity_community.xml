@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
-            android:id="@+id/followerComm"
+            android:id="@+id/followerCommCount"
             android:layout_width="133dp"
             android:layout_height="25dp"
             android:layout_weight="1" />
@@ -78,27 +78,39 @@
 
     <ListView
         android:id="@+id/lvPostsCommunity"
-        android:layout_width="423dp"
-        android:layout_height="514dp"
+        android:layout_width="419dp"
+        android:layout_height="508dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.577" />
+        app:layout_constraintVertical_bias="0.61" />
 
     <Button
         android:id="@+id/postCommunity"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_width="143dp"
+        android:layout_height="36dp"
         android:background="@android:color/black"
         android:text="Post"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/lvPostsCommunity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lvPostsCommunity"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageButton
+        android:id="@+id/profilePicUpdateCommunity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/holo_blue_light"
+        android:tint="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/update_profile_picture" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

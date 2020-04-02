@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
@@ -25,20 +26,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityListPageActivity extends AppCompatActivity {
-    ListView lv;
     AccessUsers users = new AccessUsers();
-    User loggedInUser = null;
-    CommunityListAdapter adapter = null;
-    List<Page> lvPage = null;
-    User currUser;
-    SharedPreferences preferences;
-    String clickedCommunityPage = null;
+    private ListView lv;
+    private User loggedInUser = null;
+    private CommunityListAdapter adapter = null;
+    private List<Page> lvPage = null;
+    private User currUser;
+    private SharedPreferences preferences;
+    private String clickedCommunityPage = null;
+    private Button createCommunityButton = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_list_page);
+        createCommunityButton = findViewById(R.id.createCommunityButton);
 
         lv = (ListView) findViewById(R.id.communityList);
         lvPage = new ArrayList<Page>();
@@ -49,7 +52,7 @@ public class CommunityListPageActivity extends AppCompatActivity {
 
         try {
             currUser = users.getUser(loggerInUser);
-            Page p1 = new CommunityPage("Manitoba");
+            Page p1 = new CommunityPage("CCC");
             Page p2 = new CommunityPage("AAA");
             Page p3 = new CommunityPage("BBB");
             lvPage.add(p1);
@@ -81,6 +84,14 @@ public class CommunityListPageActivity extends AppCompatActivity {
                 intent.putExtra("currentCommunityPage", clickedCommunityPage);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+
+        createCommunityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            startActivity(new Intent(CommunityListPageActivity.this, CreateCommunityActivity.class));
             }
         });
 
