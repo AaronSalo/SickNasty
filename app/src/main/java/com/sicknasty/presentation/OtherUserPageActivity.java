@@ -55,21 +55,21 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUsername = sharedPreferences.getString("username",null);       //this is necessary for message
-        int postSize = 0;
+        int numberOfPosts = 0;
         PostAdapter postAdapter = null;
         try {
             loggedUser = users.getUser(loggedInUsername);
-            thisUser = users.getUser(userName);
+            thisUser = users.getUser(userName);             //thisUser is the user whose page we are looking at
             page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-            postSize = posts.getPostsByPage(page).size();
+            numberOfPosts = posts.getPostsByPage(page).size();
         } catch (DBPageNameNotFoundException | NoValidPageException | UserNotFoundException | DBUsernameNotFoundException e) {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
         name.setText(thisUser.getName());
         followers.setText(""+(int)(100*Math.random()));
-        numberOfPosts.setText(""+postSize);
+        numberOfPosts.setText(""+numberOfPosts);
         following.setText(""+(int)(100*Math.random()));
 
         listView.setAdapter(postAdapter);
@@ -92,9 +92,9 @@ public class OtherUserPageActivity extends AppCompatActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
+                Intent homeIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
                 startIntent.putExtra("user", loggedInUsername);
-                startActivity(startIntent);
+                startActivity(homeIntent);
                 finish();
             }
         });
@@ -102,10 +102,10 @@ public class OtherUserPageActivity extends AppCompatActivity {
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
+                Intent messageIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
                 newIntent.putExtra("loggedInUser", loggedInUsername);       //sends whos logged in to message activity
                 newIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
-                startActivity(newIntent);
+                startActivity(messageIntent);
                 finish();
             }
         });
