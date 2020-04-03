@@ -94,16 +94,16 @@ class HSQLDBInitializer {
         stmt.execute();
 
         stmt = db.prepareStatement(
-            "CREATE TABLE IF NOT EXISTS Comments (" +
-                "commenter VARCHAR(32) NOT NULL," +
-                "p_id INTEGER NOT NULL," +
-                "contents VARCHAR(1024) NOT NULL," +
-                "time_sent BIGINT NOT NULL," +
-                "FOREIGN KEY(commenter) REFERENCES Users(username)" +
-                    "ON DELETE CASCADE " +
-                    "ON UPDATE CASCADE," +
-                "FOREIGN KEY(p_id) REFERENCES POSTS(p_id) ON DELETE CASCADE" +
-            ")"
+                "CREATE TABLE IF NOT EXISTS Comments (" +
+                        "commenter VARCHAR(32) NOT NULL," +
+                        "p_id INTEGER NOT NULL," +
+                        "contents VARCHAR(1024) NOT NULL," +
+                        "time_sent BIGINT NOT NULL," +
+                        "FOREIGN KEY(commenter) REFERENCES Users(username)" +
+                        "ON DELETE CASCADE " +
+                        "ON UPDATE CASCADE," +
+                        "FOREIGN KEY(p_id) REFERENCES POSTS(p_id) ON DELETE CASCADE" +
+                        ")"
         );
         stmt.execute();
 
@@ -113,46 +113,46 @@ class HSQLDBInitializer {
             //////////////////////////////
             // bob and his page + post
             stmt = db.prepareStatement(
-                "INSERT INTO Users VALUES('notbob123', 'UncleBob', 'bobsgreatpass')"
+                    "INSERT INTO Users VALUES('notbob123', 'UncleBob', 'bobsgreatpass')"
             );
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO Pages VALUES('notbob123', 'notbob123', 0)"
+                    "INSERT INTO Pages VALUES('notbob123', 'notbob123', 0)"
             );
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO Posts VALUES(0, 'Uncle Bob hates computer science', 'test', 0, 0, 'notbob123', ?)"
+                    "INSERT INTO Posts VALUES(0, 'Uncle Bob hates computer science', 'test', 0, 0, 'notbob123', ?)"
             );
             stmt.setLong(1, System.currentTimeMillis());
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO PagePosts VALUES(0, 'notbob123')"
+                    "INSERT INTO PagePosts VALUES(0, 'notbob123')"
             );
             stmt.execute();
 
             //////////////////////////////
             // engineer and his page + post
             stmt = db.prepareStatement(
-                "INSERT INTO Users VALUES('texanwits', 'TheEngineer', 'ihatespies')"
+                    "INSERT INTO Users VALUES('texanwits', 'TheEngineer', 'ihatespies')"
             );
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO Pages VALUES('texanwits', 'texanwits', 0)"
+                    "INSERT INTO Pages VALUES('texanwits', 'texanwits', 0)"
             );
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO Posts VALUES(1, 'HEAVY LOAD COMING THROUGH', 'test', 0, 0, 'texanwits', ?)"
+                    "INSERT INTO Posts VALUES(1, 'HEAVY LOAD COMING THROUGH', 'test', 0, 0, 'texanwits', ?)"
             );
             stmt.setLong(1, System.currentTimeMillis());
             stmt.execute();
 
             stmt = db.prepareStatement(
-                "INSERT INTO PagePosts VALUES(1, 'texanwits')"
+                    "INSERT INTO PagePosts VALUES(1, 'texanwits')"
             );
             stmt.execute();
         }
