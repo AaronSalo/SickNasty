@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 String inputUsername = userName.getText().toString();
                 String inputPassword = password.getText().toString();
 
+
                 if(!inputUsername.isEmpty() && !inputPassword.isEmpty()){ //check sure we have a valid input
 
                     //some text we are going to show the user
