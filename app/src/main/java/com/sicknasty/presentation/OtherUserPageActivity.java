@@ -93,7 +93,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent homeIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
-                startIntent.putExtra("user", loggedInUsername);
+                homeIntent.putExtra("user", loggedInUsername);
                 startActivity(homeIntent);
                 finish();
             }
@@ -103,8 +103,8 @@ public class OtherUserPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent messageIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
-                newIntent.putExtra("loggedInUser", loggedInUsername);       //sends whos logged in to message activity
-                newIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
+                messageIntent.putExtra("loggedInUser", loggedInUsername);       //sends whos logged in to message activity
+                messageIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
                 startActivity(messageIntent);
                 finish();
             }
