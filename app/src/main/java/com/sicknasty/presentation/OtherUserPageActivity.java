@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
@@ -32,17 +33,21 @@ public class OtherUserPageActivity extends AppCompatActivity {
     AccessPosts posts = new AccessPosts();
     SharedPreferences sharedPreferences;
     Page page;
-    User loggedUser;
+    User loggedUser ,thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_page);
 
+        TextView followers = findViewById(R.id.Otherfollowers);
+        TextView following = findViewById(R.id.Otherfollowing);
+        TextView numberOfPosts = findViewById(R.id.Otherposts);
+
         final Button followButton = findViewById(R.id.followButton);
         Button messageButton = findViewById(R.id.messageButton);
         ListView listView = findViewById(R.id.lvOtherPost);
         Button homeButton = findViewById(R.id.home);
-
+        TextView name = findViewById(R.id.otherProfileName);
 
         Intent intent = getIntent();
         final String userName = intent.getStringExtra("user");
@@ -50,17 +55,22 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUsername = sharedPreferences.getString("username",null);       //this is necessary for message
-
+        int numberOfPosts = 0;
         PostAdapter postAdapter = null;
         try {
             loggedUser = users.getUser(loggedInUsername);
+            thisUser = users.getUser(userName);             //thisUser is the user whose page we are looking at
             page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
+            numberOfPosts = posts.getPostsByPage(page).size();
         } catch (DBPageNameNotFoundException | NoValidPageException | UserNotFoundException | DBUsernameNotFoundException e) {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
-
+        name.setText(thisUser.getName());
+        followers.setText(""+(int)(100*Math.random()));
+        numberOfPosts.setText(""+numberOfPosts);
+        following.setText(""+(int)(100*Math.random()));
 
         listView.setAdapter(postAdapter);
 
@@ -82,25 +92,20 @@ public class OtherUserPageActivity extends AppCompatActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    try {
-                        Intent startIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
-                        startIntent.putExtra("user", loggedInUsername);
-                        startActivity(startIntent);
-                        finish();
-
-                    } catch (Exception e) {
-                        //do something here
-                    }
+                Intent homeIntent=new Intent(OtherUserPageActivity.this, LoggedUserPageActivity.class);
+                homeIntent.putExtra("user", loggedInUsername);
+                startActivity(homeIntent);
+                finish();
             }
         });
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
-                newIntent.putExtra("loggedInUser", loggedInUsername);       //sends whos logged in to message activity
-                newIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
-                startActivity(newIntent);
+                Intent messageIntent = new Intent(OtherUserPageActivity.this,MessageActivity.class);
+                messageIntent.putExtra("loggedInUser", loggedInUsername);       //sends whos logged in to message activity
+                messageIntent.putExtra("currentUser", userName);            //sends the person being sent the message to message activity
+                startActivity(messageIntent);
                 finish();
             }
         });
