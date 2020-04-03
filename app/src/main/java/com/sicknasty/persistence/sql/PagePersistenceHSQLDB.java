@@ -16,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PagePersistenceHSQLDB implements PagePersistence {
     private final static int PERSONAL_PAGE = 0;
@@ -195,4 +196,28 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 			throw new DBGenericException(e);
 		}
 	}
+
+    @Override
+    public ArrayList<String> getAllPageNames() {
+        ArrayList<String> returnNames = new ArrayList<String>();
+
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                    "SELECT pg_name FROM Pages"
+            );
+
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                String pageName = result.getString(1);
+
+                returnNames.add(pageName);
+            }
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
+
+        return returnNames;
+    }
 }
