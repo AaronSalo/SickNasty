@@ -1,6 +1,6 @@
 package com.sicknasty.objects;
 
-import com.sicknasty.objects.Exceptions.InvalidPageNameException;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 
 import java.util.ArrayList;
 
@@ -19,27 +19,27 @@ public abstract class Page {
         this.id = pageID;
         if(creator!=null){
             followers=new ArrayList<>();
-            this.creator =  creator;
-            this.pageName = creator.getUsername();
+            this.creator = creator;
+            pageName = creator.getUsername();
             followers.add(creator);
             postList=new ArrayList<>();
         }
     }
 
-    public Page(User creator, String name) throws InvalidPageNameException {
-        //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
-        if(name.length() < 3){
-            throw new InvalidPageNameException("Page Name cannot be less than 3 characters");
+    public Page(User creator, String name) throws InvalidCommunityPageNameException {
+        this(creator);
+        setPageName(name);
+    }
+
+    public void setPageName(String pageName) throws InvalidCommunityPageNameException {
+        if(pageName.length() < 3){
+            throw new InvalidCommunityPageNameException("Page Name cannot be less than 3 characters");              //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
         }
-        else if(name.length()  > 12){
-            throw new InvalidPageNameException("Page name cannot be more than 12 characters");
+        else if(pageName.length()  > 12){
+            throw new InvalidCommunityPageNameException("Page name cannot be more than 12 characters");
         }
-        else if(creator!=null){
-            followers=new ArrayList<>();
-            this.creator =  creator;
-            this.pageName = name;
-            followers.add(creator);
-            postList=new ArrayList<>();         //this is violating dry i know  but it works unless you have some suggestion -Jay
+        else {
+            this.pageName = pageName;
         }
     }
 
@@ -55,7 +55,9 @@ public abstract class Page {
         return this.pageName;
     }
 
-    public void changePageName(String newName) {this.pageName = newName; }
+    public void changePageName(String newName){
+        pageName = newName;
+    }
 
     //package private
     ArrayList<User> getFollowers() {

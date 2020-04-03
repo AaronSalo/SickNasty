@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,12 +15,11 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.CommunityPage;
-import com.sicknasty.objects.Exceptions.InvalidPageNameException;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class CreateCommunityActivity extends AppCompatActivity {
@@ -56,7 +54,7 @@ public class CreateCommunityActivity extends AppCompatActivity {
                 try {
                     newPage = new CommunityPage(currUser,currName);
                     pages.insertNewPage(newPage);
-                } catch (InvalidPageNameException | DBPageNameExistsException e) {
+                } catch (InvalidCommunityPageNameException | DBPageNameExistsException e) {
                     Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
