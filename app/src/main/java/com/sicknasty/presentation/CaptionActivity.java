@@ -57,7 +57,6 @@ public class CaptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String captionText=caption.getText().toString();
-                if(validateInput(captionText)){
                     updated = "something";            //this so we know that input is valid and we are posting post
                     try {
                         Post newPost=new Post(captionText, finalCurUser,uri,0,0,finalCurUser.getPersonalPage());
@@ -71,27 +70,8 @@ public class CaptionActivity extends AppCompatActivity {
                     intent.putExtra("user",finalCurUser.getUsername());
                     startActivity(intent);
                     finish();
-                }
             }
         });
-    }
-    //function that checks for valid input
-    private boolean validateInput(String caption){
-        String infoText = "";
-        boolean result=true;
-
-
-        //empty text??
-        if(caption.length()>255){
-            infoText = "caption is too long : must be less than 255 characters";
-            result = false;
-        }
-
-        if(infoText.length() > 0) {
-            Toast toast = Toast.makeText(CaptionActivity.this, infoText, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        return result;
     }
 
     @Override

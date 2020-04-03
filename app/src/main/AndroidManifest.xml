@@ -21,8 +21,10 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".presentation.MessageActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".presentation.UserAccountActivity" />
-        <activity android:name=".presentation.LoggedUserPageActivity" />
+        <activity android:name=".presentation.UserAccountActivity"
+            android:label="Update User Information"/>
+        <activity android:name=".presentation.LoggedUserPageActivity"
+            android:label="Home"/>
         <activity android:name=".presentation.RegistrationActivity"
             android:label="@string/register"/>
         <activity android:name=".presentation.LoginActivity"
