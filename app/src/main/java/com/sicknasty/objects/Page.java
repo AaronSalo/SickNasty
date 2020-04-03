@@ -1,5 +1,7 @@
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.PageNameException;
+
 import java.util.ArrayList;
 
 public abstract class Page {
@@ -9,37 +11,30 @@ public abstract class Page {
     private ArrayList<Post> postList;
     private User creator;               //user that created the page
 
+
     private ArrayList<User> followers;
                                         //decide whether to keep creator in Page or in subclass
-    public Page(User creator){
+    public Page(User creator) throws PageNameException{
+        this(creator,creator.getUsername());
         pageID++;
         this.id = pageID;
-        if(creator!=null){
+    }
+
+    public Page(User creator, String name) throws PageNameException {
+        //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
+        if(name.length() < 3){
+            throw new PageNameException("Page Name cannot be less than 3 characters");
+        }
+        else if(name.length()  > 12){
+            throw new PageNameException("Page name cannot be more than 12 characters");
+        }
+        else if(creator!=null){
             followers=new ArrayList<>();
-            this.creator = creator;
-            this.pageName = creator.getUsername();
+            this.creator =  creator;
+            this.pageName = name;
             followers.add(creator);
             postList=new ArrayList<>();
         }
-    }
-
-    public Page(User creator, String name){
-        followers=new ArrayList<>();
-        this.pageName = name;
-        postList=new ArrayList<>();
-        this.creator = creator;
-        followers.add(creator);
-    }
-
-    public Page(String name){
-        followers=new ArrayList<>();
-        this.pageName = name;
-        postList=new ArrayList<>();
-    }
-
-
-    public void setPostList(ArrayList<Post> postList){
-        this.postList = postList;
     }
 
     public User getCreator() {
@@ -56,21 +51,12 @@ public abstract class Page {
 
     public void changePageName(String newName) {this.pageName = newName; }
 
-    public ArrayList<User> getFollowers() {
+    //package private
+    ArrayList<User> getFollowers() {
         return followers;
     }
 
     public ArrayList<Post> getPostList(){
         return postList;
     }
-
-    public void addPost(Post newPost){
-        if(postList != null && newPost!= null){         //newPost!=null???
-            postList.add(newPost);
-        }
-    }
-    public void addFollower(User e){
-        followers.add(e);
-    }
-    //public void deletePost(){}                        //future iteration
 }

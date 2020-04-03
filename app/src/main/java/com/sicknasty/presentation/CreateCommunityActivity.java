@@ -24,28 +24,26 @@ import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class CreateCommunityActivity extends AppCompatActivity {
-    AccessPages pages = new AccessPages();
-    AccessUsers users = new AccessUsers();
     private User currUser = null;
-    private SharedPreferences preferences = null;
-
-
-
+    private AccessPages pages;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_community);
+
         final EditText inputName = findViewById(R.id.communityNameAdder);
         Button createCommunityButton = findViewById(R.id.addCommunity);
 
-        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        pages = new AccessPages();
+        AccessUsers users = new AccessUsers();
+
+        SharedPreferences preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggerInUser =  preferences.getString("username",null);
 
         try {
             currUser = users.getUser(loggerInUser);
-
         } catch (UserNotFoundException | DBUsernameNotFoundException e) {
-
+            Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         createCommunityButton.setOnClickListener(new View.OnClickListener() {
