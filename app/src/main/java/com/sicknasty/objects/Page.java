@@ -1,6 +1,6 @@
 package com.sicknasty.objects;
 
-import com.sicknasty.objects.Exceptions.PageNameException;
+import com.sicknasty.objects.Exceptions.InvalidPageNameException;
 
 import java.util.ArrayList;
 
@@ -14,19 +14,19 @@ public abstract class Page {
 
     private ArrayList<User> followers;
                                         //decide whether to keep creator in Page or in subclass
-    public Page(User creator) throws PageNameException{
+    public Page(User creator) throws InvalidPageNameException {
         this(creator,creator.getUsername());
         pageID++;
         this.id = pageID;
     }
 
-    public Page(User creator, String name) throws PageNameException {
+    public Page(User creator, String name) throws InvalidPageNameException {
         //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
         if(name.length() < 3){
-            throw new PageNameException("Page Name cannot be less than 3 characters");
+            throw new InvalidPageNameException("Page Name cannot be less than 3 characters");
         }
         else if(name.length()  > 12){
-            throw new PageNameException("Page name cannot be more than 12 characters");
+            throw new InvalidPageNameException("Page name cannot be more than 12 characters");
         }
         else if(creator!=null){
             followers=new ArrayList<>();

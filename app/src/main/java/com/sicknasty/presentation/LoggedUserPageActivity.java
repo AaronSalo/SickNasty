@@ -81,16 +81,16 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
-                startActivity(newIntent);
+                Intent settingsIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
+                startActivity(settingsIntent);
             }
         });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
-                startActivity(newIntent);
+                Intent searchIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
+                startActivity(searchIntent);
             }
         });
 
@@ -104,8 +104,8 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         communityListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
-                startActivity(newIntent);
+                Intent showCommunityListIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
+                startActivity(showCommunityListIntent);
             }
         });
 
@@ -157,10 +157,10 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
                 Uri uri = data.getData();
-                Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
-                newIntent.putExtra("pageName", pageName);
-                newIntent.putExtra("URI", uri.toString());
-                startActivity(newIntent);
+                Intent newPostIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                newPostIntent.putExtra("pageName", pageName);
+                newPostIntent.putExtra("URI", uri.toString());
+                startActivity(newPostIntent);
             }
         }
     }
