@@ -84,14 +84,14 @@
     <ListView
         android:id="@+id/lvPost"
         android:layout_width="0dp"
-        android:layout_height="450dp"
+        android:layout_height="500dp"
         android:layout_marginTop="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.255" />
 
     <ImageView
         android:id="@+id/settings"
@@ -143,19 +143,15 @@
         app:layout_constraintStart_toStartOf="@id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/postButton" />
 
-    <Button
-
-        android:id="@+id/communityListButton"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_border"
-        android:text="Manage Communities"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/lvPost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.282"
+    <ImageButton
+        android:id="@+id/profilePicUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/holo_blue_light"
+        android:tint="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postButton"
-        app:layout_constraintVertical_bias="0.398" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/update_profile_picture" />
 </androidx.constraintlayout.widget.ConstraintLayout>

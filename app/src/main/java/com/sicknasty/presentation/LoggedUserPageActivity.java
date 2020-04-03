@@ -21,6 +21,8 @@ import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     AccessPosts posts = new AccessPosts();
 
     public User curUser;
+    Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
     public String pageName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,8 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         Button postButton = findViewById(R.id.postButton);
         TextView name = findViewById(R.id.profileName);
         Button searchButton = findViewById(R.id.searchButton);
+        ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
         ImageView settings = findViewById(R.id.settings);
-
-        Button communityListButton = findViewById(R.id.communityListButton);
 
 
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
@@ -79,19 +81,19 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent settingsIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
-                startActivity(settingsIntent);
+                Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
+                startActivity(newIntent);
             }
         });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
-                startActivity(searchIntent);
+                Intent newIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
+                startActivity(newIntent);
             }
         });
-
+        //also filter by post!! UI
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +101,11 @@ public class LoggedUserPageActivity extends AppCompatActivity {
             }
         });
 
-        communityListButton.setOnClickListener(new View.OnClickListener() {
+        profilePicEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent showCommunityListIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
-                startActivity(showCommunityListIntent);
+                editProfilePic = true;
+                chooseImageHelper();
             }
         });
 
@@ -155,10 +157,18 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
                 Uri uri = data.getData();
-                Intent newPostIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
-                newPostIntent.putExtra("pageName", pageName);
-                newPostIntent.putExtra("URI", uri.toString());
-                startActivity(newPostIntent);
+
+                if(editProfilePic){
+                    //we know we have to update profile pic and not upload a post
+                    //save the uri      -Reminder for lucas to add a uri field in page table
+
+                }
+                else {
+                    Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                    newIntent.putExtra("pageName", pageName);
+                    newIntent.putExtra("URI", uri.toString());
+                    startActivity(newIntent);
+                }
             }
         }
     }
