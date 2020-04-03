@@ -13,17 +13,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.OtherUserPageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".presentation.CaptionActivity"
             android:label="@string/caption"/>
 
         <activity android:name=".presentation.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".presentation.CommunityListPageActivity">
-
-        </activity>
-        <activity android:name=".presentation.CommunityPageActivity"/>
-        <activity android:name=".presentation.CreateCommunityActivity"/>
         <activity android:name=".presentation.MessageActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".presentation.UserAccountActivity"

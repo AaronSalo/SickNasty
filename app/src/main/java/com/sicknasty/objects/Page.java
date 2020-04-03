@@ -11,7 +11,6 @@ public abstract class Page {
     private ArrayList<Post> postList;
     private User creator;               //user that created the page
 
-
     private ArrayList<User> followers;
                                         //decide whether to keep creator in Page or in subclass
     public Page(User creator) {
@@ -43,6 +42,10 @@ public abstract class Page {
         }
     }
 
+    public void setPostList(ArrayList<Post> postList){
+        this.postList = postList;
+    }
+
     public User getCreator() {
         return creator;
     }
@@ -59,12 +62,21 @@ public abstract class Page {
         pageName = newName;
     }
 
-    //package private
-    ArrayList<User> getFollowers() {
+    public ArrayList<User> getFollowers() {
         return followers;
     }
 
     public ArrayList<Post> getPostList(){
         return postList;
     }
+
+    public void addPost(Post newPost){
+        if(postList != null && newPost!= null){         //newPost!=null???
+            postList.add(newPost);
+        }
+    }
+    public void addFollower(User e){
+        followers.add(e);
+    }
+    //public void deletePost(){}                        //future iteration
 }
