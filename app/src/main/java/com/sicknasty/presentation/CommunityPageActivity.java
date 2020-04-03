@@ -62,17 +62,18 @@ public class CommunityPageActivity extends AppCompatActivity {
         name.setText(pageName);
 
         Page currPage;
+        int postSize = 0;
         try {
             currPage = pages.getPage(pageName);
-            numberOfPosts.setText(currPage.getPostList().size());
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(currPage));
 
+            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(currPage));
+            postSize = posts.getPostsByPage(currPage).size();
         } catch (DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
         }
 
         lvPostsCommunity.setAdapter(postAdapter);
-
+        numberOfPosts.setText(""+postSize);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

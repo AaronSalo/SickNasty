@@ -37,8 +37,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         final ViewHolder viewHolder;
         if(convertView==null){
             viewHolder=new ViewHolder();
-            view = LayoutInflater.from(getContext()).inflate(//convertView is null represent layout is not loaded, and it mean that getView is not called
-                    resourceId, null);
+            view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
@@ -54,8 +53,20 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         Uri postUri;
         if (post != null) {
-            postUri = Uri.parse(post.getPath());
-            viewHolder.ivImage.setImageURI(postUri);             //this is working
+
+            //*To professor/any member*:
+            //this is just for some data that's already there and we don't know where to put the uri so
+            //when the sample post was created,it was created with a uri of 'test' so we know
+            //thanks -Jay
+
+            //ps i asked you about this in iteration 2 and you said it would be okay to do this
+            if(post.getPath().equals("test")){
+                viewHolder.ivImage.setImageResource(R.drawable.logo);
+            }
+            else{
+                postUri = Uri.parse(post.getPath());
+                viewHolder.ivImage.setImageURI(postUri);             //this is working
+            }
             viewHolder.userName.setText(post.getPageId().getPageName());            //userid-> pageName due to community page Name
             viewHolder.textView.setText(post.getText());
         }
@@ -68,4 +79,3 @@ class ViewHolder{
     TextView textView;
     TextView userName;
 }
-
