@@ -101,7 +101,7 @@ public class PagePersistenceStub implements PagePersistence {
 	}
 
     @Override
-    public ArrayList<String> getAllPageNames() {
+    public ArrayList<String> getAllCommunityPageNames() {
         ArrayList<String> returnResult = new ArrayList<String>();
 
         for (String name : this.pages.keySet()) {
