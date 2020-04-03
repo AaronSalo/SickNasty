@@ -97,6 +97,7 @@ div {
     object-fit: contain;
 }
 
+/*====================*/
 .us {
     display: flex;
     flex-direction: row;
@@ -110,6 +111,21 @@ div {
 .us > div > * {
     text-align: left;
 }
+/*====================*/
+/*====================*/
+.team > div {
+    display: flex;
+    flex-direction: row;
+}
+.team > div > div:nth-child(1) {
+    width: 25%;
+    text-align: right;
+    margin-right: 1rem;
+}
+.team > div > div:nth-child(2) {
+    width: 75%;
+}
+/*====================*/
 
 footer {
     background-color: black;
