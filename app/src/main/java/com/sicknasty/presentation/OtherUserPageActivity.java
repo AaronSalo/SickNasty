@@ -55,21 +55,21 @@ public class OtherUserPageActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUsername = sharedPreferences.getString("username",null);       //this is necessary for message
-        int numberOfPosts = 0;
+        int numOfPosts = 0;
         PostAdapter postAdapter = null;
         try {
             loggedUser = users.getUser(loggedInUsername);
             thisUser = users.getUser(userName);             //thisUser is the user whose page we are looking at
             page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-            numberOfPosts = posts.getPostsByPage(page).size();
+            numOfPosts = posts.getPostsByPage(page).size();
         } catch (DBPageNameNotFoundException | NoValidPageException | UserNotFoundException | DBUsernameNotFoundException e) {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
         name.setText(thisUser.getName());
         followers.setText(""+(int)(100*Math.random()));
-        numberOfPosts.setText(""+numberOfPosts);
+        numberOfPosts.setText(""+numOfPosts);
         following.setText(""+(int)(100*Math.random()));
 
         listView.setAdapter(postAdapter);
