@@ -1,7 +1,14 @@
 package com.sicknasty.presentation;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -10,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.sicknasty.R;
@@ -18,6 +26,8 @@ import com.sicknasty.objects.User;
 
 public class UserAccountActivity extends AppCompatActivity {
     AccessUsers users=new AccessUsers();
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
     SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +37,8 @@ public class UserAccountActivity extends AppCompatActivity {
         preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
 
         final EditText username = findViewById(R.id.updateUsername);
-        final EditText password=findViewById(R.id.updatePassword);
+        final EditText password = findViewById(R.id.updatePassword);
+
         Button update = findViewById(R.id.updateInfo);
         CheckBox showPass = findViewById(R.id.passwordShow);
 
@@ -55,8 +66,8 @@ public class UserAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String newPass = username.getText().toString();
-                String newUsername = password.getText().toString();
+                String newPass = password.getText().toString();
+                String newUsername = username.getText().toString();
                 String message="An unexpected error has occurred";
                 try {
                     User user = users.getUser(oldUsername);     //find user with oldUsername
@@ -80,6 +91,7 @@ public class UserAccountActivity extends AppCompatActivity {
                 }
             }
         });
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +107,8 @@ public class UserAccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
     @Override
     public void onBackPressed() {

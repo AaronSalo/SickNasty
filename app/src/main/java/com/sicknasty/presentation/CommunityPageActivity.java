@@ -37,54 +37,38 @@ public class CommunityPageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    private User currUser;
-    private Page currPage;
-    private Boolean editProfilePic = false;
-
-    AccessUsers users = new AccessUsers();
-    AccessPages pages=new AccessPages();
+    AccessPages pages;
     AccessPosts posts = new AccessPosts();
-    private SharedPreferences preferences;
     private String pageName ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
-        PostAdapter postAdapter = null;
 
         ListView lvPostsCommunity = findViewById(R.id.lvPostsCommunity);
-        TextView numberOfFollower = findViewById(R.id.followerCommCount);
-        TextView numberOfPosts = findViewById(R.id.postsCount);
+        TextView numberOfPosts = findViewById(R.id.communityPostCount);
         TextView name = findViewById(R.id.communityName);
-        Button postButton = findViewById(R.id.postCommunity);
-        ImageView profilePicEdit = findViewById(R.id.profilePicUpdateCommunity);
+        Button postButton = findViewById(R.id.communityPostButton);
+
+        pages = new AccessPages();
+        posts = new AccessPosts();
+
+        PostAdapter postAdapter = null;
 
         Intent intent = getIntent();
-        pageName = intent.getStringExtra("currentCommunityPage");
+        pageName = intent.getStringExtra("currentCommunityPage");       //how to fetch from search activity
 
         name.setText(pageName);
 
-        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
-
-        final String loggerInUser =  preferences.getString("username",null);
-
-        try {
-            currUser = users.getUser(loggerInUser);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        } catch (DBUsernameNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Page currPage;
         try {
             currPage = pages.getPage(pageName);
-            numberOfFollower.setText(currPage.getFollowers().size());
             numberOfPosts.setText(currPage.getPostList().size());
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(currPage));
 
         } catch (DBPageNameNotFoundException | NoValidPageException e) {
-            e.printStackTrace();
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
         }
 
         lvPostsCommunity.setAdapter(postAdapter);
@@ -96,17 +80,7 @@ public class CommunityPageActivity extends AppCompatActivity {
             }
         });
 
-        profilePicEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editProfilePic = true;
-                chooseImageHelper();
-            }
-        });
-
     }
-
-
 
     private void chooseImageHelper()
     {
@@ -150,22 +124,13 @@ public class CommunityPageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_PICK_CODE) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
-                //we will save the uri.getPath to the db
-                //create a picture post and insert it to database
 
                 Uri uri = data.getData();
 
-                if(editProfilePic){
-                    //we know we have to update profile pic and not upload a post
-                    //save the uri      -Reminder for lucas to add a uri field in page table
-
-                }
-                else {
-                    Intent newIntent = new Intent(CommunityPageActivity.this, CaptionActivity.class);
-                    newIntent.putExtra("pageName", pageName);
-                    newIntent.putExtra("URI", uri.toString());
-                    startActivity(newIntent);
-                }
+                Intent newIntent = new Intent(CommunityPageActivity.this, CaptionActivity.class);
+                newIntent.putExtra("pageName", pageName);
+                newIntent.putExtra("URI", uri.toString());
+                startActivity(newIntent);
             }
         }
     }

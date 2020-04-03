@@ -21,8 +21,6 @@ import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,7 +39,6 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     AccessPosts posts = new AccessPosts();
 
     public User curUser;
-    Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
     public String pageName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +53,6 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         Button postButton = findViewById(R.id.postButton);
         TextView name = findViewById(R.id.profileName);
         Button searchButton = findViewById(R.id.searchButton);
-        ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
         ImageView settings = findViewById(R.id.settings);
 
         Button communityListButton = findViewById(R.id.communityListButton);
@@ -65,18 +61,21 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         pageName = loggedInUser;
         PostAdapter postAdapter = null;
+        int postSize = 0;
         try {
             curUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
+            postSize = posts.getPostsByPage(page).size();
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        //name.setText(curUser.getName());
-        //update this
-//        followers.setText(""+(int)(100*Math.random()));
-//        numberOfPosts.setText(""+(int)(100*Math.random()));
-//        following.setText(""+(int)(100*Math.random()));
+        name.setText(curUser.getName());
+        followers.setText(""+(int)(100*Math.random()));
+        numberOfPosts.setText(""+postSize);
+        following.setText(""+(int)(100*Math.random()));
+        lvPost.setAdapter(postAdapter);
+
         lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {
@@ -94,22 +93,13 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
-        //also filter by post!! UI
+
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImageHelper();
             }
         });
-
-        profilePicEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editProfilePic = true;
-                chooseImageHelper();
-            }
-        });
-
 
         communityListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,18 +157,10 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
                 Uri uri = data.getData();
-
-                if(editProfilePic){
-                    //we know we have to update profile pic and not upload a post
-                    //save the uri      -Reminder for lucas to add a uri field in page table
-
-                }
-                else {
-                    Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
-                    newIntent.putExtra("pageName", pageName);
-                    newIntent.putExtra("URI", uri.toString());
-                    startActivity(newIntent);
-                }
+                Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                newIntent.putExtra("pageName", pageName);
+                newIntent.putExtra("URI", uri.toString());
+                startActivity(newIntent);
             }
         }
     }

@@ -44,10 +44,8 @@ public class CreateCommunityActivity extends AppCompatActivity {
         try {
             currUser = users.getUser(loggerInUser);
 
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        } catch (DBUsernameNotFoundException e) {
-            e.printStackTrace();
+        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+
         }
 
         createCommunityButton.setOnClickListener(new View.OnClickListener() {
@@ -55,32 +53,15 @@ public class CreateCommunityActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String currName = inputName.getText().toString();
 
-                if(validName(currName)){
-                   Page newPage = new CommunityPage(currUser,currName);
-                    try {
-                        pages.insertNewPage(newPage);
-                    } catch (DBPageNameExistsException e) {
-                        Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    Intent intent = new Intent(CreateCommunityActivity.this, CommunityListPageActivity.class);
-                    startActivity(intent);
-
+                Page newPage = new CommunityPage(currUser,currName);
+                try {
+                    pages.insertNewPage(newPage);
+                } catch (DBPageNameExistsException e) {
+                    Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(CreateCommunityActivity.this, "Name is empty, please try again ", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(CreateCommunityActivity.this, CommunityListPageActivity.class);
+                startActivity(intent);
             }
         });
     }
-
-    private boolean validName(String currName) {
-        if(!currName.equals("")){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-
 }

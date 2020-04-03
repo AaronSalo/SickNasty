@@ -52,17 +52,13 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         Post post =getItem(getCount()-position-1);           //give a post position in layout(now it displays the most recent one)
 
-
-        //get the path from the post and display it
-        //lucas check the following code(setImageUri accepts an URI)
-
-//        Uri postUri;
-//        if (post != null) {
-//            postUri = Uri.parse(post.getPath());
-//            viewHolder.ivImage.setImageURI(postUri);             //this is working
-//            viewHolder.userName.setText(post.getUserId().getUsername());
-//            viewHolder.textView.setText(post.getText());
-//        }
+        Uri postUri;
+        if (post != null) {
+            postUri = Uri.parse(post.getPath());
+            viewHolder.ivImage.setImageURI(postUri);             //this is working
+            viewHolder.userName.setText(post.getPageId().getPageName());            //userid-> pageName due to community page Name
+            viewHolder.textView.setText(post.getText());
+        }
 
         return view;
     }
