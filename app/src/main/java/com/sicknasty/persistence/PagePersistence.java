@@ -60,9 +60,9 @@ public interface PagePersistence {
     public boolean changeName(String oldName, String newName);
 
     /**
-     * Get the names of all the Pages that exist, includes both Personal and Community
+     * Get the names of all the Community Pages that exist
      *
      * @return returns unsorted ArrayList of page names
      */
-    public ArrayList<String> getAllPageNames();
+    public ArrayList<String> getAllCommunityPageNames();
 }
