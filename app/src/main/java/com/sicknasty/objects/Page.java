@@ -14,10 +14,16 @@ public abstract class Page {
 
     private ArrayList<User> followers;
                                         //decide whether to keep creator in Page or in subclass
-    public Page(User creator) throws InvalidPageNameException {
-        this(creator,creator.getUsername());
+    public Page(User creator) {
         pageID++;
         this.id = pageID;
+        if(creator!=null){
+            followers=new ArrayList<>();
+            this.creator =  creator;
+            this.pageName = creator.getUsername();
+            followers.add(creator);
+            postList=new ArrayList<>();
+        }
     }
 
     public Page(User creator, String name) throws InvalidPageNameException {
@@ -33,7 +39,7 @@ public abstract class Page {
             this.creator =  creator;
             this.pageName = name;
             followers.add(creator);
-            postList=new ArrayList<>();
+            postList=new ArrayList<>();         //this is violating dry i know  but it works unless you have some suggestion -Jay
         }
     }
 

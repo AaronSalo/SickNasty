@@ -16,6 +16,7 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.CommunityPage;
+import com.sicknasty.objects.Exceptions.InvalidPageNameException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.User;
@@ -51,14 +52,16 @@ public class CreateCommunityActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String currName = inputName.getText().toString();
 
-                Page newPage = new CommunityPage(currUser,currName);
+                Page newPage;
                 try {
+                    newPage = new CommunityPage(currUser,currName);
                     pages.insertNewPage(newPage);
-                } catch (DBPageNameExistsException e) {
+                } catch (InvalidPageNameException | DBPageNameExistsException e) {
                     Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(CreateCommunityActivity.this, CommunityListPageActivity.class);
-                startActivity(intent);
+
+                Intent createCommunityIntent = new Intent(CreateCommunityActivity.this, CommunityListPageActivity.class);
+                startActivity(createCommunityIntent);
             }
         });
     }
