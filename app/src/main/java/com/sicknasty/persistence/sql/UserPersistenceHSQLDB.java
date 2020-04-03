@@ -290,7 +290,8 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 
             stmt.setString(1, senderUsername);
             stmt.setString(2, recvUsername);
-            stmt.setLong(3, message.getTimeSent());
+            stmt.setString(3, message.getMsg());
+            stmt.setLong(4, message.getTimeSent());
             stmt.execute();
 
             return true;

@@ -2,9 +2,11 @@ package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Page;
+import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
 import com.sicknasty.persistence.stubs.PagePersistenceStub;
 
 /** @author aaron
@@ -56,6 +58,16 @@ public class AccessPages {
      */
     public boolean deletePage(String name){
         return pageHandler.deletePage(name);
+    }
+
+
+    /**
+     * Add a follower to the user's page
+     * @param user that wants to follow the page
+     * @param page page being followed by User
+     */
+    public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
+        pageHandler.addFollower(page,user);
     }
 
 }//end of class

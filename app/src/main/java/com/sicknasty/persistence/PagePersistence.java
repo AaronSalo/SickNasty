@@ -6,6 +6,8 @@ import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
 
+import java.util.ArrayList;
+
 public interface PagePersistence {
     /**
      * Returns a Page specified by it's unique name.
@@ -57,4 +59,10 @@ public interface PagePersistence {
      */
     public boolean changeName(String oldName, String newName);
 
+    /**
+     * Get the names of all the Pages that exist, includes both Personal and Community
+     *
+     * @return returns unsorted ArrayList of page names
+     */
+    public ArrayList<String> getAllPageNames();
 }
