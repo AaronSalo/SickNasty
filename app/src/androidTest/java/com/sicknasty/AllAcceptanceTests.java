@@ -1,4 +1,4 @@
-package com.sicknasty.acceptanceTests;
+package com.sicknasty;
 
 public class AllAcceptanceTests {
 }
