@@ -7,7 +7,6 @@ import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
-import com.sicknasty.persistence.stubs.PagePersistenceStub;
 
 import java.util.ArrayList;
 
@@ -45,21 +44,18 @@ public class AccessPages {
 
     /**
      * Inserts a new Page.
-     *
-     * @return      returns true on success, otherwise return false
      */
-    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
-        return pageHandler.insertNewPage(page);
+    public void insertNewPage(Page page) throws DBPageNameExistsException {
+        pageHandler.insertNewPage(page);
     }
 
     /**
      * Delete a Page by its unique name.
      *
      * @param   name  the unique name of the Page
-     * @return      returns true if it deleted successfully, otherwise false
      */
-    public boolean deletePage(String name){
-        return pageHandler.deletePage(name);
+    public void deletePage(String name){
+        pageHandler.deletePage(name);
     }
 
 
@@ -69,7 +65,7 @@ public class AccessPages {
      * @param page page being followed by User
      */
     public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
-        pageHandler.addFollower(page,user);
+        pageHandler.addFollower(page, user);
     }
 
     /**

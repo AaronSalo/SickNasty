@@ -129,7 +129,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
     }
 
     @Override
-    public boolean insertNewPost(Post post) throws DBPostIDExistsException {
+    public void insertNewPost(Post post) throws DBPostIDExistsException {
         try {
             // get connection
             Connection db = this.getConnection();
@@ -179,9 +179,8 @@ public class PostPersistenceHSQLDB implements PostPersistence {
                 );
                 stmt.setInt(1, postID);
                 stmt.setString(2, post.getPageId().getPageName());
-                stmt.execute();
 
-                return true;
+                stmt.execute();
             }
         } catch (SQLException e) {
             throw new DBGenericException(e);
@@ -189,7 +188,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
     }
 
     @Override
-    public boolean deletePost(int id) {
+    public void deletePost(int id) {
         try {
             // your standard DELETE query
             Connection db = this.getConnection();
@@ -199,17 +198,17 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             );
             stmt.setInt(1, id);
 
-            return stmt.executeUpdate() == 1;
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }
     }
 
     @Override
-    public boolean deletePost(Post post) {
+    public void deletePost(Post post) {
         // just call the function above
-        // i think this is here for "ease of access"
-        return this.deletePost(post.getPostID());
+        // think this is here for "ease of access"
+        this.deletePost(post.getPostID());
     }
     
     private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException, NoValidPageException {
@@ -266,6 +265,26 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 //            }
 //
 //            return rntResult;
+//        } catch (SQLException e) {
+//            throw new DBGenericException(e);
+//        }
+//    }
+
+//    @Override
+//    public void addComment(Comment comment) {
+//        try {
+//            Connection db = this.getConnection();
+//
+//            PreparedStatement stmt = db.prepareStatement(
+//                "INSERT INTO Comments VALUES(?, ?, ?, ?)"
+//            );
+//
+//            stmt.setString(1, /* commenter username */);
+//            stmt.setInt(2, /* post id comment belongs to */);
+//            stmt.setString(3, /* the text content */);
+//            stmt.setLong(4, /* the time sent (in millis) */);
+//
+//            stmt.execute();
 //        } catch (SQLException e) {
 //            throw new DBGenericException(e);
 //        }

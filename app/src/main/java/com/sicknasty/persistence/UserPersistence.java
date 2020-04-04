@@ -39,29 +39,26 @@ public interface UserPersistence {
      * Deletes a User by specifying a User object
      *
      * @param   user the User object to delete
-     * @return  returns true if an object was deleted, otherwise false
      */
-     public boolean deleteUser(User user);
+     public void deleteUser(User user);
 
     /**
      * Updates an existing username
      *
      * @param   oldUsername the old username to update
      * @param   newUsername the new username to replace with
-     * @return  true if username was updated, false otherwise
      * @throws  DBUsernameExistsException thrown when new username is already taken
      */
-     public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException, ChangeUsernameException;
+     public void updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException, ChangeUsernameException;
 
     /**
      * Changes the password of a user
      *
      * @param   password the new password to change to
-     * @return  true if changed successfully
      * @throws  DBUsernameNotFoundException thrown when user does not exist
      * @throws  PasswordErrorException thrown when password requirements are not met
      */
-     public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException;
+     public void updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException;
 
     /**
      * Gets all the messages sent between two users
@@ -76,7 +73,6 @@ public interface UserPersistence {
      * Add a message to the database to save
      *
      * @param   message the message object
-     * @returns returns true if inserted successfully
      */
-    public boolean addMessage(Message message);
+    public void addMessage(Message message);
 }

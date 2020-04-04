@@ -55,16 +55,12 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public boolean deleteUser(User user) {
-        if (user == null) return false;
-
-        User result = this.users.remove(user.getUsername());
-
-        return result != null;
+    public void deleteUser(User user) {
+        this.users.remove(user.getUsername());
     }
 
     @Override
-    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException {
+    public void updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException {
         if (this.users.containsKey(newUsername)) throw new DBUsernameExistsException(newUsername);
 
         if (this.users.containsKey(oldUsername)) {
@@ -72,22 +68,18 @@ public class UserPersistenceStub implements UserPersistence {
 
             this.users.remove(oldUsername);
             this.users.put(newUsername, oldUser);
-
-            return true;
         } else {
             throw new DBUsernameNotFoundException(oldUsername);
         }
     }
 
     @Override
-    public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
+    public void updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
         User usr = this.users.get(user.getUsername());
 
         if (usr == null) throw new DBUsernameNotFoundException("");
 
         usr.changePassword(password);
-
-        return true;
     }
 
     @Override
@@ -111,9 +103,7 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public boolean addMessage(Message message) {
+    public void addMessage(Message message) {
         this.messages.add(message);
-
-        return true;
     }
 }
