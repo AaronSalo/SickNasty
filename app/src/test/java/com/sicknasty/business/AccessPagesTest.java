@@ -61,7 +61,7 @@ public class AccessPagesTest {
             }
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testNullPages() throws DBPageNameExistsException, DBPageNameNotFoundException {
         PersonalPage page1 =null;
 
