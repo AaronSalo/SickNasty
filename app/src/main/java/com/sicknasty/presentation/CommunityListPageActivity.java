@@ -14,11 +14,14 @@ import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
 
+import java.util.ArrayList;
+
 public class CommunityListPageActivity extends AppCompatActivity {
     AccessUsers users;
     AccessPages pages;
     ArrayAdapter<String> adapter;
     private ListView lv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +33,13 @@ public class CommunityListPageActivity extends AppCompatActivity {
         pages = new AccessPages();
         lv = findViewById(R.id.communityList);
 
-        adapter = new ArrayAdapter<>(CommunityListPageActivity.this, android.R.layout.simple_list_item_1,pages.getAllCommunityPages());
+        ArrayList<String> allCommunityNames = pages.getAllCommunityPages();
+        adapter = new ArrayAdapter<>(CommunityListPageActivity.this, android.R.layout.simple_list_item_1, allCommunityNames);
+
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Intent intent = new Intent(CommunityListPageActivity.this, CommunityPageActivity.class);
                 intent.putExtra("currentCommunityPage", lv.getItemAtPosition(position).toString());
                 startActivity(intent);

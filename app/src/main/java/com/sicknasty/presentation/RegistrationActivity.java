@@ -54,7 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(),infoText ,Toast.LENGTH_SHORT);
                     toast.show();
                 }//finally
-                }//onClickView
+            }//onClickView
         });
 
         //here we listen for a click, and attempt to register

@@ -1,14 +1,9 @@
 package com.sicknasty.presentation;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -17,7 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.sicknasty.R;
@@ -25,10 +19,12 @@ import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.User;
 
 public class UserAccountActivity extends AppCompatActivity {
-    AccessUsers users=new AccessUsers();
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+
+    AccessUsers users = new AccessUsers();
     SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +50,7 @@ public class UserAccountActivity extends AppCompatActivity {
         showPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
                 else {
@@ -62,17 +58,19 @@ public class UserAccountActivity extends AppCompatActivity {
                 }
             }
         });
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String newPass = password.getText().toString();
                 String newUsername = username.getText().toString();
                 String message="An unexpected error has occurred";
+
                 try {
                     User user = users.getUser(oldUsername);     //find user with oldUsername
                     String updatedUsername = oldUsername;       //if it gets updates
-                    if(!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
+
+                    if (!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
                         users.updateUsername(user, newUsername);    //if yes,try to update it
 
                         //update shared preferences data
@@ -82,6 +80,7 @@ public class UserAccountActivity extends AppCompatActivity {
                         editor.apply();
                         updatedUsername = newUsername;          //update it with new username
                     }
+
                     users.updateUserPassword(updatedUsername,newPass);      //try to update password
                     message="Username and Password updated successfully";
                 } catch (Exception e) {
@@ -95,7 +94,6 @@ public class UserAccountActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.remove("username");
                 editor.remove("password");
@@ -115,7 +113,7 @@ public class UserAccountActivity extends AppCompatActivity {
         goToHome();
     }
 
-    private void goToHome(){
+    private void goToHome() {
         Intent intent = new Intent(UserAccountActivity.this, LoggedUserPageActivity.class);
         startActivity(intent);
         finish();

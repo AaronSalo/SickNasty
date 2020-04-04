@@ -72,6 +72,6 @@ public class AccessPages {
      * fetches all community pages names from the db
      */
     public ArrayList<String> getAllCommunityPages(){
-        return pageHandler.getAllPageNames();
+        return pageHandler.getAllCommunityPageNames();
     }
 }//end of class

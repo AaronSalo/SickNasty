@@ -2,15 +2,12 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,15 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
-import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.CommunityPage;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
-import com.sicknasty.objects.User;
+import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
-import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
+
+import java.util.ArrayList;
 
 
 public class CommunityPageActivity extends AppCompatActivity {
@@ -39,7 +34,7 @@ public class CommunityPageActivity extends AppCompatActivity {
 
     AccessPages pages;
     AccessPosts posts = new AccessPosts();
-    private String pageName ="";
+    private String pageName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +58,19 @@ public class CommunityPageActivity extends AppCompatActivity {
 
         Page currPage;
         int postSize = 0;
+
         try {
             currPage = pages.getPage(pageName);
+            ArrayList<Post> pagePosts = posts.getPostsByPage(currPage);
 
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(currPage));
-            postSize = posts.getPostsByPage(currPage).size();
+            postAdapter = new PostAdapter(this, R.layout.activity_post, pagePosts);
+            postSize = pagePosts.size();
         } catch (DBPageNameNotFoundException | NoValidPageException e) {
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         lvPostsCommunity.setAdapter(postAdapter);
-        numberOfPosts.setText(""+postSize);
+        numberOfPosts.setText("" + postSize);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,23 +80,23 @@ public class CommunityPageActivity extends AppCompatActivity {
 
     }
 
-    private void chooseImageHelper()
-    {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions,PERMISSION_CODE);
-            }
-            else{
+    private void chooseImageHelper() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+            if (hasReadPermission == PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            } else{
                 //access granted
                 chooseImage();
             }
-        }
-        else {
+        } else {
             //ose is less than marshmallow
             chooseImage();
         }
     }
+
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -109,12 +106,11 @@ public class CommunityPageActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            case PERMISSION_CODE: {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     chooseImage();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied!!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied!!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -123,9 +119,9 @@ public class CommunityPageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == IMAGE_PICK_CODE) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {       //if request is successful
-
                 Uri uri = data.getData();
 
                 Intent newIntent = new Intent(CommunityPageActivity.this, CaptionActivity.class);
