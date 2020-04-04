@@ -97,22 +97,10 @@ div {
     object-fit: contain;
 }
 
-/*====================*/
-.us {
-    display: flex;
-    flex-direction: row;
+.postmortem-text > p:not(:first-child) {
+    margin-top: 1rem;
 }
 
-.us > div {
-    flex: 1;
-    text-align: center;
-}
-
-.us > div > * {
-    text-align: left;
-}
-/*====================*/
-/*====================*/
 .team > div {
     display: flex;
     flex-direction: row;
@@ -136,7 +124,6 @@ div {
 .name {
     font-weight: bold;
 }
-/*====================*/
 
 footer {
     background-color: black;
