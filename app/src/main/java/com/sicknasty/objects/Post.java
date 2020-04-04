@@ -1,6 +1,7 @@
 
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 
 public class Post {
@@ -20,12 +21,17 @@ public class Post {
 
     private String path;
 
-    public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException{
+    public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException, CaptionTextException {
         if(page != null)
             this.pageId = page;
         else
             throw new NoValidPageException("Could not find a page to post to");
-        this.text = text;
+        //this will be changed when i do final refactoring
+        if(text.length()>255)
+            throw new CaptionTextException("Caption is too long; No more than 255 characters");
+        else{
+            this.text = text;
+        }
         this.userId = userId;
         this.path=path;
         this.timeCreated = System.currentTimeMillis();
