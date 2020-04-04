@@ -6,12 +6,10 @@ import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-import com.sicknasty.persistence.stubs.PagePersistenceStub;
-import com.sicknasty.persistence.stubs.UserPersistenceStub;
+import com.sicknasty.stubs.UserPersistenceStub;
 
 import org.junit.After;
 import org.junit.Before;

@@ -11,7 +11,7 @@ import com.sicknasty.objects.Post;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PostPersistence;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
-import com.sicknasty.persistence.stubs.PostPersistenceStub;
+import com.sicknasty.stubs.PostPersistenceStub;
 
 import org.junit.After;
 import org.junit.Before;

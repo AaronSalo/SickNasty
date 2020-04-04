@@ -11,7 +11,7 @@ import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
-import com.sicknasty.persistence.stubs.PagePersistenceStub;
+import com.sicknasty.stubs.PagePersistenceStub;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
