@@ -35,26 +35,23 @@ public interface PostPersistence {
      * Inserts a new Post.
      *
      * @param   post the Post object to insert into the database
-     * @return  returns true on successful insert, otherwise return false
      * @throws  DBPostIDExistsException this gets thrown if you attempt to insert an existing post
      */
-    public boolean insertNewPost(Post post) throws DBPostIDExistsException;
+    public void insertNewPost(Post post) throws DBPostIDExistsException;
 
     /**
      * Deletes a Post specified by it's unique ID.
      * 
      * @param   id  the unique ID of the Post
-     * @return  returns true on success, otherwise return false
      */
-    public boolean deletePost(int id);
+    public void deletePost(int id);
 
     /**
      * Deletes a Post specified by a Post object.
      * 
      * @param   post a Post object to delete
-     * @return  returns true on success, otherwise return false
      */
-    public boolean deletePost(Post post);
+    public void deletePost(Post post);
 
 //    /**
 //     * Fetches all comments that are under a Post

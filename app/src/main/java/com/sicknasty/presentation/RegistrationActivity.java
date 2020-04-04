@@ -17,7 +17,7 @@ import com.sicknasty.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    AccessUsers users=new AccessUsers();
+    AccessUsers users = new AccessUsers();
     AccessPages pages = new AccessPages();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(),infoText ,Toast.LENGTH_SHORT);
                     toast.show();
                 }//finally
-                }//onClickView
+            }//onClickView
         });
 
         //here we listen for a click, and attempt to register
