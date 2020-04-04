@@ -29,46 +29,30 @@ public class PagePersistenceStub implements PagePersistence {
     }
 
     @Override
-    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
-        if (page == null) return false;
-
+    public void insertNewPage(Page page) throws DBPageNameExistsException {
         String pageName = page.getPageName();
 
         if (pages.containsKey(pageName)) throw new DBPageNameExistsException(page.getPageName());
 
         this.pages.put(pageName, page);
-
-        return true;
     }
 
     @Override
-    public boolean deletePage(String name) {
-        if (name == null) return false;
-
-        Page result = this.pages.remove(name);
-
-        return result != null;
+    public void deletePage(String name) {
+        this.pages.remove(name);
     }
 
     @Override
-    public boolean deletePage(Page page) {
-        if (page == null) return false;
-
+    public void deletePage(Page page) {
         Page exisitingPost = this.pages.get(page.getPageName());
 
-        if (exisitingPost == null) {
-            return false;
+        if (exisitingPost != null) {
+            this.deletePage(exisitingPost.getPageName());
         }
-
-        // i dont like this.
-        // the existance of this function can be discussed
-        return this.deletePage(exisitingPost.getPageName());
     }
 
     @Override
-    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
-        if (page == null) return false;
-
+    public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
         ArrayList<User> localFollowers = this.followers.get(page.getPageID());
 
         if (localFollowers == null) {
@@ -81,27 +65,21 @@ public class PagePersistenceStub implements PagePersistence {
             throw new DBUserAlreadyFollowingException(user.getUsername(), page.getPageName());
 
         localFollowers.add(user);
-
-        return true;
     }
 
 	@Override
-	public boolean changeName(String oldName, String newName) {
+	public void changeName(String oldName, String newName) {
 		if (this.pages.containsKey(oldName)) {
 			Page oldPage = this.pages.get(oldName);
 			oldPage.changePageName(newName);
 
 			this.pages.remove(oldName);	
-			this.pages.put(newName, oldPage);	
-
-			return true;
+			this.pages.put(newName, oldPage);
 		}
-
-		return false;
 	}
 
     @Override
-    public ArrayList<String> getAllPageNames() {
+    public ArrayList<String> getAllCommunityPageNames() {
         ArrayList<String> returnResult = new ArrayList<String>();
 
         for (String name : this.pages.keySet()) {
