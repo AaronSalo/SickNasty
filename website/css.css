@@ -117,13 +117,24 @@ div {
     display: flex;
     flex-direction: row;
 }
+
+.team > div:not(:first-child) {
+    margin-top: 1rem;
+}
+
 .team > div > div:nth-child(1) {
     width: 25%;
     text-align: right;
     margin-right: 1rem;
+    font-weight: bold;
 }
+
 .team > div > div:nth-child(2) {
     width: 75%;
+}
+
+.name {
+    font-weight: bold;
 }
 /*====================*/
 
