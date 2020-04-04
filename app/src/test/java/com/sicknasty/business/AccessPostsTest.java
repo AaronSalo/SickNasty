@@ -47,7 +47,7 @@ public class AccessPostsTest {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
 
         Page newPage=new PersonalPage(new User("test", "test", "testing1234"));
         ArrayList<Post> test = accessPostStub.getPostsByPage(newPage);
@@ -61,7 +61,7 @@ public class AccessPostsTest {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
     }
 
     @Test
@@ -70,15 +70,15 @@ public class AccessPostsTest {
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
 
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
 
-        assertTrue("the deletion failed from the persistence stub", accessPostStub.deletePost(post));
+        accessPostStub.deletePost(post);
 
-        assertFalse("We somehow deleted the same post twice", accessPostStub.deletePost(post));
+        accessPostStub.deletePost(post);
 
         Post aDifferentPost = new Post("this is a test",newUser,null,1, 1, page);
 
-        assertFalse("deleted a post that was not inserted to the db", accessPostStub.deletePost(aDifferentPost));
+        accessPostStub.deletePost(aDifferentPost);
     }
     @Test
     public void deleteNullPost()

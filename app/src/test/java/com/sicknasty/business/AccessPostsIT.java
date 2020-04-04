@@ -48,7 +48,7 @@ public class AccessPostsIT {
 
         Post newPost = new Post("Caption is nice", user1, "some random path doesn't matter", 0, 0, user1.getPersonalPage());
 
-        assertTrue(posts.insertPost(newPost));
+        posts.insertPost(newPost);
         assertEquals(newPost.getNumberOfDislikes(),0);
         assertEquals(newPost.getNumberOfLikes(),0);
         assertEquals(newPost.getPageId(),user1.getPersonalPage());
@@ -56,7 +56,7 @@ public class AccessPostsIT {
         assertEquals(newPost.getText(),"Caption is nice");
         assertEquals(newPost.getUserId(),user1);
 
-        assertTrue(posts.deletePost(newPost));
+        posts.deletePost(newPost);
         users.deleteUser("jay1");
         System.out.println("Finished insertPostTest");
     }
@@ -70,10 +70,10 @@ public class AccessPostsIT {
         users.insertUser(user1);
         pages.insertNewPage(user1.getPersonalPage());
 
-        assertTrue(posts.insertPost(newPost));
-        assertFalse(posts.insertPost(newPost));     //it is adding same post twice
+        posts.insertPost(newPost);
+        posts.insertPost(newPost);     //it is adding same post twice
 
-        assertTrue(posts.deletePost(newPost.getPostID()));
+        posts.deletePost(newPost.getPostID());
         System.out.println("Finished duplicatePostTest");
 
     }
@@ -86,11 +86,11 @@ public class AccessPostsIT {
         pages.insertNewPage(user1.getPersonalPage());
         Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
 
-        assertTrue(posts.insertPost(newPost));
+        posts.insertPost(newPost);
         assertEquals(posts.getPostsByPage(page).size(),1);
         assertEquals(posts.getPostsByPage(page).get(0).getPostID(),newPost.getPostID());
 
-        assertTrue(posts.deletePost(newPost));
+        posts.deletePost(newPost);
 
         System.out.println("Finished testGetPost");
     }
@@ -106,8 +106,8 @@ public class AccessPostsIT {
 
         Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
 
-        assertTrue(posts.insertPost(newPost));
-        assertTrue(posts.deletePost(newPost));
+        posts.insertPost(newPost);
+        posts.deletePost(newPost);
 
         assertFalse(posts.getPostsByPage(page).remove(newPost));
 
@@ -123,7 +123,7 @@ public class AccessPostsIT {
         Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,page);
 
         assertFalse(posts.getPostsByPage(page).contains(newPost));
-        assertFalse(posts.deletePost(newPost));
+        posts.deletePost(newPost);
 
         System.out.println("Finished testNotExistPost");
 
@@ -140,8 +140,8 @@ public class AccessPostsIT {
 
         Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,page);
 
-        assertTrue(posts.insertPost(newPost));
-        assertTrue(posts.deletePost(newPost.getPostID()));
+        posts.insertPost(newPost);
+        posts.deletePost(newPost.getPostID());
 
         assertFalse(posts.getPostsByPage(page).contains(newPost));
 

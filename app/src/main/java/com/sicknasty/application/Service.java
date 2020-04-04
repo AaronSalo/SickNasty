@@ -1,12 +1,11 @@
 package com.sicknasty.application;
-import android.content.Context;
 import android.util.Log;
 
 import com.sicknasty.persistence.*;
 import com.sicknasty.persistence.sql.PagePersistenceHSQLDB;
 import com.sicknasty.persistence.sql.PostPersistenceHSQLDB;
 import com.sicknasty.persistence.sql.UserPersistenceHSQLDB;
-import com.sicknasty.persistence.stubs.*;
+
 
 import java.io.File;
 import java.io.IOException;

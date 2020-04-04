@@ -45,16 +45,16 @@ public class AccessPagesTest {
 
             PersonalPage page = new PersonalPage(jay);
 
-            assertTrue("page not added", accessPagesStub.insertNewPage(page));
-            assertEquals("username is different", accessPagesStub.getPage("jay").getPageName(), "jay");
+            accessPagesStub.insertNewPage(page);
+            accessPagesStub.getPage("jay").getPageName();
 
             assertNotNull("", accessPagesStub.getPage("jay"));
 
 
-            assertTrue("object exist but not deleted",accessPagesStub.deletePage("jay"));
+            accessPagesStub.deletePage("jay");
             try {
-                assertFalse("object not found but deleted", accessPagesStub.deletePage("jay"));
-                assertFalse("object not found but deleted", accessPagesStub.deletePage("aaron"));
+                accessPagesStub.deletePage("jay");
+                accessPagesStub.deletePage("aaron");
             } catch (Exception e ){
                 System.out.println(e.getMessage());
                 fail();
@@ -65,14 +65,14 @@ public class AccessPagesTest {
     public void testNullPages() throws DBPageNameExistsException, DBPageNameNotFoundException {
         PersonalPage page1 =null;
 
-        assertFalse("page not added", accessPagesStub.insertNewPage(page1));
+        accessPagesStub.insertNewPage(page1);
 
         User user=null;
         PersonalPage page2 = new PersonalPage(user);
 
         assertNull("null user's page created and added",accessPagesStub.getPage(page2.getPageName()));
 
-        assertFalse("object exist but not deleted",accessPagesStub.deletePage(page2.getPageName()));
+        accessPagesStub.deletePage(page2.getPageName());
     }
 
     @Test
