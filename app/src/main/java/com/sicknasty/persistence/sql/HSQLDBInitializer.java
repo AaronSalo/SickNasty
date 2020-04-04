@@ -18,7 +18,7 @@ class HSQLDBInitializer {
                         "username VARCHAR(32) PRIMARY KEY," +
                         "name VARCHAR(32) NOT NULL," +
                         "password VARCHAR(128) NOT NULL" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
@@ -34,7 +34,7 @@ class HSQLDBInitializer {
                         "FOREIGN KEY(creator_username) REFERENCES Users(username)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
@@ -46,7 +46,7 @@ class HSQLDBInitializer {
                         "FOREIGN KEY(creator_username) REFERENCES Users(username)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
@@ -58,7 +58,7 @@ class HSQLDBInitializer {
                         "FOREIGN KEY(pg_name) REFERENCES Pages(pg_name)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
@@ -72,7 +72,7 @@ class HSQLDBInitializer {
                         "FOREIGN KEY(pg_name) REFERENCES Pages(pg_name)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
@@ -89,7 +89,7 @@ class HSQLDBInitializer {
                         "FOREIGN KEY(receiver) REFERENCES Users(username)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE" +
-                        ")"
+                ")"
         );
         stmt.execute();
 
