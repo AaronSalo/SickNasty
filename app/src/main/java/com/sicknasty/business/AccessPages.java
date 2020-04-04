@@ -8,6 +8,8 @@ import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
 
+import java.util.ArrayList;
+
 /** @author aaron
  * wrapper for the page db
  * passes info from UI to the db and vise versa
@@ -66,4 +68,10 @@ public class AccessPages {
         pageHandler.addFollower(page, user);
     }
 
+    /**
+     * fetches all community pages names from the db
+     */
+    public ArrayList<String> getAllCommunityPages(){
+        return pageHandler.getAllCommunityPageNames();
+    }
 }//end of class
