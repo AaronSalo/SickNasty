@@ -1,5 +1,6 @@
 package com.sicknasty.persistence.sql;
 
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
@@ -68,7 +69,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
                 return this.postBuilder(result, pgSQL.getPage(pageName));
             }
-        } catch (SQLException | DBUsernameNotFoundException | DBPageNameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | DBPageNameNotFoundException | CaptionTextException e) {
             throw new DBGenericException(e);
         }
 
@@ -115,15 +116,12 @@ public class PostPersistenceHSQLDB implements PostPersistence {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                try {
                     retList.add(this.postBuilder(result, page));
-                } catch (NoValidPageException e){
-                    throw e;
-                }
+                    //it was throwing and catching the same exception
             }
 
             return retList;
-        } catch (SQLException | DBUsernameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | CaptionTextException e) {
             throw new DBGenericException(e);
         }
     }
@@ -211,7 +209,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
         this.deletePost(post.getPostID());
     }
     
-    private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException, NoValidPageException {
+    private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException, NoValidPageException, CaptionTextException {
         // this needs to be redone
         UserPersistenceHSQLDB uSQL = new UserPersistenceHSQLDB(this.path);
 
