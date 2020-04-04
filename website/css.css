@@ -12,6 +12,7 @@ body {
     font-size: 17px;
     display: flex;
     flex-direction: column;
+    color: white;
 }
 
 div {
@@ -23,11 +24,12 @@ div {
 }
 
 .wrapper > div {
-    padding: 2rem 15% 2rem 15%;
+    padding: 2rem 20% 2rem 20%;
+    background-color: #0f4b64;
 }
 
 .wrapper > div:nth-of-type(even) {
-    background-color: #dbdbdb;
+    background-color: #123352;
 }
 
 .welcome {
@@ -37,7 +39,8 @@ div {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 1rem 15% 1rem 15% !important;
+    padding: 1rem 0 1rem 0 !important;
+    background-color: #232e3a !important;
 }
 
 .welcome-header {
@@ -60,6 +63,7 @@ div {
     font-weight: bold;
     text-align: center !important;
     margin-bottom: 1rem;
+    color: #fede54;
 }
 
 .information {
