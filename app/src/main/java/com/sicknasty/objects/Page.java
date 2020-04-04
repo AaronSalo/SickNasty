@@ -17,12 +17,14 @@ public abstract class Page {
     public Page(User creator) {
         pageID++;
         this.id = pageID;
-        if(creator!=null){
-            followers=new ArrayList<>();
+
+        if (creator != null){
             this.creator = creator;
+
+            followers = new ArrayList<>();
             pageName = creator.getUsername();
             followers.add(creator);
-            postList=new ArrayList<>();
+            postList = new ArrayList<>();
         }
     }
 
@@ -32,13 +34,11 @@ public abstract class Page {
     }
 
     public void setPageName(String pageName) throws InvalidCommunityPageNameException {
-        if(pageName.length() < 3){
+        if (pageName.length() < 3){
             throw new InvalidCommunityPageNameException("Page Name cannot be less than 3 characters");              //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
-        }
-        else if(pageName.length()  > 12){
+        } else if (pageName.length() > 12){
             throw new InvalidCommunityPageNameException("Page name cannot be more than 12 characters");
-        }
-        else {
+        } else {
             this.pageName = pageName;
         }
     }

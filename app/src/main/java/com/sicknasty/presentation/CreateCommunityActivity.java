@@ -25,6 +25,7 @@ import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 public class CreateCommunityActivity extends AppCompatActivity {
     private User currUser = null;
     private AccessPages pages;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class CreateCommunityActivity extends AppCompatActivity {
         AccessUsers users = new AccessUsers();
 
         SharedPreferences preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
-        final String loggerInUser =  preferences.getString("username",null);
+        final String loggerInUser = preferences.getString("username",null);
 
         try {
             currUser = users.getUser(loggerInUser);

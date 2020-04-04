@@ -30,16 +30,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
         final ViewHolder viewHolder;
-        if(convertView == null){
+
+        if (convertView == null){
+            LayoutInflater layoutInflate = LayoutInflater.from(getContext());
+
+            view = layoutInflate.inflate(resourceId, null);
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder.ivImage = view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
 
             view.setTag(viewHolder);
-        }else{
+        } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }

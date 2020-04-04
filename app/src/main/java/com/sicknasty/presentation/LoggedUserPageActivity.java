@@ -2,6 +2,7 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -29,8 +30,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoggedUserPageActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class LoggedUserPageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
@@ -40,6 +42,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
 
     public User curUser;
     public String pageName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,33 +50,38 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_page);
 
         ListView lvPost = findViewById(R.id.lvPost);         //listView of posts
+        ImageView settings = findViewById(R.id.settings);
         TextView followers = findViewById(R.id.followers);
         TextView following = findViewById(R.id.following);
         TextView numberOfPosts = findViewById(R.id.posts);
-        Button postButton = findViewById(R.id.postButton);
         TextView name = findViewById(R.id.profileName);
-        Button searchButton = findViewById(R.id.searchButton);
-        ImageView settings = findViewById(R.id.settings);
 
+        Button postButton = findViewById(R.id.postButton);
+        Button searchButton = findViewById(R.id.searchButton);
         Button communityListButton = findViewById(R.id.communityListButton);
 
+        SharedPreferences preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        final String loggedInUser = preferences.getString("username", null);
 
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         pageName = loggedInUser;
         PostAdapter postAdapter = null;
         int numOfPosts = 0;      //this indicates how many posts this page/user has
+
         try {
             curUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-            numOfPosts = posts.getPostsByPage(page).size();
+            ArrayList<Post> pagePosts = posts.getPostsByPage(page);
+
+            postAdapter = new PostAdapter(this, R.layout.activity_post, pagePosts);
+            numOfPosts = pagePosts.size();
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
         name.setText(curUser.getName());
-        followers.setText(""+(int)(100*Math.random()));
-        numberOfPosts.setText(""+numOfPosts);
-        following.setText(""+(int)(100*Math.random()));
+        followers.setText("" + (int) (100 * Math.random()));
+        numberOfPosts.setText("" + numOfPosts);
+        following.setText("" + (int) (100 * Math.random()));
         lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +95,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
+                Intent searchIntent = new Intent(LoggedUserPageActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
             }
         });
@@ -102,30 +110,30 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         communityListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent showCommunityListIntent=new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
+                Intent showCommunityListIntent = new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
                 startActivity(showCommunityListIntent);
             }
         });
 
     }
 
-    private void chooseImageHelper()
-    {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions,PERMISSION_CODE);
-            }
-            else{
+    private void chooseImageHelper() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+            if (hasReadPermission == PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            } else{
                 //access granted
                 chooseImage();
             }
-        }
-        else {
+        } else {
             //ose is less than marshmallow
             chooseImage();
         }
     }
+
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -135,12 +143,11 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     chooseImage();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied!!",Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(this,"Permission denied!!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
