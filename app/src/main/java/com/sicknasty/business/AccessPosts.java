@@ -41,25 +41,22 @@ public class AccessPosts {
 
     /**
      *@param    post   the post we want to insert into the db
-     *@return true if the post was successful, false if the post was unsuccessful
      */
-    public boolean insertPost(Post post) throws DBPostIDExistsException {
-        return postHandler.insertNewPost(post);
+    public void insertPost(Post post) throws DBPostIDExistsException {
+        postHandler.insertNewPost(post);
     }
 
     /**
      *@param    id   the id of the post we want to delete from the db
-     *@return true if the deletion was successful, false if the deletion was unsuccessful
      */
-    public boolean deletePost(int id) {
-        return postHandler.deletePost(id);
+    public void deletePost(int id) {
+        postHandler.deletePost(id);
     }
 
     /**
      *@param    post    the post we want to delete from the db
-     *@return true if the deletion was successful, false if the deletion was unsuccessful
      */
-    public boolean deletePost(Post post) {
-        return postHandler.deletePost(post);
+    public void deletePost(Post post) {
+        postHandler.deletePost(post);
     }
 }
