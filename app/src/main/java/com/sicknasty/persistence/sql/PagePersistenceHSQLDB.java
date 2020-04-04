@@ -198,14 +198,14 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 	}
 
     @Override
-    public ArrayList<String> getAllPageNames() {
+    public ArrayList<String> getAllCommunityPageNames() {
         ArrayList<String> returnNames = new ArrayList<String>();
 
         try {
             Connection db = this.getConnection();
 
             PreparedStatement stmt = db.prepareStatement(
-                    "SELECT pg_name FROM Pages"
+                    "SELECT pg_name FROM Pages WHERE type = 1"
             );
 
             ResultSet result = stmt.executeQuery();

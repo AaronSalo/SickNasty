@@ -270,4 +270,24 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 //            throw new DBGenericException(e);
 //        }
 //    }
+
+//    @Override
+//    public void addComment(Comment comment) {
+//        try {
+//            Connection db = this.getConnection();
+//
+//            PreparedStatement stmt = db.prepareStatement(
+//                "INSERT INTO Comments VALUES(?, ?, ?, ?)"
+//            );
+//
+//            stmt.setString(1, /* commenter username */);
+//            stmt.setInt(2, /* post id comment belongs to */);
+//            stmt.setString(3, /* the text content */);
+//            stmt.setLong(4, /* the time sent (in millis) */);
+//
+//            stmt.execute();
+//        } catch (SQLException e) {
+//            throw new DBGenericException(e);
+//        }
+//    }
 }
