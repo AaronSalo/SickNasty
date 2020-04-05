@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        UserTest.class,
         AccessUsersTest.class,
         AccessPagesTest.class,
         AccessPostsTest.class

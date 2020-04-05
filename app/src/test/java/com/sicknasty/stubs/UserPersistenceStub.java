@@ -1,4 +1,4 @@
-package com.sicknasty.persistence.stubs;
+package com.sicknasty.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
