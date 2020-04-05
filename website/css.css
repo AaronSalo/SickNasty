@@ -101,7 +101,8 @@ div {
     object-fit: contain;
 }
 
-.postmortem-text > p:not(:first-child) {
+.postmortem-text > p:not(:first-child),
+.information > div > div > p:not(:first-child) {
     margin-top: 1rem;
 }
 
@@ -123,6 +124,11 @@ div {
 
 .team > div > div:nth-child(2) {
     width: 75%;
+}
+
+.team-info > p:nth-child(1) {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
 }
 
 .name {
