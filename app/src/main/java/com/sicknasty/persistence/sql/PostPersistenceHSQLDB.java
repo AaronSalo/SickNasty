@@ -210,7 +210,6 @@ public class PostPersistenceHSQLDB implements PostPersistence {
     }
     
     private Post postBuilder(ResultSet result, Page page) throws SQLException, DBUsernameNotFoundException, NoValidPageException, CaptionTextException {
-        // this needs to be redone
         UserPersistenceHSQLDB uSQL = new UserPersistenceHSQLDB(this.path);
 
         Post returnPost = new Post(

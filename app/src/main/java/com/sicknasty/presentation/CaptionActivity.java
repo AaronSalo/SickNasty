@@ -67,16 +67,15 @@ public class CaptionActivity extends AppCompatActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String captionText=caption.getText().toString();
-                    try {
-                        Post newPost = new Post(captionText, curUser ,uri,0,0,currPage);
-                        posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
-                        goToHome();
-                    } catch (DBPostIDExistsException | NoValidPageException | CaptionTextException e) {
-                        // if this gets tripped, you have done something wrong
-                        // -Lucas
-                        Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                String captionText = caption.getText().toString();
+
+                try {
+                    Post newPost = new Post(captionText, curUser, uri, 0, 0, currPage);
+                    posts.insertPost(newPost);          //only insert after adding a caption(move to captionActivity)
+                    goToHome();
+                } catch (DBPostIDExistsException | NoValidPageException | CaptionTextException e) {
+                    Toast.makeText(CaptionActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
