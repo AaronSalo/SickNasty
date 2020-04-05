@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:textAlignment="viewStart"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/tertiary_text_dark"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -64,7 +64,7 @@
         android:layout_marginTop="10dp"
         android:hint="Enter a Comment"
         android:textAlignment="viewStart"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -76,11 +76,11 @@
         android:id="@+id/commentButton"
         android:layout_width="180dp"
         android:layout_height="40dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:background="@android:color/darker_gray"
         android:text="Comment"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/commentEditText" />
+        app:layout_constraintEnd_toEndOf="@id/commentEditText"
+        app:layout_constraintTop_toTopOf="@+id/commentEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

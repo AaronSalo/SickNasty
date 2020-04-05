@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.sicknasty.business.AccessPosts;
 import com.sicknasty.objects.*;
 import com.sicknasty.R;
 import com.sicknasty.presentation.LoggedUserPageActivity;
@@ -29,6 +30,9 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
+
+    AccessPosts posts = new AccessPosts(); //get a reference to posts
+
     LoggedUserPageActivity pageActivity;
     Post post;
     private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
@@ -68,8 +72,15 @@ public class  PostAdapter extends ArrayAdapter<Post> {
                     String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
 
                     Comment newComment = new Comment(pageActivity.currUser, content, 1);
+                    viewHolder.commentEditText.getText().clear(); //remove the text
+                    //add the comment to the db
+                    posts.addComment(newComment);
+                    //update the commentView to include the comment
+                    viewHolder.commentView.setText(viewHolder.commentView.getText() + "\n" +
+                            pageActivity.currUser.getUsername() + ": " + newComment.getContent());
                 }
             });
+
         }else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
