@@ -59,7 +59,6 @@ public abstract class Page {
         pageName = newName;
     }
 
-    //package private
     public ArrayList<User> getFollowers() {
         return followers;
     }
