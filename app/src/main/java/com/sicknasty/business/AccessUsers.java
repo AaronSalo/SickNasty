@@ -68,10 +68,8 @@ public class AccessUsers {
 
     public User getUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
         User user = userHandler.getUser(username);
-        if (user != null)
-            return user;
-        else
-            throw new UserNotFoundException("Could not find a user with that username");
+//
+        return user;
     }
 
 

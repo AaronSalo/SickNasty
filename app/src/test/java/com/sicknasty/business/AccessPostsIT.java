@@ -1,6 +1,7 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
@@ -39,7 +40,7 @@ public class AccessPostsIT {
         pages=new AccessPages();
     }
     @Test
-    public void testInsertPost() throws UserNotFoundException, NoValidPageException, DBUsernameNotFoundException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
+    public void testInsertPost() throws UserNotFoundException, NoValidPageException, DBUsernameNotFoundException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
 
         System.out.println("Starting insertPostTest::");
         User user1=new User("Jay K","jay1","1234567");
@@ -62,7 +63,7 @@ public class AccessPostsIT {
     }
 
     @Test(expected = DBPostIDExistsException.class)
-    public void testDuplicatePost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
+    public void testDuplicatePost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Starting duplicatePostTest::");
         User user1=new User("Jay K","jay1","1234567");
         Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
@@ -78,7 +79,7 @@ public class AccessPostsIT {
 
     }
     @Test
-    public void testGetPost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBPageNameExistsException, DBUsernameExistsException {
+    public void testGetPost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBPageNameExistsException, DBUsernameExistsException, CaptionTextException {
         User user1=new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);
 
@@ -95,7 +96,7 @@ public class AccessPostsIT {
         System.out.println("Finished testGetPost");
     }
     @Test
-    public void testRemovePost() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
+    public void testRemovePost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Started testRemovePost");
 
         User user1=new User("Jay K","jay1","1234567");
@@ -114,7 +115,7 @@ public class AccessPostsIT {
         System.out.println("Finished testRemovePost");
     }
     @Test
-    public void testNotExistPost() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException{
+    public void testNotExistPost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, CaptionTextException {
         System.out.println("Started testNotExist");
 
         User user1=new User("Jay K","jay1","1234567");
@@ -130,7 +131,7 @@ public class AccessPostsIT {
     }
 
     @Test
-    public void testDeleteById() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException {
+    public void testDeleteById() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Started testDeleteById");
         User user1=new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);

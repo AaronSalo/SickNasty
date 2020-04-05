@@ -1,11 +1,14 @@
 package com.sicknasty.business;
 
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
+import com.sicknasty.objects.Post;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
@@ -24,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 public class AccessPagesTest {
 
     private AccessPages accessPagesStub;
+    private AccessUsers accessUsers;
     private AccessPages accessPagesMock;
 
 
@@ -31,7 +35,6 @@ public class AccessPagesTest {
     public final void setup()
     {
         PagePersistence pagePersistenceStub,pagePersistenceMock;
-
         pagePersistenceStub = new PagePersistenceStub();
         pagePersistenceMock = mock(PagePersistence.class);
 
@@ -76,9 +79,18 @@ public class AccessPagesTest {
     }
 
     @Test
-    public void testInsertedFields()
-    {
+    public void testInsertedFields() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, CaptionTextException, NoValidPageException {
         //use mockito
+        final int TEST_ID = 0;
+        User user = new User("Jay K","jay1","strongpass");
+        //acces
+        Page newPage = new PersonalPage(user);
+
+        Post newPost = new Post("helloUser",user,"test",0,0,newPage);
+
+
+
+
     }
 
     @Test

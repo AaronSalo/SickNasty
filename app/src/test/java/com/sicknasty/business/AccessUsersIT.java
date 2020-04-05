@@ -146,8 +146,7 @@ public class AccessUsersIT {
     }
 
     @Test
-    public void testMessageOrder() {
-        try {
+    public void testMessageOrder() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
             String username = "user1";
             String username1 = "user2";
             User user1 = new User("user 1", username, "password");
@@ -166,9 +165,6 @@ public class AccessUsersIT {
 
             assertEquals(users.getMessages(user1, user2).get(0).getMsg(), msg.getMsg());
             assertNotEquals(users.getMessages(user1, user2).get(2).getMsg(), msg.getMsg());
-        }catch (Exception e){
-            fail();
-        }
     }
 
 
@@ -186,11 +182,18 @@ public class AccessUsersIT {
             Message msg = new Message("", user1, user2);
             users.addMessage(msg);
 
-            Message msg1 = new Message("sjnjknfkjesktbkjerdkjgjdngjdkjfngk" +
+            msg = new Message("sjnjknfkjesktbkjerdkjgjdngjdkjfngk" +
                         "jbdfkjgbkjdbgkjbdkjxbcvkjdfbkbksdbkvbdskfbvkbedkfbgkerbdfkgb" +
                         "kdbvkdbfkvbrkdbklebdkvbkdbflkgkdbvkdbkbvdkbvkbvkbfkjgjfhkfngkd" +
                         "bfgbskgverkhgiuvhsgiersdlgdlvdblgsbdfgbcerldgbidbfgkbcludfbgiulcd" +
                         "fuigildkjbg", user2, user1);
-            users.addMessage(msg1);
+            users.addMessage(msg);
+    }
+
+    @Test
+    public void testDifferentUsersMessage(){
+
+
+
     }
 }
