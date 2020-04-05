@@ -52,4 +52,4 @@ This layer contains three persistence interfaces (and their concrete classes) th
     - UserPersistenceHSQLDB that contains real calls to the persistent database.
   
 ## Diagram
-![](diagram.sv)
+![](diagram.svg)
