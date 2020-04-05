@@ -6,32 +6,28 @@ The Business layer will handle the interaction between the Presentation and Pers
 Along side the three layers, we also have Domain Specific Objects (DSOs) that get passed around to each of the different layers.  
   
 ## Presentation Layer
-This layer contains several different activities and adapters:
-1. adapter/MessageAdapter
-    - This adapter class is responsible for managing how messages get laid out on the screen (message details, date, which side it resides on).
-2. adapter/PostAdapter
-    - This adapter class provides the translation from the Post object into it's correct view object. This class creates the correct TextViews and ImageViews based on the contents of the Post object.
-3. CaptionActivity
+This layer contains several different activities:
+1. CaptionActivity
     - This activity is responsible for accepting a potential caption from the user after they select media from their device to post.
-4. CommunityListPageActivity
+2. CommunityListPageActivity
     - This activity is responsible for navigation to CommunityPages. It shows a list of buttons of all the CommunityPages.
-5. CommunityPageActivity
+3. CommunityPageActivity
     - This activity is showcases all the Posts that were posted to this CommunityPage. It also contains the button to allow others to post to this page.
-6. CreateCommunityActivity
+4. CreateCommunityActivity
     - This activity contains all the fields required to create a brand new CommunityPage.
-7. LoggedUserPageActivity
+5. LoggedUserPageActivity
     - This activity loads the personal page of the that is currently logged in.
-8. LoginActivity
+6. LoginActivity
     - This activity is the landing zone for new or returning users. Existing users will login here.
-9. MessageActivity
+7. MessageActivity
     - This activity is launched from another user's PersonalPage. It is the activity responsible for displaying and sending private messages between two people.
-10. OtherUserPageActivity
+8. OtherUserPageActivity
     - This activity is similar to LoggedUserPageActivity, except this activity is ment for other users and does not contain a "post" or "change account details" button.
-11. RegistrationActivity
+9. RegistrationActivity
     - This activity is can be launched from the LoginActivity. This is where new users come to create a new account.
-12. SearchActivity
+10. SearchActivity
     - This activity shows the names of all Users that have accounts. Pressing on any one of the names will launch OtherUserPageActivity.
-13. UserAccountActivity
+11. UserAccountActivity
     - This activity will give the user the ability to change their personal details pertaining to their user account.
   
 ## Business
@@ -56,3 +52,4 @@ This layer contains three persistence interfaces (and their concrete classes) th
     - UserPersistenceHSQLDB that contains real calls to the persistent database.
   
 ## Diagram
+![](diagram.sv)
