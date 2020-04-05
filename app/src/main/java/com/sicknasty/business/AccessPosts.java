@@ -1,6 +1,7 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
@@ -61,5 +62,13 @@ public class AccessPosts {
      */
     public boolean deletePost(Post post) {
         return postHandler.deletePost(post);
+    }
+
+    public void addComment(Comment comment) {
+        this.postHandler.addComment(comment);
+    }
+
+    public ArrayList<Comment> getComments(Post post) {
+        return this.postHandler.getCommentsByPost(post, 10, PostPersistence.FILTER_BY.TIME_CREATED, false);
     }
 }

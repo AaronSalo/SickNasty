@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.sicknasty.business.AccessPosts;
 import com.sicknasty.objects.*;
 import com.sicknasty.R;
+import com.sicknasty.persistence.sql.PostPersistenceHSQLDB;
 import com.sicknasty.presentation.LoggedUserPageActivity;
 
 import android.content.Context;
@@ -31,6 +33,8 @@ public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
     LoggedUserPageActivity pageActivity;
     Post post;
+    AccessPosts logicPosts = new AccessPosts();
+
     private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
 
     public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
@@ -67,7 +71,13 @@ public class  PostAdapter extends ArrayAdapter<Post> {
                     //create a comment obj
                     String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
 
-                    Comment newComment = new Comment(pageActivity.currUser, content, 1);
+                    Comment newComment = new Comment(pageActivity.currUser, content, post.getPostID());
+
+                    Log.e("COMMENT", "creating comment");
+                    Log.e("COMMENT", String.valueOf(post.getPostID()));
+
+                    post.addComment(newComment);
+                    logicPosts.addComment(newComment);
                 }
             });
         }else{
@@ -90,13 +100,14 @@ public class  PostAdapter extends ArrayAdapter<Post> {
 
 
             //display the comments
-            ArrayList<Comment> comments = post.getComments();
+//            ArrayList<Comment> comments = post.getComments();
+            ArrayList<Comment> comments = logicPosts.getComments(this.post);
 
             if(!comments.isEmpty()) { //if we have comments on the post
 
                 String commentText = "";
                 //insert the text from all the comments into a string
-                for (int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
+                for (int i = 0; i < (comments.size() > MAX_COMMENTS_PER_POST ? MAX_COMMENTS_PER_POST : comments.size()); i++) {
                     String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
                     String commentContent = comments.get(i).getContent(); //get the comment itself
                     commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
