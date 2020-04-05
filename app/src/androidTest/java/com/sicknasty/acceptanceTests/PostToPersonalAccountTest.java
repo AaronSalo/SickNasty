@@ -51,6 +51,7 @@ public class PostToPersonalAccountTest {
     @Test
     public void followPagesFromAccessedAccount()
     {
+        //login
         SystemClock.sleep(2500);
 
         onView(withId(R.id.userName)).perform(typeText("notbob123"),closeSoftKeyboard());
@@ -64,27 +65,35 @@ public class PostToPersonalAccountTest {
 
 
         SystemClock.sleep(1000);
+        //accept the permission to view storage automatuic
         GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        //have an intent
         SystemClock.sleep(1000);
         Matcher<Intent> matcher = allOf(hasAction(Intent.ACTION_PICK),hasData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
 
         intending(matcher).respondWith(create());
 
+
         onView(withId(R.id.postButton)).perform(click());
 
         SystemClock.sleep(1000);
+        //then match intent
         intended(matcher);
     }
     private Instrumentation.ActivityResult create(){
+        //get resources
         Resources resources  = InstrumentationRegistry.getInstrumentation().getContext().getResources();
 
+        //calculate uri
         Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                         resources.getResourcePackageName(R.drawable.ic_launcher_foreground)+"/"+
                         resources.getResourceTypeName(R.drawable.ic_launcher_foreground)+"/"+
                         resources.getResourceEntryName(R.drawable.ic_launcher_foreground));
         Intent newIntent = new Intent();
+        //give it for startACtivityResult
         newIntent.setData(imageUri);
+        //then return the activity result
         return new Instrumentation.ActivityResult(RESULT_OK,newIntent);
     }
 

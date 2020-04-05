@@ -47,7 +47,9 @@ public class FollowPagesTest {
     public ActivityTestRule<LoginActivity> activityActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Before
-    public void login() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBPageNameExistsException {
+    public void login() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBPageNameExistsException
+    {
+        //insert a new user and login with predefined user
         userPersistence = Service.getUserData();
         pagePersistence = Service.getPageData();
         user = new User("JAAAY K","JAY$$","1234567");
@@ -85,11 +87,13 @@ public class FollowPagesTest {
     {
         SystemClock.sleep(1000);
 
+        //search for the user type the name
         onView(withId(R.id.searchButton)).perform(click());
         SystemClock.sleep(1000);
 
         onView(allOf(withText("texanwits"),isDisplayed())).perform(click());
 
+        //hit follow
         SystemClock.sleep(1000);
         onView(withId(R.id.followButton)).perform(click());
 
@@ -105,6 +109,7 @@ public class FollowPagesTest {
         onView(withId(R.id.searchButton)).perform(click());
         SystemClock.sleep(1000);
 
+        //search for the keyword
         onView(withId(R.id.search_view)).perform(typeText("JA"));
         SystemClock.sleep(1000);
 
@@ -115,13 +120,14 @@ public class FollowPagesTest {
 
 
         SystemClock.sleep(5000);
-
+        //got to homw and play with it more searches and text matching in search_view
         onView(withId(R.id.home)).perform(click());
         SystemClock.sleep(1000);
 
         onView(withId(R.id.searchButton)).perform(click());
         SystemClock.sleep(1000);
 
+        //trying to hit follow multiple times tells you that u have alreaady followed
         onView(withId(R.id.search_view)).perform(typeText("JA"),closeSoftKeyboard());
         SystemClock.sleep(1000);
         onView(allOf(withText("JAY$$"),isDisplayed())).perform(click());
@@ -143,6 +149,7 @@ public class FollowPagesTest {
 
         SystemClock.sleep(5000);
 
+        //ultimately plan to exit
         onView(withId(R.id.home)).perform(click());
         SystemClock.sleep(1000);
 

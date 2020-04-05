@@ -33,6 +33,8 @@ public class CommunityCreationAndFollowTest {
     @Before
     public void login()
     {
+
+        //default login details
         SystemClock.sleep(2500);
         Espresso.closeSoftKeyboard();
         SystemClock.sleep(1000);
@@ -47,6 +49,7 @@ public class CommunityCreationAndFollowTest {
     @After
     public void logout()
     {
+        //logout from the app
         SystemClock.sleep(1000);
         onView(withId(R.id.settings)).perform(click());
         SystemClock.sleep(1000);
@@ -57,10 +60,12 @@ public class CommunityCreationAndFollowTest {
     @Test
     public void testCommunityCreation()
     {
+        //try to view communities
         SystemClock.sleep(1000);
         onView(withId(R.id.communityListButton)).perform(click());
         SystemClock.sleep(1000);
 
+        //create bunch of communities
         onView(withId(R.id.createCommunityButton)).perform(click());
         SystemClock.sleep(1000);
         onView(withId(R.id.communityNameAdder)).perform(typeText("COMPUTER"));
@@ -82,6 +87,7 @@ public class CommunityCreationAndFollowTest {
         onView(withId(R.id.addCommunity)).perform(click());
         SystemClock.sleep(1000);
 
+        //go to a particular community and test follow button
         onView(withText("COMPUTER")).perform(click());
         SystemClock.sleep(1000);
 
@@ -91,6 +97,7 @@ public class CommunityCreationAndFollowTest {
         pressBack();
         SystemClock.sleep(1000);
 
+        //select more community pages and try to follow
         onView(withText("ARTS")).perform(click());
         SystemClock.sleep(1000);
 
@@ -115,6 +122,7 @@ public class CommunityCreationAndFollowTest {
         onView(withId(R.id.communityfollowButton)).perform(click());
         SystemClock.sleep(1000);
 
+        //ultimately go back and exit
         pressBack();
         SystemClock.sleep(1000);
         pressBack();

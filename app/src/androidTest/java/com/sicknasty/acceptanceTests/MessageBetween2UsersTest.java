@@ -8,7 +8,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.sicknasty.R;
-import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.presentation.LoginActivity;
 
 import org.junit.Rule;
@@ -35,6 +34,7 @@ public class MessageBetween2UsersTest {
     @Test
     public void testInteractionBetweenUsers()
     {
+        //try to login for one user
         SystemClock.sleep(2500);
         Espresso.closeSoftKeyboard();
         SystemClock.sleep(1000);
@@ -48,6 +48,7 @@ public class MessageBetween2UsersTest {
 
         SystemClock.sleep(1000);
 
+        //find the message button through search
         onView(withId(R.id.searchButton)).perform(click());
         SystemClock.sleep(1000);
 
@@ -63,6 +64,7 @@ public class MessageBetween2UsersTest {
         onView(withId(R.id.messageButton)).perform(click());
         SystemClock.sleep(1000);
 
+        //enter a bunch of messages
         onView(withId(R.id.messageEntered)).perform(typeText("hey engineer!! what's up"));
         SystemClock.sleep(1000);
         onView(withId(R.id.sendMessage)).perform(click());
@@ -75,6 +77,7 @@ public class MessageBetween2UsersTest {
 
         pressBack();
 
+        //go back and logout and login using diffeent account
         SystemClock.sleep(1000);
         onView(withId(R.id.home)).perform(click());
 
@@ -85,6 +88,7 @@ public class MessageBetween2UsersTest {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.logout)).perform(click());
 
+        //follow same steps
         SystemClock.sleep(2500);
         Espresso.closeSoftKeyboard();
         SystemClock.sleep(1000);
@@ -106,6 +110,7 @@ public class MessageBetween2UsersTest {
         SystemClock.sleep(1000);
 
 
+        //enter a few messages to the return user and we can see we have received
         onView(withId(R.id.messageButton)).perform(click());
         SystemClock.sleep(1000);
 
@@ -121,7 +126,7 @@ public class MessageBetween2UsersTest {
 
         pressBack();
         SystemClock.sleep(1000);
-
+        //we can see how the messages are displayed
         SystemClock.sleep(1000);
         onView(withId(R.id.home)).perform(click());
 
