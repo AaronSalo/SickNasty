@@ -49,14 +49,28 @@
         android:id="@+id/commentView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="10dp"
         android:textAlignment="viewStart"
-        android:textSize="25dp"
         android:textColor="@android:color/darker_gray"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/commentEditText"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:hint="Enter a Comment"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentView" />
+
 
     <Button
         android:id="@+id/commentButton"
@@ -67,6 +81,6 @@
         android:text="Comment"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/commentView" />
+        app:layout_constraintTop_toBottomOf="@+id/commentEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

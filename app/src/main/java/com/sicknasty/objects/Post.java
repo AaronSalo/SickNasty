@@ -29,6 +29,7 @@ public class Post {
         else
             throw new NoValidPageException("Could not find a page to post to");
         this.text = text;
+        this.comments = new ArrayList<Comment>();
         this.userId = userId;
         this.path=path;
         this.timeCreated = System.currentTimeMillis();

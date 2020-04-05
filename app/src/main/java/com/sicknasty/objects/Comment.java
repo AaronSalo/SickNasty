@@ -6,22 +6,27 @@ public class Comment {
 
     private String content;
     private User user;
-    private Date timePosted;
+    private int postId;
+    private long timePosted;
 
-    /*
-    @userCommenting the user that is commenting
-    @content the comments' content (just a string)
+    /**
+     * @param userCommenting - the user commenting
+     * @param content - the content of the comment
+     * @param postId - the id the comment is on
      */
-    public Comment (User userCommenting, String content) {
+    public Comment (User userCommenting, String content, int postId) {
         this.user = userCommenting;
         this.content = content;
-        timePosted = new Date(System.currentTimeMillis());
+        this.postId = postId;
+        timePosted = System.currentTimeMillis();
     }
+
+    public int getPostId(){ return postId; }
 
     public String getContent() { return content; }
 
     public User getUser() { return user; }
 
-    public Date getTimePosted() { return timePosted; }
+    public long getTimePosted() { return timePosted; }
 
 }

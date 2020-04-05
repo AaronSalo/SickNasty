@@ -40,7 +40,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     AccessPages pages = new AccessPages();
     AccessPosts posts = new AccessPosts();
 
-    public User curUser;
+    public User currUser;
     Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
     public String pageName = "";
     @Override
@@ -65,14 +65,14 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         PostAdapter postAdapter = null;
         int numOfPosts = 0;      //this indicates how many posts this page/user has
         try {
-            curUser = users.getUser(loggedInUser);
+            currUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
             numOfPosts = posts.getPostsByPage(page).size();
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        name.setText(curUser.getName());
+        name.setText(currUser.getName());
         followers.setText(""+(int)(100*Math.random()));
         numberOfPosts.setText(""+numOfPosts);
         following.setText(""+(int)(100*Math.random()));

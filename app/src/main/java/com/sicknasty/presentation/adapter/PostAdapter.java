@@ -1,11 +1,13 @@
 package com.sicknasty.presentation.adapter;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.sicknasty.objects.*;
 import com.sicknasty.R;
+import com.sicknasty.presentation.LoggedUserPageActivity;
 
 import android.content.Context;
 import android.view.View;
@@ -16,6 +18,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import android.view.LayoutInflater;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,10 +29,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
+    LoggedUserPageActivity pageActivity;
+    Post post;
     private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
 
     public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
         super(context,resource,posts);
+        pageActivity = (LoggedUserPageActivity) context;
         resourceId = resource;
     }
 
@@ -42,18 +49,33 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             view = LayoutInflater.from(getContext()).inflate(//convertView is null represent layout is not loaded, and it mean that getView is not called
                     resourceId, null);
 
+            //set up the viewHolder
             viewHolder.ivImage =  view.findViewById(R.id.ivImage);
             viewHolder.userName = view.findViewById(R.id.userName);
             viewHolder.textView = view.findViewById(R.id.textView);
             viewHolder.commentView = view.findViewById(R.id.commentView);
-
+            viewHolder.commentButton = view.findViewById(R.id.commentButton);
+            viewHolder.commentEditText = view.findViewById(R.id.commentEditText);
             view.setTag(viewHolder);
+
+
+            //set up the button listener
+            //this will handle what happens when the "comment" button is pressed
+            viewHolder.commentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //create a comment obj
+                    String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
+
+                    Comment newComment = new Comment(pageActivity.currUser, content, 1);
+                }
+            });
         }else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        Post post =getItem(getCount()-position-1);           //give a post position in layout(now it displays the most recent one)
+        post = getItem(getCount()-position-1);           //give a post position in layout(now it displays the most recent one)
 
 
         //get the path from the post and display it
@@ -66,34 +88,42 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
 
+
+            //display the comments
             ArrayList<Comment> comments = post.getComments();
 
             if(!comments.isEmpty()) { //if we have comments on the post
 
                 String commentText = "";
                 //insert the text from all the comments into a string
-                for(int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
+                for (int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
                     String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
                     String commentContent = comments.get(i).getContent(); //get the comment itself
                     commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
                 }
 
-                if(comments.size() > MAX_COMMENTS_PER_POST)
+                if (comments.size() > MAX_COMMENTS_PER_POST)
                     commentText += "See all " + comments.size() + " comments..."; //show the user there are more comments we arent showing
-                    //TODO add link to Comment activity, where we show all the comments
+                //TODO add link to Comment activity, where we show all the comments
 
                 //set the commentViews text
                 viewHolder.commentView.setText(commentText); //set the text in the xml
+            } else { //no comments... reduce the width of the comment view
+                viewHolder.commentView.setWidth(1);
             }
         }
 
         return view;
     }
-}
+
+
+}//PostAdapter
 class ViewHolder{
     ImageView ivImage;
     TextView textView;
     TextView userName;
     TextView commentView;
+    EditText commentEditText;
+    Button commentButton;
 }
 
