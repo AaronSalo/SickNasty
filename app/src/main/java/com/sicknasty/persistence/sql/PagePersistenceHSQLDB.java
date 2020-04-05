@@ -172,7 +172,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 );
                 stmt.setString(1, username);
                 stmt.setString(2, pageName);
-
+                page.addFollower(user);
                 stmt.execute();
             }
         } catch (SQLException e) {
