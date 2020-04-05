@@ -1,5 +1,7 @@
 package com.sicknasty.persistence.sql;
 
+import com.sicknasty.objects.CommunityPage;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
@@ -64,10 +66,12 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     switch (result.getInt("type")) {
                         case PERSONAL_PAGE:
                             return new PersonalPage(user);
+                        case COMMUNITY_PAGE:
+                            return new CommunityPage(user, name);
                     }
                 }
             }
-        } catch (SQLException | DBUsernameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | InvalidCommunityPageNameException e) {
             throw new DBGenericException(e);
         }
 
