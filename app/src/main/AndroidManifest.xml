@@ -13,7 +13,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.OtherUserPageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".presentation.LoggedUserPageActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:label="Home"/>
         <activity android:name=".presentation.CaptionActivity"
             android:label="@string/caption"/>
 
@@ -28,12 +32,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".presentation.UserAccountActivity"
             android:label="Update User Information"/>
-        <activity android:name=".presentation.LoggedUserPageActivity"
-            android:label="Home"/>
         <activity android:name=".presentation.RegistrationActivity"
             android:label="@string/register"/>
-        <activity android:name=".presentation.LoginActivity"
-            android:label="@string/title_activity_login">
+        <activity android:name=".presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

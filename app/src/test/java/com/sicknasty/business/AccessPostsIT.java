@@ -149,11 +149,4 @@ public class AccessPostsIT {
         System.out.println("Finished testDeleteById");
 
     }
-
-    @After
-    public void tearDown(){
-        //destroy database file
-    }
-
-
 }
