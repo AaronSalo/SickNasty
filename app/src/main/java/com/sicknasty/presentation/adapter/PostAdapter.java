@@ -40,7 +40,6 @@ public class  PostAdapter extends ArrayAdapter<Post> {
     SharedPreferences pref;
 
     Post post;
-    private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
 
     public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
         super(context,resource,posts);
