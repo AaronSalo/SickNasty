@@ -1,6 +1,7 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
@@ -29,21 +30,24 @@ public class AccessPostsIT {
     private AccessPosts posts;
     private AccessUsers users;
     private AccessPages pages;
+
+
     @Before
     public void setUp()
     {
 
         Service.initTestDatabase();
         //set up the db
-        posts=new AccessPosts();
-        users=new AccessUsers();
-        pages=new AccessPages();
+        posts = new AccessPosts();
+        users = new AccessUsers();
+        pages = new AccessPages();
     }
+
     @Test
     public void testInsertPost() throws UserNotFoundException, NoValidPageException, DBUsernameNotFoundException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
 
         System.out.println("Starting insertPostTest::");
-        User user1=new User("Jay K","jay1","1234567");
+        User user1 = new User("Jay K","jay1","1234567");
         users.insertUser(user1);
         pages.insertNewPage(user1.getPersonalPage());
 
@@ -65,8 +69,8 @@ public class AccessPostsIT {
     @Test(expected = DBPostIDExistsException.class)
     public void testDuplicatePost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Starting duplicatePostTest::");
-        User user1=new User("Jay K","jay1","1234567");
-        Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
+        User user1 = new User("Jay K","jay1","1234567");
+        Post newPost = new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
 
         users.insertUser(user1);
         pages.insertNewPage(user1.getPersonalPage());
@@ -78,14 +82,15 @@ public class AccessPostsIT {
         System.out.println("Finished duplicatePostTest");
 
     }
+
     @Test
     public void testGetPost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBPageNameExistsException, DBUsernameExistsException, CaptionTextException {
-        User user1=new User("Jay K","jay1","1234567");
+        User user1 = new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);
 
         users.insertUser(user1);
         pages.insertNewPage(user1.getPersonalPage());
-        Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
+        Post newPost = new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
 
         posts.insertPost(newPost);
         assertEquals(posts.getPostsByPage(page).size(),1);
@@ -95,17 +100,19 @@ public class AccessPostsIT {
 
         System.out.println("Finished testGetPost");
     }
+
+
     @Test
     public void testRemovePost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Started testRemovePost");
 
-        User user1=new User("Jay K","jay1","1234567");
+        User user1 = new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);
 
         users.insertUser(user1);
         pages.insertNewPage(user1.getPersonalPage());
 
-        Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
+        Post newPost = new Post("Caption is nice",user1,"some random path doesn't matter",0,0,user1.getPersonalPage());
 
         posts.insertPost(newPost);
         posts.deletePost(newPost);
@@ -114,14 +121,15 @@ public class AccessPostsIT {
 
         System.out.println("Finished testRemovePost");
     }
+
     @Test
     public void testNotExistPost() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, CaptionTextException {
         System.out.println("Started testNotExist");
 
-        User user1=new User("Jay K","jay1","1234567");
+        User user1 = new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);
 
-        Post newPost=new Post("Caption is nice",user1,"some random path doesn't matter",0,0,page);
+        Post newPost = new Post("Caption is nice",user1,"some random path doesn't matter",0,0,page);
 
         assertFalse(posts.getPostsByPage(page).contains(newPost));
         posts.deletePost(newPost);
@@ -133,7 +141,7 @@ public class AccessPostsIT {
     @Test
     public void testDeleteById() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, DBUsernameExistsException, DBPageNameExistsException, CaptionTextException {
         System.out.println("Started testDeleteById");
-        User user1=new User("Jay K","jay1","1234567");
+        User user1 = new User("Jay K","jay1","1234567");
         PersonalPage page = new PersonalPage(user1);
 
         users.insertUser(user1);
@@ -147,6 +155,27 @@ public class AccessPostsIT {
         assertFalse(posts.getPostsByPage(page).contains(newPost));
 
         System.out.println("Finished testDeleteById");
+
+    }
+
+    @Test
+    public void testCommentFeature() throws CaptionTextException, NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPageNameExistsException, DBUsernameExistsException, DBPostIDExistsException
+    {
+        User user1 = new User("Jay K","jay1","1234567");
+        users.insertUser(user1);
+        pages.insertNewPage(user1.getPersonalPage());
+
+        Post post = new Post("HELLO USER",user1,"test",0,0,user1.getPersonalPage());
+        Comment comment = new Comment(user1,"NICE PIC",post.getPostID());
+        posts.insertPost(post);
+
+        posts.addComment(comment);
+
+        assertEquals(1, posts.getComments(post).size());
+
+        posts.addComment(comment);
+
+        assertEquals(2, posts.getComments(post).size());
 
     }
 }
