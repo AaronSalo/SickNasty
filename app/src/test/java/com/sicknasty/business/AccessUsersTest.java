@@ -47,7 +47,7 @@ public class AccessUsersTest {
         accessUsersMock = new AccessUsers(userPersistenceMock);
     }
     @Test
-    public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
+    public void testInsertUsers() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException, UserNotFoundException {
 
         User newUser=new User("Jay K","jay1","1234567");
         assertNotNull(accessUsersStub.insertUser(newUser));
@@ -65,7 +65,7 @@ public class AccessUsersTest {
     }
 
     @Test(expected = DBUsernameExistsException.class)
-    public void testUpdatesInUsername() throws DBUsernameNotFoundException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException {
+    public void testUpdatesInUsername() throws DBUsernameNotFoundException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, UserNotFoundException {
         User user1=new User("Jay K","jay","abcmmdef");
 
 

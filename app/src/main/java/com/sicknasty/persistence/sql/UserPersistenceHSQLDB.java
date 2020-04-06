@@ -1,15 +1,13 @@
 package com.sicknasty.persistence.sql;
-
-import android.util.Log;
-
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.MessageException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
+import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -197,7 +195,6 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 			}
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
-                Log.d("AAAAAAAA",e.getSQLState());
                 throw new DBUsernameExistsException(newUsername);
             } else {
                 throw new DBGenericException(e);

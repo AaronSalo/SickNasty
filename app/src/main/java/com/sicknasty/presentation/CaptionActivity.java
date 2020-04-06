@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,12 +46,11 @@ public class CaptionActivity extends AppCompatActivity {
         Button postButton = findViewById(R.id.captionPost);
         ImageView imageView = findViewById(R.id.postImage);
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();                              //get the intent from last activity
 
-
-        final String uri=intent.getStringExtra("URI");
+        final String uri = intent.getStringExtra("URI");          //this is what is displaying selected image when choosing
         Uri uri1 = Uri.parse(uri);
-        imageView.setImageURI(uri1);
+        imageView.setImageURI(uri1);                                    //display selected image
 
 
         preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);

@@ -141,6 +141,4 @@ public class AccessPostsTest {
 
         postPersistenceMock = null;
     }
-
-
 }

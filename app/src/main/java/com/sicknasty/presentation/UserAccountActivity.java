@@ -4,33 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sicknasty.R;
-import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.Exceptions.ChangeUsernameException;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
-import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
-import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 public class UserAccountActivity extends AppCompatActivity {
 
@@ -114,7 +100,7 @@ public class UserAccountActivity extends AppCompatActivity {
                 editor.remove("isLogin");
                 editor.apply();
 
-                Intent newIntent=new Intent(UserAccountActivity.this,LoginActivity.class);
+                Intent newIntent = new Intent(UserAccountActivity.this,LoginActivity.class);
                 startActivity(newIntent);
                 finish();
             }

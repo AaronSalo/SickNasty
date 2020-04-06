@@ -2,9 +2,9 @@ package com.sicknasty.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
+import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.UserPersistence;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
@@ -12,9 +12,11 @@ import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
 public class UserPersistenceStub implements UserPersistence {
     private HashMap<String, User> users;
+    private ArrayList<Message> messages;
 
     public UserPersistenceStub() {
         this.users = new HashMap<String, User>();
+        this.messages = new ArrayList<Message>();
     }
 
     @Override

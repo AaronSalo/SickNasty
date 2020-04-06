@@ -3,6 +3,7 @@ package com.sicknasty.presentation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,13 +34,19 @@ public class SearchActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUser = sharedPreferences.getString("username",null);
 
-        adapter=new ArrayAdapter<>(SearchActivity.this,android.R.layout.simple_list_item_1,users.getUsersByUsername());
         listOfSearches.setAdapter(adapter);
         listOfSearches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //proceed according to the current item selected(redirect to pageActivity)
-                Intent newIntent=new Intent(SearchActivity.this,PageActivity.class);
+                String user = listOfSearches.getItemAtPosition(position).toString();
+                Intent newIntent;
+                if(user.equals(loggedInUser)){
+                     newIntent = new Intent(SearchActivity.this, LoggedUserPageActivity.class);
+                }else{
+                     newIntent = new Intent(SearchActivity.this, OtherUserPageActivity.class);
+                     //let's keep this if statement for now -Jay
+                }
                 newIntent.putExtra("user",listOfSearches.getItemAtPosition(position).toString());
                 startActivity(newIntent);
             }
