@@ -138,5 +138,7 @@ public class AccessPostsTest {
     {
         accessPostMock = null;
         accessPostStub = null;
+
+        postPersistenceMock = null;
     }
 }
