@@ -98,7 +98,7 @@ class HSQLDBInitializer {
                         "commenter VARCHAR(32) NOT NULL," +
                         "p_id INTEGER NOT NULL," +
                         "contents VARCHAR(1024) NOT NULL," +
-                        "time_sent BIGINT NOT NULL," +
+                        "time_created BIGINT NOT NULL," +
                         "FOREIGN KEY(commenter) REFERENCES Users(username)" +
                         "ON DELETE CASCADE " +
                         "ON UPDATE CASCADE," +

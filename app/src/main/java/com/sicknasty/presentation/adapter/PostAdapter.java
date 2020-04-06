@@ -102,8 +102,6 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage.setImageURI(postUri);             //this is working
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
-            Log.d("gggg", "hggg");
-
             //display the comments
             ArrayList<Comment> comments = posts.getComments(post);
 
