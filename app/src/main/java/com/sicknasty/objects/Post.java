@@ -27,7 +27,7 @@ public class Post {
         else
             throw new NoValidPageException("Could not find a page to post to");
         //this will be changed when i do final refactoring
-        if(text.length()>255)
+        if(text.length() > 255)
             throw new CaptionTextException("Caption is too long; No more than 255 characters");
         else{
             this.text = text;

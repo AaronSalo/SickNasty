@@ -2,6 +2,7 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -19,10 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sicknasty.R;
 import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
+import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
+import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
 
 import java.util.ArrayList;
@@ -34,8 +39,10 @@ public class CommunityPageActivity extends AppCompatActivity {
 
     AccessPages pages;
     AccessPosts posts = new AccessPosts();
+    AccessUsers users = new AccessUsers();
     private String pageName = "";
-
+    private User loggedUser;
+    private Page currPage = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,7 @@ public class CommunityPageActivity extends AppCompatActivity {
         TextView numberOfPosts = findViewById(R.id.communityPostCount);
         TextView name = findViewById(R.id.communityName);
         Button postButton = findViewById(R.id.communityPostButton);
+        final Button followButton = findViewById(R.id.communityfollowButton);
 
         pages = new AccessPages();
         posts = new AccessPosts();
@@ -55,17 +63,18 @@ public class CommunityPageActivity extends AppCompatActivity {
         pageName = intent.getStringExtra("currentCommunityPage");       //how to fetch from search activity
 
         name.setText(pageName);
+        SharedPreferences preferences = getSharedPreferences("MY_PREFS",MODE_PRIVATE);
+        String loggedUsername = preferences.getString("username",null);
 
-        Page currPage;
         int postSize = 0;
 
         try {
             currPage = pages.getPage(pageName);
             ArrayList<Post> pagePosts = posts.getPostsByPage(currPage);
-
+            loggedUser = users.getUser(loggedUsername);
             postAdapter = new PostAdapter(this, R.layout.activity_post, pagePosts);
             postSize = pagePosts.size();
-        } catch (DBPageNameNotFoundException | NoValidPageException e) {
+        } catch (DBPageNameNotFoundException | NoValidPageException | DBUsernameNotFoundException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -78,6 +87,19 @@ public class CommunityPageActivity extends AppCompatActivity {
             }
         });
 
+
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    pages.addFollower(currPage,loggedUser);
+                    followButton.setText("Following");
+
+                } catch (DBUserAlreadyFollowingException e) {
+                    Toast.makeText(CommunityPageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void chooseImageHelper() {
@@ -128,6 +150,7 @@ public class CommunityPageActivity extends AppCompatActivity {
                 newIntent.putExtra("pageName", pageName);
                 newIntent.putExtra("URI", uri.toString());
                 startActivity(newIntent);
+                finish();
             }
         }
     }

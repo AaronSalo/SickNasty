@@ -61,6 +61,7 @@ public class CreateCommunityActivity extends AppCompatActivity {
 
                 Intent createCommunityIntent = new Intent(CreateCommunityActivity.this, CommunityListPageActivity.class);
                 startActivity(createCommunityIntent);
+                finish();
             }
         });
     }
