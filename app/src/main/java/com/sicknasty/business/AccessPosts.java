@@ -1,13 +1,13 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PostPersistence;
+import com.sicknasty.persistence.exceptions.DBGenericException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
-
-import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 
