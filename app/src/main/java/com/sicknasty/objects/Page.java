@@ -34,9 +34,9 @@ public abstract class Page {
     }
 
     public void setPageName(String pageName) throws InvalidCommunityPageNameException {
-        if (pageName.length() < 3){
+        if (pageName.length() < Constants.PAGE_MIN_NAME_LENGTH){
             throw new InvalidCommunityPageNameException("Page Name cannot be less than 3 characters");              //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
-        } else if (pageName.length() > 12){
+        } else if (pageName.length() > Constants.PAGE_MAX_NAME_LENGTH){
             throw new InvalidCommunityPageNameException("Page name cannot be more than 12 characters");
         } else {
             this.pageName = pageName;
