@@ -69,9 +69,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.commentButton = view.findViewById(R.id.commentButton);
             viewHolder.commentEditText = view.findViewById(R.id.commentEditText);
             view.setTag(viewHolder);
-            
+
             //set up the button listener
             //this will handle what happens when the "comment" button is pressed
+            post = getItem(getCount() - position - 1);
             viewHolder.commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,7 +100,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         //update the commentView to include the comment
                         viewHolder.commentView.setText(viewHolder.commentView.getText() + "\n" +
                                 loggedInUser.getUsername() + ": " + newComment.getContent());
-                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                    } catch (DBUsernameNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
@@ -109,7 +110,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Post post = getItem(getCount() - position - 1);           //give a post position in layout(now it displays the most recent one)
+        //Post post =           //give a post position in layout(now it displays the most recent one)
 
         Uri postUri;
         if (post != null) {
