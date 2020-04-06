@@ -4,7 +4,7 @@ import android.os.SystemClock;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.MediumTest;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.sicknasty.R;
@@ -25,7 +25,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
-@MediumTest
+@LargeTest
 public class CommunityCreationAndFollowTest {
 
     @Rule
@@ -55,6 +55,7 @@ public class CommunityCreationAndFollowTest {
         SystemClock.sleep(1000);
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.logout)).perform(click());
+        SystemClock.sleep(1000);
     }
 
     @Test
@@ -97,6 +98,9 @@ public class CommunityCreationAndFollowTest {
         pressBack();
         SystemClock.sleep(1000);
 
+        onView(withId(R.id.communityListButton)).perform(click());
+        SystemClock.sleep(1000);
+
         //select more community pages and try to follow
         onView(withText("ARTS")).perform(click());
         SystemClock.sleep(1000);
@@ -105,6 +109,9 @@ public class CommunityCreationAndFollowTest {
         SystemClock.sleep(1000);
 
         pressBack();
+        SystemClock.sleep(1000);
+
+        onView(withId(R.id.communityListButton)).perform(click());
         SystemClock.sleep(1000);
 
         onView(withText("BIOLOGY")).perform(click());
@@ -116,15 +123,42 @@ public class CommunityCreationAndFollowTest {
         pressBack();
         SystemClock.sleep(1000);
 
+        logout();
+
+        Espresso.closeSoftKeyboard();
+        SystemClock.sleep(1000);
+        onView(withId(R.id.userName)).perform(typeText("texanwits"),closeSoftKeyboard());
+        SystemClock.sleep(1000);
+
+        onView(withId(R.id.password)).perform(typeText("ihatespies"),closeSoftKeyboard());
+        SystemClock.sleep(1000);
+
+        onView(withId(R.id.Login)).perform(click());
+
+        SystemClock.sleep(1000);
+        onView(withId(R.id.communityListButton)).perform(click());
+        SystemClock.sleep(1000);
+
+        onView(withText("COMPUTER")).perform(click());
+        SystemClock.sleep(1000);
+
+        onView(withId(R.id.communityfollowButton)).perform(click());
+        SystemClock.sleep(1000);
+
+        pressBack();
+        SystemClock.sleep(1000);
+
+        onView(withId(R.id.communityListButton)).perform(click());
+        SystemClock.sleep(1000);
+
+        //select more community pages and try to follow
         onView(withText("ARTS")).perform(click());
         SystemClock.sleep(1000);
 
         onView(withId(R.id.communityfollowButton)).perform(click());
         SystemClock.sleep(1000);
 
-        //ultimately go back and exit
         pressBack();
         SystemClock.sleep(1000);
-        pressBack();
     }
 }
