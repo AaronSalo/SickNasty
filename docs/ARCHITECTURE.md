@@ -42,13 +42,10 @@ This layer contains three different managing classes that act as the middlemen f
 ## Persistence
 This layer contains three persistence interfaces (and their concrete classes) that save the DSOs and their information:
 1. PagePersistence
-    - PagePersistenceStub that contains a fake implementation of Pages using a HashMap.
     - PagePersistenceHSQLDB that contains calls to the HSQLDB driver that modifies a persistent database.
 2. PostPersistence
-    - PostPersistenceStub that contains a fake implementation.
     - PostPersistenceHSQLDB that contains the real calls to a persistent database.
 3. UserPersistence
-    - UserPersistenceStub that contains fake implementation.
     - UserPersistenceHSQLDB that contains real calls to the persistent database.
   
 ## Diagram
