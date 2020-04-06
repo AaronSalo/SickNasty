@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -76,7 +75,8 @@ public class FollowPagesTest {
         SystemClock.sleep(1000);
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.logout)).perform(click());
-
+        SystemClock.sleep(2000);
+        pressBack();
         //also delete user and delete page
 
         userPersistence.deleteUser(user);

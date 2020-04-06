@@ -137,6 +137,7 @@ public class MessageBetween2UsersTest {
         Espresso.closeSoftKeyboard();
         SystemClock.sleep(1000);
         onView(withId(R.id.logout)).perform(click());
+        SystemClock.sleep(1000);
 
     }
 

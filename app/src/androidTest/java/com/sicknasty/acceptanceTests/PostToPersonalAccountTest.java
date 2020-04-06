@@ -13,11 +13,9 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.sicknasty.R;
-import com.sicknasty.presentation.LoggedUserPageActivity;
 import com.sicknasty.presentation.LoginActivity;
 
 import org.hamcrest.Matcher;
@@ -39,13 +37,12 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-
+//this doesn't work but is there so you know we tries :)
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class PostToPersonalAccountTest {
 
     @Rule
-    //public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
     public IntentsTestRule<LoginActivity> intentsTestRule = new IntentsTestRule<>(LoginActivity.class);
 
     @Test
