@@ -1,13 +1,15 @@
 package com.sicknasty.presentation.adapter;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.sicknasty.business.AccessPosts;
+import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
 import com.sicknasty.R;
+import com.sicknasty.objects.Exceptions.UserNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.LoggedUserPageActivity;
 
 import android.content.Context;
@@ -21,26 +23,27 @@ import java.util.List;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
 
     AccessPosts posts = new AccessPosts(); //get a reference to posts
 
-    LoggedUserPageActivity pageActivity;
+    SharedPreferences pref;
+
     Post post;
     private final int MAX_COMMENTS_PER_POST = 3; //how many comments should we show per post
 
     public PostAdapter(@NonNull Context context, int resource , List<Post> posts) {
         super(context,resource,posts);
-        pageActivity = (LoggedUserPageActivity) context;
+
         resourceId = resource;
+
+        this.pref = context.getSharedPreferences("MY_PREFS",MODE_PRIVATE);
     }
 
     @NonNull
@@ -68,20 +71,33 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             viewHolder.commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //create a comment obj
-                    String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
+                    AccessUsers userLogic = new AccessUsers();
+                    User loggedInUser = null;
 
-                    Comment newComment = new Comment(pageActivity.currUser, content, post.getPostID());
-                    viewHolder.commentEditText.getText().clear(); //remove the text
-                    //increase the size of the container
-                    ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
-                    params.height += 100;
-                    viewHolder.commentView.setLayoutParams(params);
-                    //add the comment to the db
-                    posts.addComment(newComment);
-                    //update the commentView to include the comment
-                    viewHolder.commentView.setText(viewHolder.commentView.getText() + "\n" +
-                            pageActivity.currUser.getUsername() + ": " + newComment.getContent());
+                    try {
+                        String loggedInUsername = pref.getString("username", null);
+                        loggedInUser = userLogic.getUser(loggedInUsername);
+
+                        //create a comment obj
+                        String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
+
+                        Comment newComment = new Comment(loggedInUser, content, post.getPostID());
+                        viewHolder.commentEditText.getText().clear(); //remove the text
+
+                        //increase the size of the container
+                        ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                        params.height += 100;
+                        viewHolder.commentView.setLayoutParams(params);
+
+                        //add the comment to the db
+                        posts.addComment(newComment);
+
+                        //update the commentView to include the comment
+                        viewHolder.commentView.setText(viewHolder.commentView.getText() + "\n" +
+                                loggedInUser.getUsername() + ": " + newComment.getContent());
+                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
