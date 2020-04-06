@@ -21,9 +21,9 @@ public class User {
     private String password; //just store unsecure pass for now
 
     //ArrayList<User> followers; //list of people that follow the user
-    ArrayList<User> follows; //list of people that the user follows
+    private ArrayList<User> follows; //list of people that the user follows
 
-    PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
+    private PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
 
     private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
     private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters

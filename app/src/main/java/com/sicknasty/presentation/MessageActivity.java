@@ -25,11 +25,10 @@ import com.sicknasty.presentation.adapter.MessageAdapter;
 
 public class MessageActivity extends AppCompatActivity {
 
-    AccessUsers users;
-    User curUser=null;
-    User loggedInUser = null;
-    MessageAdapter messageAdapter = null;
-
+    private AccessUsers users;
+    private User curUser = null;
+    private User loggedInUser = null;
+    private MessageAdapter messageAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

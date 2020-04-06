@@ -28,12 +28,11 @@ import com.sicknasty.presentation.adapter.PostAdapter;
 
 public class OtherUserPageActivity extends AppCompatActivity {
 
-    AccessUsers users = new AccessUsers();
-    AccessPages pages = new AccessPages();
-    AccessPosts posts = new AccessPosts();
-    SharedPreferences sharedPreferences;
-    Page page;
-    User loggedUser ,thisUser;
+    private AccessUsers users = new AccessUsers();
+    private AccessPages pages = new AccessPages();
+    private AccessPosts posts = new AccessPosts();
+    private Page page;
+    private User loggedUser ,thisUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +52,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
         final String userName = intent.getStringExtra("user");
         String message;
 
-        sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUsername = sharedPreferences.getString("username",null);       //this is necessary for message
         int numOfPosts = 0;
         PostAdapter postAdapter = null;

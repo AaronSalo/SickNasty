@@ -17,8 +17,9 @@ import com.sicknasty.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    AccessUsers users = new AccessUsers();
-    AccessPages pages = new AccessPages();
+    private AccessUsers users = new AccessUsers();
+    private AccessPages pages = new AccessPages();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

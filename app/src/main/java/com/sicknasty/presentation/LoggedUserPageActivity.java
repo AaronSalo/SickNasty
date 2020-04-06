@@ -17,7 +17,6 @@ import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,16 +32,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class LoggedUserPageActivity extends AppCompatActivity {
+
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    AccessUsers users = new AccessUsers();
-    AccessPages pages = new AccessPages();
-    AccessPosts posts = new AccessPosts();
+    private AccessUsers users = new AccessUsers();
+    private AccessPages pages = new AccessPages();
+    private AccessPosts posts = new AccessPosts();
 
     public User currUser;
-    Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
-
     public String pageName = "";
 
     @Override
