@@ -103,27 +103,23 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
             //display the comments
+
+            //first get all the comments on the post from db
             ArrayList<Comment> comments = posts.getComments(post);
 
             if(!comments.isEmpty()) { //if we have comments on the post
 
                 String commentText = "";
                 //insert the text from all the comments into a string
-                for (int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
-                    if( i < comments.size()) {
-                        String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
-                        String commentContent = comments.get(i).getContent(); //get the comment itself
-                        commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
-                        //increase the size of the container
-                        ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
-                        params.height += 100;
-                        viewHolder.commentView.setLayoutParams(params);
-                    }
+                for (int i = 0; i < comments.size(); i++) {
+                    String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
+                    String commentContent = comments.get(i).getContent(); //get the comment itself
+                    commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
+                    //increase the size of the container
+                    ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                    params.height += 100;
+                    viewHolder.commentView.setLayoutParams(params);
                 }
-
-                if (comments.size() > MAX_COMMENTS_PER_POST)
-                    commentText += "See all " + comments.size() + " comments..."; //show the user there are more comments we arent showing
-                //TODO add link to Comment activity, where we show all the comments
 
                 //set the commentViews text
                 viewHolder.commentView.setText(commentText); //set the text in the xml
