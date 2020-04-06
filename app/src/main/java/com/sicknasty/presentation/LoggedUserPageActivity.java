@@ -17,7 +17,6 @@ import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.PostAdapter;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,14 +32,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class LoggedUserPageActivity extends AppCompatActivity {
+
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    AccessUsers users = new AccessUsers();
-    AccessPages pages = new AccessPages();
-    AccessPosts posts = new AccessPosts();
+    private AccessUsers users = new AccessUsers();
+    private AccessPages pages = new AccessPages();
+    private AccessPosts posts = new AccessPosts();
 
-    public User curUser;
+    public User currUser;
     public String pageName = "";
 
     @Override
@@ -68,7 +68,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         int numOfPosts = 0;      //this indicates how many posts this page/user has
 
         try {
-            curUser = users.getUser(loggedInUser);
+            currUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
             ArrayList<Post> pagePosts = posts.getPostsByPage(page);
 
@@ -78,10 +78,11 @@ public class LoggedUserPageActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        name.setText(curUser.getName());
+        name.setText(currUser.getName());
         followers.setText("" + (int) (100 * Math.random()));
         numberOfPosts.setText("" + numOfPosts);
         following.setText("" + (int) (100 * Math.random()));
+
         lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {

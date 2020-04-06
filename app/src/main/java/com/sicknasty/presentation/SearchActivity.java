@@ -16,24 +16,22 @@ import com.sicknasty.business.AccessUsers;
 
 public class SearchActivity extends AppCompatActivity {
 
-    SearchView mySearchView;
-    AccessUsers users;            //for fetching all users
-    ListView listOfSearches;
-    ArrayAdapter<String> adapter;
-    SharedPreferences sharedPreferences;
+    private ListView listOfSearches;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mySearchView = findViewById(R.id.search_view);
+        SearchView mySearchView = findViewById(R.id.search_view);
         listOfSearches = findViewById(R.id.search_user);
 
-        users = new AccessUsers();
+        //for fetching all users
+        AccessUsers users = new AccessUsers();
 
         adapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, users.getUsersByUsername());
-        sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         final String loggedInUser = sharedPreferences.getString("username",null);
 
         listOfSearches.setAdapter(adapter);

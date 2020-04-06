@@ -17,9 +17,6 @@ import com.sicknasty.business.AccessUsers;
 import java.util.ArrayList;
 
 public class CommunityListPageActivity extends AppCompatActivity {
-    AccessUsers users;
-    AccessPages pages;
-    ArrayAdapter<String> adapter;
     private ListView lv;
 
     @Override
@@ -29,12 +26,11 @@ public class CommunityListPageActivity extends AppCompatActivity {
 
         ImageButton createCommunityButton = findViewById(R.id.createCommunityButton);
 
-        users = new AccessUsers();
-        pages = new AccessPages();
+        AccessPages pages = new AccessPages();
         lv = findViewById(R.id.communityList);
 
         ArrayList<String> allCommunityNames = pages.getAllCommunityPages();
-        adapter = new ArrayAdapter<>(CommunityListPageActivity.this, android.R.layout.simple_list_item_1, allCommunityNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(CommunityListPageActivity.this, android.R.layout.simple_list_item_1, allCommunityNames);
 
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

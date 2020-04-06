@@ -37,12 +37,12 @@ public class CommunityPageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    AccessPages pages;
-    AccessPosts posts = new AccessPosts();
-    AccessUsers users = new AccessUsers();
+    private AccessPages pages;
+    private AccessUsers users = new AccessUsers();
     private String pageName = "";
     private User loggedUser;
     private Page currPage = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class CommunityPageActivity extends AppCompatActivity {
         final Button followButton = findViewById(R.id.communityfollowButton);
 
         pages = new AccessPages();
-        posts = new AccessPosts();
+        AccessPosts posts = new AccessPosts();
 
         PostAdapter postAdapter = null;
 
@@ -127,13 +127,11 @@ public class CommunityPageActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE: {
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    chooseImage();
-                } else {
-                    Toast.makeText(this, "Permission denied!!", Toast.LENGTH_SHORT).show();
-                }
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                chooseImage();
+            } else {
+                Toast.makeText(this, "Permission denied!!", Toast.LENGTH_SHORT).show();
             }
         }
     }
