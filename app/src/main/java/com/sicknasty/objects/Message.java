@@ -13,30 +13,26 @@ import java.util.ArrayList;
 public class Message {
 
     private String msg;         //message to be sent
+
     private long timeSent;      //time that message was sent at
-    private boolean seen = false;   //to see if the receiver has seen the message of not
+
     private User messenger;         //person message sent from
     private User receiver;          //person message sent to
+
     private ArrayList<User> group;  //if its a group, group messsage sent to
 
-
-    private final int MAX_LENGTH = 255;     //max size of message
-    private final int MIN_LENGTH = 1;       //min size of message allowed
-
     public Message(String msg, User messenger, User receiver) throws MessageException {     //makes a new messages for a private chat
-
-
-        if(msg.length() <= MAX_LENGTH){
-            if(msg.length() >= MIN_LENGTH){
+        if (msg.length() <= Constants.MESSAGE_MAX_CONTENT_LENGTH) {
+            if (msg.length() >= Constants.MESSAGE_MIN_CONTENT_LENGTH) {
                 this.msg = msg;
                 timeSent = System.currentTimeMillis();
                 this.messenger = messenger;
                 this.receiver = receiver;
-            }else{
-                throw new MessageException("The message must be larger than "+ MIN_LENGTH +" character");
+            } else {
+                throw new MessageException("The message must be larger than "+ Constants.MESSAGE_MIN_CONTENT_LENGTH +" character");
             }
-        }else{
-            throw new MessageException("The message cannot be larger than "+ MAX_LENGTH+ " characters");
+        } else {
+            throw new MessageException("The message cannot be larger than "+ Constants.MESSAGE_MAX_CONTENT_LENGTH+ " characters");
         }
     }
 
@@ -45,26 +41,18 @@ public class Message {
 
     public Message(String msg, User messenger, ArrayList<User> group) throws MessageException{  //creates a new message for a group
 
-        if(msg.length() <= MAX_LENGTH){
-            if(msg.length() >= MIN_LENGTH){
+        if (msg.length() <= Constants.MESSAGE_MAX_CONTENT_LENGTH) {
+            if (msg.length() >= Constants.MESSAGE_MIN_CONTENT_LENGTH) {
                 this.msg = msg;
                 timeSent = System.currentTimeMillis();
                 this.messenger = messenger;
                 this.group = group;
-            }else{
-                throw new MessageException("The message must be larger than "+ MIN_LENGTH +" character");
+            } else {
+                throw new MessageException("The message must be larger than " + Constants.MESSAGE_MIN_CONTENT_LENGTH + " character");
             }
-        }else{
-            throw new MessageException("The message cannot be larger than "+ MAX_LENGTH+ " characters");
+        } else {
+            throw new MessageException("The message cannot be larger than " + Constants.MESSAGE_MAX_CONTENT_LENGTH + " characters");
         }
-
-    }
-
-
-
-    public void viewed(){               //to be implemented. if we want to show if the person receiving the message has seen message sent
-
-        seen = true;
 
     }
 

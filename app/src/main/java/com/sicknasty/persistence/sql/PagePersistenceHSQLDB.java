@@ -21,6 +21,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PagePersistenceHSQLDB implements PagePersistence {
+    // note that the reason this is here is because of how the pages are saved in the database
+    // a more detailed explanation is in insertNewPage() of this class
+    // but basically: we either violate DRY in the db or we have to use instanceof in code
+    // we chose to use instanceof
     private final static int PERSONAL_PAGE = 0;
     private final static int COMMUNITY_PAGE = 1;
 
@@ -63,6 +67,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
                 if (user != null) {
                     // use our private "enum" to create the page
+                    // again, more detailed explanation in insertNewPage() of this class
                     switch (result.getInt("type")) {
                         case PERSONAL_PAGE:
                             return new PersonalPage(user);
