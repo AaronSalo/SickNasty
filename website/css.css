@@ -46,12 +46,6 @@ div {
 .welcome-header {
     font-size: 2rem;
     font-weight: bold;
-    margin-right: 1rem;
-}
-
-.welcome-subtext {
-    font-size: 1.25rem;
-    margin-left: 1rem;
 }
 
 .video-wrapper {
