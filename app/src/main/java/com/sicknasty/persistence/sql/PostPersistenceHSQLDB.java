@@ -4,6 +4,7 @@ import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
+import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PostPersistence;
 import com.sicknasty.persistence.exceptions.DBGenericException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
@@ -233,7 +234,7 @@ public class PostPersistenceHSQLDB implements PostPersistence {
     }
 
     @Override
-    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder) {
+    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder){
         ArrayList<Comment> rntResult = new ArrayList<Comment>();
 
         try {
@@ -262,12 +263,21 @@ public class PostPersistenceHSQLDB implements PostPersistence {
 
             ResultSet result = stmt.executeQuery();
 
+            UserPersistenceHSQLDB userDB = new UserPersistenceHSQLDB(this.path);
             while (result.next()) {
                 //build comment
+                User user = userDB.getUser(result.getString("commenter"));
+                String content = result.getString("contents");
+                int postID = result.getInt("p_id");
+
+                Comment comment = new Comment(user, content, postID);
+
+                rntResult.add(comment);
+
             }
 
             return rntResult;
-        } catch (SQLException e) {
+        } catch (SQLException | DBUsernameNotFoundException e) {
             throw new DBGenericException(e);
         }
     }

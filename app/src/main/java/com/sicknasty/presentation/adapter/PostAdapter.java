@@ -71,8 +71,12 @@ public class  PostAdapter extends ArrayAdapter<Post> {
                     //create a comment obj
                     String content = viewHolder.commentEditText.getText().toString(); //get the contents of the comment
 
-                    Comment newComment = new Comment(pageActivity.currUser, content, 1);
+                    Comment newComment = new Comment(pageActivity.currUser, content, post.getPostID());
                     viewHolder.commentEditText.getText().clear(); //remove the text
+                    //increase the size of the container
+                    ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                    params.height += 100;
+                    viewHolder.commentView.setLayoutParams(params);
                     //add the comment to the db
                     posts.addComment(newComment);
                     //update the commentView to include the comment
@@ -98,19 +102,25 @@ public class  PostAdapter extends ArrayAdapter<Post> {
             viewHolder.ivImage.setImageURI(postUri);             //this is working
             viewHolder.userName.setText(post.getUserId().getUsername());
             viewHolder.textView.setText(post.getText());
-
+            Log.d("gggg", "hggg");
 
             //display the comments
-            ArrayList<Comment> comments = post.getComments();
+            ArrayList<Comment> comments = posts.getComments(post);
 
             if(!comments.isEmpty()) { //if we have comments on the post
 
                 String commentText = "";
                 //insert the text from all the comments into a string
                 for (int i = 0; i < MAX_COMMENTS_PER_POST; i++) {
-                    String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
-                    String commentContent = comments.get(i).getContent(); //get the comment itself
-                    commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
+                    if( i < comments.size()) {
+                        String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
+                        String commentContent = comments.get(i).getContent(); //get the comment itself
+                        commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
+                        //increase the size of the container
+                        ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                        params.height += 100;
+                        viewHolder.commentView.setLayoutParams(params);
+                    }
                 }
 
                 if (comments.size() > MAX_COMMENTS_PER_POST)
