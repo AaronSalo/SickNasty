@@ -60,7 +60,7 @@ public abstract class Page {
     }
 
     //package private
-    ArrayList<User> getFollowers() {
+    public ArrayList<User> getFollowers() {
         return followers;
     }
 

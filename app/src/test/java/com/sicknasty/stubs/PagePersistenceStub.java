@@ -1,4 +1,4 @@
-package com.sicknasty.persistence.stubs;
+package com.sicknasty.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,10 +44,10 @@ public class PagePersistenceStub implements PagePersistence {
 
     @Override
     public void deletePage(Page page) {
-        Page exisitingPost = this.pages.get(page.getPageName());
+        Page existingPost = this.pages.get(page.getPageName());
 
-        if (exisitingPost != null) {
-            this.deletePage(exisitingPost.getPageName());
+        if (existingPost != null) {
+            this.deletePage(existingPost.getPageName());
         }
     }
 

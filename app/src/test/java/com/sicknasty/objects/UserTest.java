@@ -2,6 +2,7 @@ package com.sicknasty.objects;
 
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.MessageException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
 import com.sicknasty.objects.Exceptions.UserNotFoundException;
@@ -30,7 +31,6 @@ public class UserTest {
         }
 
         String shortPass = "short";
-        assert(shortPass.length() < User.MIN_PASS_LENGTH);
 
         try {
             User goodUser = new User("thisIsAName", "userName", longPass);
@@ -40,7 +40,7 @@ public class UserTest {
             System.out.println("yello");
             throw new PasswordErrorException("Somethign went wrong");
         } catch (ChangeUsernameException | UserCreationException | ChangeNameException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -60,7 +60,6 @@ public class UserTest {
             assertTrue(user1.checkPasswordCorrect(newPass)); //the new password should work fine
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            fail();
         }
     }
 
@@ -74,47 +73,39 @@ public class UserTest {
             String newUsername = "newUsername";
             User user = new User("vmsmadvvmadmh", oldUsername, "123");
             user.changeUsername(newUsername);
-            assert (user.getUsername() != oldUsername);
-            assert (user.getUsername() == newUsername);
+            assert (!user.getUsername().equals(oldUsername));
+            assert (user.getUsername().equals(newUsername));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            fail();
         }
     }
 
     @Test
-    public void testCorrectReceiver(){
-        try{
-            User user1 = new User("bobbington", "Mr. BOB", "password");
-            User user2 = new User("bobbington", "Mr. NOTBOB", "password");
-            User user3 = new User("bobbington", "Mr. NOTNOTBOB", "password");
+    public void testCorrectReceiver() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, MessageException {
 
-            Message msg = new Message("hey bud, hows it goin",user1,user2);
+        User user1 = new User("bobbington", "Mr.BOB", "password");
+        User user2 = new User("bobbington", "Mr.NOTBOB", "password");
+        User user3 = new User("bobbington", "Mr.NOTNOTBOB", "password");
 
-            assertEquals(msg.getReceiver(),user2);
-            assertFalse(msg.getReceiver().getName().equals(user3.getName()));
-        }catch (Exception e){
-            fail();
-        }
+        Message msg = new Message("hey bud, hows it goin",user1,user2);
+
+        assertEquals(msg.getReceiver(),user2);
+        assertEquals(msg.getReceiver().getName(), user2.getName());
     }
 
 
 
 
-    @Test
-    public void testMessageIncorrectLength(){           //testing to long message and no character message when initially making them
-        try{
-            User user1 = new User("bobbington", "Mr. BOB", "password");
-            User user2 = new User("bobbington", "Mr. NOTBOB", "password");
+    @Test(expected = MessageException.class)
+    public void testMessageIncorrectLength() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, MessageException {           //testing to long message and no character message when initially making them
+
+            User user1 = new User("bobbgton", "Mr.BOB", "password");
+            User user2 = new User("boington", "Mr.NOB", "password");
             Message msg = new Message("",user1,user2);
             Message msg1 = new Message("1234567890123456789212345678931234567890423598345982357" +
                     "982395823985982379823938923873498237438934289982398472398749827947923798472897498" +
                     "793749329439832977429739793243095809348509834095098080328098dsjhkjdbbkjsdbdkjdskjdnn" +
                     "jksdnfnsd,fn,dsnfnksdknskdnfkjnsd3fkjsd3fjkjdsfkjhsdkdhfkjdshkfhsk3dhfkjhs3jfdhkjsdh432",user1,user2);
-
-        }catch (Exception e){           //should be catching message exception
-            fail();
-        }
 
     }
 
