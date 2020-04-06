@@ -1,26 +1,10 @@
 package com.sicknasty.objects;
 
-import java.util.ArrayList;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 
 public class CommunityPage extends Page {
-
-    private ArrayList<User> bannedUsers;
-    private String comName;
-
-    public CommunityPage(String name, User creator) {
-        super(creator);
-        comName = name;
-        bannedUsers = new ArrayList<>();
+    public CommunityPage(User creator, String name) throws InvalidCommunityPageNameException {
+        super(creator,name);
     }
 
-    public String getComName(){         //gets communities name
-        return comName;
-    }
-
-    public void banUser(User user) {     //deletes user from page and adds them to banned array list so they can follow again
-        if(!bannedUsers.contains(user)){
-            bannedUsers.add(user);
-            getFollowers().remove(user);             //also remove from user's list
-        }
-    }
 }

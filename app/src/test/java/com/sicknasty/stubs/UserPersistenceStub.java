@@ -1,4 +1,4 @@
-package com.sicknasty.persistence.stubs;
+package com.sicknasty.stubs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,16 +53,12 @@ public class UserPersistenceStub implements UserPersistence {
     }
 
     @Override
-    public boolean deleteUser(User user) {
-        if (user == null) return false;
-
-        User result = this.users.remove(user.getUsername());
-
-        return result != null;
+    public void deleteUser(User user) {
+        this.users.remove(user.getUsername());
     }
 
     @Override
-    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException {
+    public void updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException {
         if (this.users.containsKey(newUsername)) throw new DBUsernameExistsException(newUsername);
 
         if (this.users.containsKey(oldUsername)) {
@@ -70,21 +66,42 @@ public class UserPersistenceStub implements UserPersistence {
 
             this.users.remove(oldUsername);
             this.users.put(newUsername, oldUser);
-
-            return true;
         } else {
             throw new DBUsernameNotFoundException(oldUsername);
         }
     }
 
     @Override
-    public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
+    public void updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
         User usr = this.users.get(user.getUsername());
 
         if (usr == null) throw new DBUsernameNotFoundException("");
 
         usr.changePassword(password);
+    }
 
-        return true;
+    @Override
+    public ArrayList<Message> getMessages(User user1, User user2) {
+        ArrayList<Message> rtnMessages = new ArrayList<Message>();
+
+        for (Message m : this.messages) {
+            String senderUsername = m.getMessenger().getUsername();
+            String revUsername = m.getReceiver().getUsername();
+
+            // this if statement checks if either the sender or receiver is user1 or user2
+            if (
+                (senderUsername.equals(user1.getUsername()) && revUsername.equals(user2.getUsername())) ||
+                (senderUsername.equals(user2.getUsername()) && revUsername.equals(user1.getUsername()))
+            ) {
+                rtnMessages.add(m);
+            }
+        }
+
+        return rtnMessages;
+    }
+
+    @Override
+    public void addMessage(Message message) {
+        this.messages.add(message);
     }
 }

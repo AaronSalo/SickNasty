@@ -1,5 +1,7 @@
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
+
 import java.util.ArrayList;
 
 public abstract class Page {
@@ -9,22 +11,36 @@ public abstract class Page {
     private ArrayList<Post> postList;
     private User creator;               //user that created the page
 
+
     private ArrayList<User> followers;
                                         //decide whether to keep creator in Page or in subclass
-    public Page(User creator){
+    public Page(User creator) {
         pageID++;
         this.id = pageID;
-        if(creator!=null){
-            followers=new ArrayList<>();
+
+        if (creator != null){
             this.creator = creator;
-            this.pageName = creator.getUsername();
+
+            followers = new ArrayList<>();
+            pageName = creator.getUsername();
             followers.add(creator);
-            postList=new ArrayList<>();
+            postList = new ArrayList<>();
         }
     }
 
-    public void setPostList(ArrayList<Post> postList){
-        this.postList = postList;
+    public Page(User creator, String name) throws InvalidCommunityPageNameException {
+        this(creator);
+        setPageName(name);
+    }
+
+    public void setPageName(String pageName) throws InvalidCommunityPageNameException {
+        if (pageName.length() < Constants.PAGE_MIN_NAME_LENGTH){
+            throw new InvalidCommunityPageNameException("Page Name cannot be less than 3 characters");              //this will change when i refactor whole code on saturday or sunday(let it be hardcoded for now)
+        } else if (pageName.length() > Constants.PAGE_MAX_NAME_LENGTH){
+            throw new InvalidCommunityPageNameException("Page name cannot be more than 12 characters");
+        } else {
+            this.pageName = pageName;
+        }
     }
 
     public User getCreator() {
@@ -39,7 +55,9 @@ public abstract class Page {
         return this.pageName;
     }
 
-    public void changePageName(String newName) {this.pageName = newName; }
+    public void changePageName(String newName){
+        pageName = newName;
+    }
 
     public ArrayList<User> getFollowers() {
         return followers;
@@ -49,13 +67,5 @@ public abstract class Page {
         return postList;
     }
 
-    public void addPost(Post newPost){
-        if(postList != null && newPost!= null){         //newPost!=null???
-            postList.add(newPost);
-        }
-    }
-    public void addFollower(User e){
-        followers.add(e);
-    }
-    //public void deletePost(){}                        //future iteration
+    public void addFollower(User user) { followers.add(user); }
 }

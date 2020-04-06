@@ -12,12 +12,12 @@
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,12 +38,52 @@
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_marginTop="20dp"
-        android:textAlignment="viewStart"
+        android:layout_marginLeft="10dp"
+        android:textAlignment="center"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivImage" />
 
+    <TextView
+        android:id="@+id/commentView"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/tertiary_text_dark"
+        android:textSize="25dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/commentEditText"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:hint="Enter a Comment"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentView" />
+
+
+    <Button
+        android:id="@+id/commentButton"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/darker_gray"
+        android:text="Comment"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@id/commentEditText"
+        app:layout_constraintTop_toTopOf="@+id/commentEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

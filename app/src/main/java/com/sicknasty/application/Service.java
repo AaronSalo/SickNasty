@@ -1,12 +1,11 @@
 package com.sicknasty.application;
-import android.content.Context;
 import android.util.Log;
 
 import com.sicknasty.persistence.*;
 import com.sicknasty.persistence.sql.PagePersistenceHSQLDB;
 import com.sicknasty.persistence.sql.PostPersistenceHSQLDB;
 import com.sicknasty.persistence.sql.UserPersistenceHSQLDB;
-import com.sicknasty.persistence.stubs.*;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -28,25 +27,15 @@ public class Service {
 
     private static String dbPath = "";
 
-    public static synchronized void initDatabase(Context context) {
-        Log.d("SQL", "Getting hidden system folder");
-
-        File dir = context.getDir("db", Context.MODE_PRIVATE);
-        File dbFile = new File(dir.toString() + "/sicknasty.script");
-
-        Service.dbPath = dbFile.toString();
-
-        Service.registerDriver();
-    }
-
     public static synchronized void initTestDatabase() {
         userData = null;
         postData = null;
         pageData = null;
+
         try {
             File tmpFile = File.createTempFile("sicknasty-", ".script");
 
-            Service.dbPath = tmpFile.toString();
+            Service.setDBPathName(tmpFile.toString());
 
             Log.d("SQL", "Creating temporary database at: " + tmpFile.toString());
         } catch (IOException e) {
@@ -54,10 +43,11 @@ public class Service {
             Log.e("SQL", e.getMessage());
         }
 
-        Service.registerDriver();
     }
 
-    private static void registerDriver() {
+    public static void setDBPathName(String path) {
+        dbPath = path;
+
         try {
             Log.d("SQL", "Linking driver class");
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
@@ -78,8 +68,6 @@ public class Service {
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
                 e.printStackTrace();
-
-                userData = new UserPersistenceStub();
             }
         }
 
@@ -94,8 +82,6 @@ public class Service {
                 Log.e("SQL", "Failed to connect to database (post data)");
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
-
-                postData = new PostPersistenceStub();
             }
         }
 
@@ -110,8 +96,6 @@ public class Service {
                 Log.e("SQL", "Failed to connect to database (page data)");
                 Log.e("SQL", e.getSQLState());
                 Log.e("SQL", e.getMessage());
-
-                pageData = new PagePersistenceStub();
             }
         }
 

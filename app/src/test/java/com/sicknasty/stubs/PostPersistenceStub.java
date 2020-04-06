@@ -1,18 +1,24 @@
-package com.sicknasty.persistence.stubs;
+package com.sicknasty.stubs;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
 import com.sicknasty.persistence.PostPersistence;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBPostIDNotFoundException;
 
+import static com.sicknasty.persistence.PostPersistence.FILTER_BY.*;
+
 public class PostPersistenceStub implements PostPersistence {
     // an HashMap containing ALL the posts in the app
     private HashMap<Integer, Post> posts;
+    private ArrayList<Comment> comments;
 
     public PostPersistenceStub() {
         this.posts = new HashMap<Integer, Post>();
@@ -43,41 +49,67 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean insertNewPost(Post post) throws DBPostIDExistsException {
-        if (post == null) return false;
-
+    public void insertNewPost(Post post) throws DBPostIDExistsException {
         Post exisitingPost = this.posts.get(post.getPostID());
 
         if (exisitingPost == null) {
             this.posts.put(post.getPostID(), post);
-
-            return true;
         } else {
             throw new DBPostIDExistsException(post.getPostID());
         }
     }
 
     @Override
-    public boolean deletePost(int id) {
-        // remove the post, if it removes then result will be the Post object
-        // if it did not fine an id, it will return null
-        Post result = this.posts.remove(id);
-
-        return result != null;
+    public void deletePost(int id) {
+        this.posts.remove(id);
     }
 
     @Override
-    public boolean deletePost(Post post) {
-        if (post == null) return false;
-
+    public void deletePost(Post post) {
         Post exisitingPost = this.posts.get(post.getPostID());
 
-        if (exisitingPost == null) {
-            return false;
+        if (exisitingPost != null) {
+            this.deletePost(exisitingPost.getPostID());
         }
 
-        // i dont like this.
-        // the existance of this function can be discussed
-        return this.deletePost(exisitingPost.getPostID());
+    }
+
+    @Override
+    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, final FILTER_BY filter, boolean ascOrder) {
+        ArrayList<Comment> result = new ArrayList<Comment>();
+
+        Collections.sort(this.comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment comment1, Comment comment2) {
+                int difference = 0;
+
+                if (filter == TIME_CREATED) {
+
+                } else if (filter == AMOUNT_LIKES) {
+
+                } else if (filter == AMOUNT_DISLIKES) {
+
+                }
+
+                return difference;
+            }
+        });
+
+        if (limit == 0) {
+            result = this.comments;
+        } else {
+            for (int i = 0; i < limit; i++) {
+                Comment comment = this.comments.get(i);
+
+                result.add(comment);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }

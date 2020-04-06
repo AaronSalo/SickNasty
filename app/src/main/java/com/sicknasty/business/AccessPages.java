@@ -2,9 +2,13 @@ package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
 import com.sicknasty.objects.Page;
+import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PagePersistence;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
+
+import java.util.ArrayList;
 
 /** @author aaron
  * wrapper for the page db
@@ -30,21 +34,34 @@ public class AccessPages {
 
     /**
      * Inserts a new Page.
-     *
-     * @return      returns true on success, otherwise return false
      */
-    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
-        return pageHandler.insertNewPage(page);
+    public void insertNewPage(Page page) throws DBPageNameExistsException {
+        pageHandler.insertNewPage(page);
     }
 
     /**
      * Delete a Page by its unique name.
      *
      * @param   name  the unique name of the Page
-     * @return      returns true if it deleted successfully, otherwise false
      */
-    public boolean deletePage(String name){
-        return pageHandler.deletePage(name);
+    public void deletePage(String name){
+        pageHandler.deletePage(name);
     }
 
+
+    /**
+     * Add a follower to the user's page
+     * @param user that wants to follow the page
+     * @param page page being followed by User
+     */
+    public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
+        pageHandler.addFollower(page, user);
+    }
+
+    /**
+     * fetches all community pages names from the db
+     */
+    public ArrayList<String> getAllCommunityPages(){
+        return pageHandler.getAllCommunityPageNames();
+    }
 }//end of class

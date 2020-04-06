@@ -154,7 +154,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
     }
 
     @Override
-    public boolean deleteUser(User user) {
+    public void deleteUser(User user) {
         try {
             // create connection
             Connection db = this.getConnection();
@@ -165,15 +165,14 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             );
             stmt.setString(1, user.getUsername());
 
-            // executeUpdate() will return number of rows affected (will be 1 or 0)
-            return stmt.executeUpdate() == 1;
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }
     }
 
     @Override
-    public boolean updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException, ChangeUsernameException {
+    public void updateUsername(String oldUsername, String newUsername) throws DBUsernameExistsException, DBUsernameNotFoundException, ChangeUsernameException {
         // try getting the user, if it fails it will throw DBUsernameNotFoundException, which we pass up
         User usr = this.getUser(oldUsername);
 
@@ -195,10 +194,6 @@ public class UserPersistenceHSQLDB implements UserPersistence {
 				PagePersistenceHSQLDB pageDB = new PagePersistenceHSQLDB(this.path);
 
 				pageDB.changeName(oldUsername, newUsername);
-
-				return true;
-			} else {
-				return false;
 			}
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
@@ -211,7 +206,7 @@ public class UserPersistenceHSQLDB implements UserPersistence {
     }
 
     @Override
-    public boolean updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
+    public void updatePassword(User user, String password) throws DBUsernameNotFoundException, PasswordErrorException {
         // try getting the user, if it fails it will throw DBUsernameNotFoundException, which we pass up
         User usr = this.getUser(user.getUsername());
 
@@ -228,8 +223,74 @@ public class UserPersistenceHSQLDB implements UserPersistence {
             stmt.setString(1, password);
             stmt.setString(2, user.getUsername());
 
-            // same as deleteUser, will return 1 or 0 rows affected
-            return stmt.executeUpdate() == 1;
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Message> getMessages(User user1, User user2) {
+        ArrayList<Message> rtnMessage = new ArrayList<Message>();
+
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                 "SELECT * FROM Messages " +
+                     "WHERE " +
+                         "(sender = ? AND receiver = ?) " +
+                         "OR " +
+                         "(sender = ? AND receiver = ?) " +
+                     "ORDER BY time_sent ASC"
+            );
+            stmt.setString(1, user1.getUsername());
+            stmt.setString(2, user2.getUsername());
+            stmt.setString(3, user2.getUsername());
+            stmt.setString(4, user1.getUsername());
+
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                User sender = this.getUser(result.getString("sender"));
+                User receiver = this.getUser(result.getString("receiver"));
+
+                String message = result.getString("message");
+
+                Message msg = new Message(
+                    message,
+                    sender,
+                    receiver
+                );
+                msg.setTimeSent(result.getLong("time_sent"));
+
+                rtnMessage.add(msg);
+            }
+        } catch (SQLException | DBUsernameNotFoundException | MessageException e) {
+            throw new DBGenericException(e);
+        }
+
+        return rtnMessage;
+    }
+
+    @Override
+    public void addMessage(Message message) {
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                "INSERT INTO Messages VALUES(?, ?, ?, ?, NULL)"
+            );
+
+            String senderUsername = message.getMessenger().getUsername();
+            String recvUsername = message.getReceiver().getUsername();
+
+            stmt.setString(1, senderUsername);
+            stmt.setString(2, recvUsername);
+            stmt.setString(3, message.getMsg());
+            stmt.setLong(4, message.getTimeSent());
+
+            stmt.execute();
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }

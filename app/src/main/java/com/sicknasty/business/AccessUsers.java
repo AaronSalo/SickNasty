@@ -33,35 +33,23 @@ public class AccessUsers {
         if (user == null) {
             throw new PasswordErrorException("User not found. Cannot change password.");
         } else {
-            try {
+
                 // update local copy and the database copy
                 // note that order here is not important
                 this.userHandler.updatePassword(user, newPassword);
-            } catch (Exception ex) {
-                throw ex; //rethrow the exception, handle it in the UI layer
-            }
         }
     }
 
     /**
      * Updates username of a user if that username is available
      * @param user  the username we want to check,newUsername that we want to updarte
-     * @return  true if the changing username was successful, false if not
      */
     public void updateUsername(User user,String newUsername) throws ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
-        try {
-            this.userHandler.updateUsername(user.getUsername(), newUsername);
-        } catch (ChangeUsernameException | DBUsernameExistsException | DBUsernameNotFoundException e) {
-            throw e;
-        }
+        this.userHandler.updateUsername(user.getUsername(), newUsername);
     }
 
-    public User getUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
-        User user = userHandler.getUser(username);
-        if(user != null)
-            return user;
-        else
-            throw new UserNotFoundException("Could not find a user with that username");
+    public User getUser(String username) throws DBUsernameNotFoundException {
+        return userHandler.getUser(username);
     }
 
     /**
@@ -75,7 +63,7 @@ public class AccessUsers {
 
     public void deleteUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
         User user = userHandler.getUser(username);
-        if(user != null)
+        if (user != null)
             userHandler.deleteUser(user);
         else
             throw new UserNotFoundException("Could not find the specified user");
@@ -85,8 +73,15 @@ public class AccessUsers {
 
      * @return  all the users in DB so that user can search for a particular user
      */
-
     public ArrayList<String> getUsersByUsername(){
         return userHandler.getAllUsers();
+    }
+
+    public ArrayList<Message> getMessages(User user1, User user2){
+        return userHandler.getMessages(user1, user2);
+    }
+
+    public void addMessage(Message message){
+        userHandler.addMessage(message);
     }
 }

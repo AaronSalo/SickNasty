@@ -1,5 +1,6 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
@@ -35,24 +36,39 @@ public interface PostPersistence {
      * Inserts a new Post.
      *
      * @param   post the Post object to insert into the database
-     * @return  returns true on successful insert, otherwise return false
      * @throws  DBPostIDExistsException this gets thrown if you attempt to insert an existing post
      */
-    public boolean insertNewPost(Post post) throws DBPostIDExistsException;
+    public void insertNewPost(Post post) throws DBPostIDExistsException;
 
     /**
      * Deletes a Post specified by it's unique ID.
      * 
      * @param   id  the unique ID of the Post
-     * @return      returns true on success, otherwise return false
      */
-    public boolean deletePost(int id);
+    public void deletePost(int id);
 
     /**
      * Deletes a Post specified by a Post object.
      * 
      * @param   post a Post object to delete
-     * @return      returns true on success, otherwise return false
      */
-    public boolean deletePost(Post post);
+    public void deletePost(Post post);
+
+//    /**
+//     * Fetches all comments that are under a Post
+//     *
+//     * @param   post the Post object to fetch comments from
+//     * @param   limit the limit of posts to fetch. Set to 0 to get all comments
+//     * @param   filter the filter to sort the ArrayList by
+//     * @param   order whether the results get returned in ascending or descending order
+//     * @return  returns an ArrayList of Comment objects sorted by filter
+//     */
+    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
+
+    /**
+     * Add a comment to a Post
+     *
+     * @param   comment the comment to save
+     */
+    public void addComment(Comment comment);
 }

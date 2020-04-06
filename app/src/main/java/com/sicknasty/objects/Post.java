@@ -1,31 +1,43 @@
 
 package com.sicknasty.objects;
 
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
+
+import java.util.ArrayList;
 
 public class Post {
 
     private String text;
+    private String path;
+
+    private ArrayList<Comment> comments;
+
     private User userId;                        //user id kept so we know which who owns this post
-                                                //can discuss redundantcy later during refactoring, useful when posting to communities//so we can trace back to the users personal page.
-
     private Page pageId;            //stored so we know which page this post is being posted too
-    private int postID = -1;
 
-    private long timeCreated;
+    private int postID = -1;
     private int likes;
     private int dislikes;
 
     private boolean liked;
 
-    private String path;
+    private long timeCreated;
 
-    public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException{
+    public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException, CaptionTextException {
         if(page != null)
             this.pageId = page;
         else
             throw new NoValidPageException("Could not find a page to post to");
-        this.text = text;
+            
+        this.comments = new ArrayList<Comment>();
+
+        if(text.length() > Constants.POST_MAX_CONTENT_LENGTH)
+            throw new CaptionTextException("Caption is too long; No more than " + Constants.POST_MAX_CONTENT_LENGTH + " characters");
+        else{
+            this.text = text;
+        }
+        
         this.userId = userId;
         this.path=path;
         this.timeCreated = System.currentTimeMillis();
@@ -76,6 +88,12 @@ public class Post {
 
     public void setPostID(int id) {
         this.postID = id;
+    }
+
+    public ArrayList<Comment> getComments() { return comments; }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
 }

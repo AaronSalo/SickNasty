@@ -11,11 +11,29 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.CaptionActivity" />
-        <activity android:name=".presentation.SearchActivity" />
-        <activity android:name=".presentation.UserAccountActivity" />
-        <activity android:name=".presentation.PageActivity" />
-        <activity android:name=".presentation.RegistrationActivity" />
+        <activity
+            android:name=".presentation.OtherUserPageActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".presentation.LoggedUserPageActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:label="Home"/>
+        <activity android:name=".presentation.CaptionActivity"
+            android:label="@string/caption"/>
+
+        <activity android:name=".presentation.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".presentation.CommunityListPageActivity">
+
+        </activity>
+        <activity android:name=".presentation.CommunityPageActivity"/>
+        <activity android:name=".presentation.CreateCommunityActivity"/>
+        <activity android:name=".presentation.MessageActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".presentation.UserAccountActivity"
+            android:label="Update User Information"/>
+        <activity android:name=".presentation.RegistrationActivity"
+            android:label="@string/register"/>
         <activity android:name=".presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

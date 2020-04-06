@@ -1,6 +1,7 @@
 package com.sicknasty.persistence.sql;
 
 import com.sicknasty.objects.CommunityPage;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
@@ -17,8 +18,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PagePersistenceHSQLDB implements PagePersistence {
+    // note that the reason this is here is because of how the pages are saved in the database
+    // a more detailed explanation is in insertNewPage() of this class
+    // but basically: we either violate DRY in the db or we have to use instanceof in code
+    // we chose to use instanceof
     private final static int PERSONAL_PAGE = 0;
     private final static int COMMUNITY_PAGE = 1;
 
@@ -61,15 +67,16 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 
                 if (user != null) {
                     // use our private "enum" to create the page
+                    // again, more detailed explanation in insertNewPage() of this class
                     switch (result.getInt("type")) {
                         case PERSONAL_PAGE:
                             return new PersonalPage(user);
                         case COMMUNITY_PAGE:
-                            return new CommunityPage(result.getString("pg_name"), user);
+                            return new CommunityPage(user, name);
                     }
                 }
             }
-        } catch (SQLException | DBUsernameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | InvalidCommunityPageNameException e) {
             throw new DBGenericException(e);
         }
 
@@ -77,7 +84,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
+    public void insertNewPage(Page page) throws DBPageNameExistsException {
         try {
             Connection db = this.getConnection();
 
@@ -117,8 +124,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 }
 
                 stmt.execute();
-
-                return true;
             }
         } catch (SQLException e) {
             throw new DBGenericException(e);
@@ -126,7 +131,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public boolean deletePage(String name) {
+    public void deletePage(String name) {
         try {
             // deletes a page. :|
 
@@ -137,19 +142,19 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             );
             stmt.setString(1, name);
 
-            return stmt.executeUpdate() == 1;
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }
     }
 
     @Override
-    public boolean deletePage(Page page) {
-        return this.deletePage(page.getPageName());
+    public void deletePage(Page page) {
+        this.deletePage(page.getPageName());
     }
 
     @Override
-    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
+    public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
         String pageName = page.getPageName();
         String username = user.getUsername();
 
@@ -174,8 +179,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 stmt.setString(2, pageName);
 
                 stmt.execute();
-
-                return true;
+                page.addFollower(user);
             }
         } catch (SQLException e) {
             throw new DBGenericException(e);
@@ -183,7 +187,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
 	@Override
-	public boolean changeName(String oldName, String newName) {
+	public void changeName(String oldName, String newName) {
 		try {
 			Connection db = this.getConnection();
 
@@ -193,9 +197,33 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 			stmt.setString(1, newName);
 			stmt.setString(2, oldName);	
 
-			return stmt.executeUpdate() == 1;
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DBGenericException(e);
 		}
 	}
+
+    @Override
+    public ArrayList<String> getAllCommunityPageNames() {
+        ArrayList<String> returnNames = new ArrayList<String>();
+
+        try {
+            Connection db = this.getConnection();
+
+            PreparedStatement stmt = db.prepareStatement(
+                    "SELECT pg_name FROM Pages WHERE type = 1"
+            );
+
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                String pageName = result.getString(1);
+
+                returnNames.add(pageName);
+            }
+        } catch (SQLException e) {
+            throw new DBGenericException(e);
+        }
+
+        return returnNames;
+    }
 }

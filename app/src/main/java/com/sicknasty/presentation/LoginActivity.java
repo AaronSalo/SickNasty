@@ -1,5 +1,6 @@
 package com.sicknasty.presentation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,20 +15,33 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sicknasty.R;
 import com.sicknasty.application.Service;
 import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
-import com.sicknasty.objects.Page;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
+import java.io.File;
+
 
 public class LoginActivity extends AppCompatActivity {
-    AccessUsers userHandler;
+    private AccessUsers userHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // create database file
+        // the reason this is here is because getApplicationContext() is only located here
+        //
+        // so in the sample project, they do a similar thing in the UI/main activity
+        // we need to create a script file for the database. that requires us to access the application context
+        // which we access from here. the sample does a similar thing where they
+        // create and copy over a file from the app to the device and call an set path function else where
+        File dir = getApplicationContext().getDir("db", Context.MODE_PRIVATE);
+        File dbFile = new File(dir.toString() + "/sicknasty.script");
+        Service.setDBPathName(dbFile.toString());
+
+        this.userHandler = new AccessUsers();
 
         SharedPreferences saveLoginDetails=getSharedPreferences("MY_PREFS",MODE_PRIVATE);           //saving user details so that
         final SharedPreferences.Editor prefEditor=saveLoginDetails.edit();                                //they don't have to login everytime they open app
@@ -37,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         Button login =findViewById(R.id.Login);
         Button register=findViewById(R.id.signUp);
 
-        //page already exists (toast from where????)
         if(saveLoginDetails.getBoolean("isLogin",false)){
             Intent startIntent=new Intent(LoginActivity.this, PageActivity.class);
             startIntent.putExtra("user", saveLoginDetails.getString("username",null));
@@ -45,17 +58,14 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        // the order here is VERY important
-        Service.initDatabase(getApplicationContext());
-        this.userHandler = new AccessUsers();
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String inputUsername = userName.getText().toString();
                 String inputPassword = password.getText().toString();
 
-                if(validateInput(inputUsername, inputPassword)){ //check sure we have a valid input
+
+                if(!inputUsername.isEmpty() && !inputPassword.isEmpty()){ //check sure we have a valid input
 
                     //some text we are going to show the user
                     //its going to get changed, so if it doesn't, we have an unexpected error
@@ -79,12 +89,15 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             infoText = "Password and username doesn't match";
                         }
-                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                    } catch (DBUsernameNotFoundException e) {
                         infoText = e.getMessage();
                     } finally {
                         //show the user the appropriate message
                         Toast.makeText(getApplicationContext(),infoText,Toast.LENGTH_SHORT).show();
                     }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Please enter all details",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -96,34 +109,5 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(startIntent);
             }
         });
-    }
-
-
-    //make sure the user actually input some values
-    private boolean validateInput(String username,String password){
-        username = username.trim();
-        password = password.trim();
-
-        String infoText = "";
-
-        boolean result=false;
-        if(username.isEmpty() && password.isEmpty()){
-            infoText = "enter your username and password";
-        }
-        else if(username.isEmpty()){
-            infoText = "Enter your username";
-        }
-        else if(password.isEmpty()){
-            infoText = "Enter your password";
-        }
-        else
-            result = true;
-
-        //if we have a message for the user, display it
-        if(infoText.length() > 0) {
-            Toast toast = Toast.makeText(LoginActivity.this, infoText, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        return result;
     }
 }

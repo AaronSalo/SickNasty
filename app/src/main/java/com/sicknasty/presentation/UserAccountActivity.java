@@ -1,10 +1,7 @@
 package com.sicknasty.presentation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -37,50 +34,81 @@ import java.util.ArrayList;
 
 public class UserAccountActivity extends AppCompatActivity {
 
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
-    AccessUsers users=new AccessUsers();
-    AccessPages pages=new AccessPages();
-    SharedPreferences preferences;
+    private AccessUsers users = new AccessUsers();
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_account);
 
-        Button submitPass=findViewById(R.id.submitPassword);
+        preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
 
-        final EditText newPass=findViewById(R.id.newPasswordText);
-        Button logout=findViewById(R.id.logout);
-        submitPass.setOnClickListener(new View.OnClickListener() {
+        final EditText username = findViewById(R.id.updateUsername);
+        final EditText password = findViewById(R.id.updatePassword);
+
+        Button update = findViewById(R.id.updateInfo);
+        CheckBox showPass = findViewById(R.id.passwordShow);
+
+        final String oldUsername = preferences.getString("username",null);      //retrieve old data
+        final String oldPassword = preferences.getString("password",null);
+
+        username.setText(oldUsername);      //this allows user to see their oldUsername
+        password.setText(oldPassword);      //and oldPassword
+
+        Button logout = findViewById(R.id.logout);
+
+        //this is used to show user their password
+        showPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-                String pass=newPass.getText().toString();
-                if(pass.isEmpty()){
-                    Toast.makeText(UserAccountActivity.this, "Enter a new Password", Toast.LENGTH_SHORT).show();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
-                else{
-                    //call similar functions
-                    if(pass.length()<6)         //i did this bcz i didn't know how fn behaves
-                        Toast.makeText(UserAccountActivity.this, "Enter a Password minimum 6 characters", Toast.LENGTH_SHORT).show();
-                    else{
-
-                        try {
-                            users.updateUserPassword(preferences.getString("username",null),pass);
-                            Toast.makeText(UserAccountActivity.this, "Password successfully updated", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(UserAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                else {
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             }
         });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newPass = password.getText().toString();
+                String newUsername = username.getText().toString();
+                String message="An unexpected error has occurred";
+
+                try {
+                    User user = users.getUser(oldUsername);     //find user with oldUsername
+                    String updatedUsername = oldUsername;       //if it gets updates
+
+                    //if this condition is not present it will show an error that user already exist which is true
+                    //this is just checking if user has made any updates or not compared to their current username
+                    if (!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
+                        users.updateUsername(user, newUsername);    //if yes,try to update it
+
+                        //update shared preferences data
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove("username");
+                        editor.putString("username", newUsername);
+                        editor.apply();
+                        updatedUsername = newUsername;          //update it with new username
+                    }
+
+                    users.updateUserPassword(updatedUsername,newPass);      //try to update password
+                    message="Username and Password updated successfully";
+                } catch (Exception e) {
+                    message = e.getMessage();
+                } finally {
+                    Toast.makeText(UserAccountActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-                SharedPreferences.Editor editor=preferences.edit();
+                SharedPreferences.Editor editor = preferences.edit();
                 editor.remove("username");
                 editor.remove("password");
                 editor.remove("isLogin");
@@ -91,16 +119,16 @@ public class UserAccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
     @Override
     public void onBackPressed() {
         goToHome();
     }
 
-    public void goToHome(){
-        Intent intent=new Intent(UserAccountActivity.this,PageActivity.class);
-        preferences=getSharedPreferences("MY_PREFS",MODE_PRIVATE);
-        intent.putExtra("user",preferences.getString("username",null));
+    private void goToHome() {
+        Intent intent = new Intent(UserAccountActivity.this, LoggedUserPageActivity.class);
         startActivity(intent);
         finish();
     }
