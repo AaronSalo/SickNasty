@@ -1,5 +1,7 @@
 package com.sicknasty.persistence.sql;
 
+import com.sicknasty.objects.CommunityPage;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
@@ -64,10 +66,12 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                     switch (result.getInt("type")) {
                         case PERSONAL_PAGE:
                             return new PersonalPage(user);
+                        case COMMUNITY_PAGE:
+                            return new CommunityPage(user, name);
                     }
                 }
             }
-        } catch (SQLException | DBUsernameNotFoundException e) {
+        } catch (SQLException | DBUsernameNotFoundException | InvalidCommunityPageNameException e) {
             throw new DBGenericException(e);
         }
 
@@ -75,7 +79,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public boolean insertNewPage(Page page) throws DBPageNameExistsException {
+    public void insertNewPage(Page page) throws DBPageNameExistsException {
         try {
             Connection db = this.getConnection();
 
@@ -115,8 +119,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 }
 
                 stmt.execute();
-
-                return true;
             }
         } catch (SQLException e) {
             throw new DBGenericException(e);
@@ -124,7 +126,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
     @Override
-    public boolean deletePage(String name) {
+    public void deletePage(String name) {
         try {
             // deletes a page. :|
 
@@ -135,19 +137,19 @@ public class PagePersistenceHSQLDB implements PagePersistence {
             );
             stmt.setString(1, name);
 
-            return stmt.executeUpdate() == 1;
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DBGenericException(e);
         }
     }
 
     @Override
-    public boolean deletePage(Page page) {
-        return this.deletePage(page.getPageName());
+    public void deletePage(Page page) {
+        this.deletePage(page.getPageName());
     }
 
     @Override
-    public boolean addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
+    public void addFollower(Page page, User user) throws DBUserAlreadyFollowingException {
         String pageName = page.getPageName();
         String username = user.getUsername();
 
@@ -172,8 +174,6 @@ public class PagePersistenceHSQLDB implements PagePersistence {
                 stmt.setString(2, pageName);
 
                 stmt.execute();
-
-                return true;
             }
         } catch (SQLException e) {
             throw new DBGenericException(e);
@@ -181,7 +181,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
     }
 
 	@Override
-	public boolean changeName(String oldName, String newName) {
+	public void changeName(String oldName, String newName) {
 		try {
 			Connection db = this.getConnection();
 
@@ -191,7 +191,7 @@ public class PagePersistenceHSQLDB implements PagePersistence {
 			stmt.setString(1, newName);
 			stmt.setString(2, oldName);	
 
-			return stmt.executeUpdate() == 1;
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DBGenericException(e);
 		}

@@ -1,4 +1,4 @@
-package com.sicknasty.persistence.stubs;
+package com.sicknasty.stubs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,42 +49,29 @@ public class PostPersistenceStub implements PostPersistence {
     }
 
     @Override
-    public boolean insertNewPost(Post post) throws DBPostIDExistsException {
-        if (post == null) return false;
-
+    public void insertNewPost(Post post) throws DBPostIDExistsException {
         Post exisitingPost = this.posts.get(post.getPostID());
 
         if (exisitingPost == null) {
             this.posts.put(post.getPostID(), post);
-
-            return true;
         } else {
             throw new DBPostIDExistsException(post.getPostID());
         }
     }
 
     @Override
-    public boolean deletePost(int id) {
-        // remove the post, if it removes then result will be the Post object
-        // if it did not fine an id, it will return null
-        Post result = this.posts.remove(id);
-
-        return result != null;
+    public void deletePost(int id) {
+        this.posts.remove(id);
     }
 
     @Override
-    public boolean deletePost(Post post) {
-        if (post == null) return false;
-
+    public void deletePost(Post post) {
         Post exisitingPost = this.posts.get(post.getPostID());
 
-        if (exisitingPost == null) {
-            return false;
+        if (exisitingPost != null) {
+            this.deletePost(exisitingPost.getPostID());
         }
 
-        // i dont like this.
-        // the existance of this function can be discussed
-        return this.deletePost(exisitingPost.getPostID());
     }
 
     @Override

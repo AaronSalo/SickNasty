@@ -2,6 +2,7 @@ package com.sicknasty.presentation;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,8 +22,6 @@ import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,8 +30,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoggedUserPageActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class LoggedUserPageActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
@@ -42,7 +42,9 @@ public class LoggedUserPageActivity extends AppCompatActivity {
 
     public User currUser;
     Boolean editProfilePic = false;         //this is what's differentiating between upload a post vs update profile pic
+
     public String pageName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,50 +52,57 @@ public class LoggedUserPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_page);
 
         ListView lvPost = findViewById(R.id.lvPost);         //listView of posts
+        ImageView settings = findViewById(R.id.settings);
         TextView followers = findViewById(R.id.followers);
         TextView following = findViewById(R.id.following);
         TextView numberOfPosts = findViewById(R.id.posts);
-        Button postButton = findViewById(R.id.postButton);
         TextView name = findViewById(R.id.profileName);
+
+        Button postButton = findViewById(R.id.postButton);
         Button searchButton = findViewById(R.id.searchButton);
-        ImageView profilePicEdit = findViewById(R.id.profilePicUpdate);
-        ImageView settings = findViewById(R.id.settings);
+        Button communityListButton = findViewById(R.id.communityListButton);
 
+        SharedPreferences preferences = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        final String loggedInUser = preferences.getString("username", null);
 
-        final String loggedInUser = getSharedPreferences("MY_PREFS",MODE_PRIVATE).getString("username",null);
         pageName = loggedInUser;
         PostAdapter postAdapter = null;
         int numOfPosts = 0;      //this indicates how many posts this page/user has
+
         try {
             currUser = users.getUser(loggedInUser);
             Page page = pages.getPage(loggedInUser);        //remember username is same as pageName
-            postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
-            numOfPosts = posts.getPostsByPage(page).size();
+            ArrayList<Post> pagePosts = posts.getPostsByPage(page);
+
+            postAdapter = new PostAdapter(this, R.layout.activity_post, pagePosts);
+            numOfPosts = pagePosts.size();
         } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
         name.setText(currUser.getName());
-        followers.setText(""+(int)(100*Math.random()));
-        numberOfPosts.setText(""+numOfPosts);
-        following.setText(""+(int)(100*Math.random()));
+        followers.setText("" + (int) (100 * Math.random()));
+        numberOfPosts.setText("" + numOfPosts);
+        following.setText("" + (int) (100 * Math.random()));
+
         lvPost.setAdapter(postAdapter);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
-                startActivity(newIntent);
+                Intent settingsIntent = new Intent(LoggedUserPageActivity.this, UserAccountActivity.class);
+                startActivity(settingsIntent);
             }
         });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent=new Intent(LoggedUserPageActivity.this,SearchActivity.class);
-                startActivity(newIntent);
+                Intent searchIntent = new Intent(LoggedUserPageActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
             }
         });
-        //also filter by post!! UI
+
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,33 +110,33 @@ public class LoggedUserPageActivity extends AppCompatActivity {
             }
         });
 
-        profilePicEdit.setOnClickListener(new View.OnClickListener() {
+        communityListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editProfilePic = true;
-                chooseImageHelper();
+                Intent showCommunityListIntent = new Intent(LoggedUserPageActivity.this, CommunityListPageActivity.class);
+                startActivity(showCommunityListIntent);
             }
         });
 
     }
 
-    private void chooseImageHelper()
-    {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-                String[] permissions ={Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions,PERMISSION_CODE);
-            }
-            else{
+    private void chooseImageHelper() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasReadPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+            if (hasReadPermission == PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            } else{
                 //access granted
                 chooseImage();
             }
-        }
-        else {
+        } else {
             //ose is less than marshmallow
             chooseImage();
         }
     }
+
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -137,12 +146,11 @@ public class LoggedUserPageActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     chooseImage();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied!!",Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(this,"Permission denied!!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -157,18 +165,10 @@ public class LoggedUserPageActivity extends AppCompatActivity {
                 //create a picture post and insert it to database
 
                 Uri uri = data.getData();
-
-                if(editProfilePic){
-                    //we know we have to update profile pic and not upload a post
-                    //save the uri      -Reminder for lucas to add a uri field in page table
-
-                }
-                else {
-                    Intent newIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
-                    newIntent.putExtra("pageName", pageName);
-                    newIntent.putExtra("URI", uri.toString());
-                    startActivity(newIntent);
-                }
+                Intent newPostIntent = new Intent(LoggedUserPageActivity.this, CaptionActivity.class);
+                newPostIntent.putExtra("pageName", pageName);
+                newPostIntent.putExtra("URI", uri.toString());
+                startActivity(newPostIntent);
             }
         }
     }
