@@ -1,11 +1,9 @@
 package com.sicknasty.objects;
 
-import com.sicknasty.application.Service;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
-import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 
 import java.util.ArrayList;
 
@@ -15,7 +13,6 @@ import java.util.ArrayList;
 //the user object manages the each individual user account. Stores a password object, and other
 //things related to the user
 public class User {
-
     private String name; //the "display name" of the user
     private String userName; //used for storage, searching, etc.
     private String password; //just store unsecure pass for now
@@ -24,13 +21,6 @@ public class User {
     private ArrayList<User> follows; //list of people that the user follows
 
     private PersonalPage personalPage; //the users personal page *****WAITING FOR PAGE IMPLEMENTATON****
-
-    private final int MAX_USERNAME_LENGTH = 12; //username cannot be longer than 12 characters
-    private final int MIN_USERNAME_LENGTH = 3; //username must be at least 3 characters
-
-    //password restrictions; public in case UI wants to display this value
-    public static final int MIN_PASS_LENGTH = 6;
-    public static final int MAX_PASS_LENGTH = 32;
 
     public User(String name, String username, String password)throws PasswordErrorException, UserCreationException,
             ChangeNameException, ChangeUsernameException {
@@ -54,14 +44,14 @@ public class User {
     public boolean changeName(String newName) throws ChangeNameException{
         boolean success = false;
         newName = newName.trim(); //trim the whitespace
-        if(newName.length() > MIN_USERNAME_LENGTH) {
-            if (newName.length() < MAX_USERNAME_LENGTH) {
+        if(newName.length() > Constants.USER_MIN_USERNAME_LENGTH) {
+            if (newName.length() < Constants.USER_MAX_USERNAME_LENGTH) {
                 name = newName;
                 success = true;
             } else
-                throw new ChangeNameException("The username was too long; must be shorter than " + MAX_USERNAME_LENGTH);
+                throw new ChangeNameException("The username was too long; must be shorter than " + Constants.USER_MAX_USERNAME_LENGTH);
         } else
-            throw new ChangeNameException(("The username was too short; must be at least " + MIN_USERNAME_LENGTH + " characters"));
+            throw new ChangeNameException(("The username was too short; must be at least " + Constants.USER_MIN_USERNAME_LENGTH + " characters"));
         return success;
     }
 
@@ -77,10 +67,10 @@ public class User {
             if (!input.contains(" ")) {
                 int passwordLength = input.length();
 
-                if (passwordLength >= MIN_PASS_LENGTH && passwordLength <= MAX_PASS_LENGTH) {
+                if (passwordLength >= Constants.USER_MIN_PASS_LENGTH && passwordLength <= Constants.USER_MAX_PASS_LENGTH) {
                     password = input;
                 } else {
-                    throw new PasswordErrorException("The password length must be between " + MIN_PASS_LENGTH + " and " + MAX_PASS_LENGTH);
+                    throw new PasswordErrorException("The password length must be between " + Constants.USER_MIN_PASS_LENGTH + " and " + Constants.USER_MAX_PASS_LENGTH);
                 }
             } else
                 throw new PasswordErrorException("Password cannot contain spaces");
@@ -118,14 +108,14 @@ public class User {
         newUsername = newUsername.trim(); //trim whitespace off edges
 
         if (newUsername!=null) {
-            if ((newUsername.length() <= MAX_USERNAME_LENGTH) && (newUsername.length() >= MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
+            if ((newUsername.length() <= Constants.USER_MAX_USERNAME_LENGTH) && (newUsername.length() >= Constants.USER_MIN_USERNAME_LENGTH)) { //is the newUsername an appropriate length
                 if (!newUsername.contains(" ")) { //check to see if the string contains whitespace
                     this.userName = newUsername;
                 } else {
                     throw new ChangeUsernameException("Username cannot contain whitespace");
                 }
             } else {
-                throw new ChangeUsernameException("Username must be longer than " + MIN_USERNAME_LENGTH + " and shorter than " + MAX_USERNAME_LENGTH);
+                throw new ChangeUsernameException("Username must be longer than " + Constants.USER_MIN_USERNAME_LENGTH + " and shorter than " + Constants.USER_MAX_USERNAME_LENGTH);
             }
         } else //this should never occur... but... just in case
             throw new ChangeUsernameException("An unknown error occured when trying to update the username");

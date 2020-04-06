@@ -31,6 +31,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // create database file
         // the reason this is here is because getApplicationContext() is only located here
+        //
+        // so in the sample project, they do a similar thing in the UI/main activity
+        // we need to create a script file for the database. that requires us to access the application context
+        // which we access from here. the sample does a similar thing where they
+        // create and copy over a file from the app to the device and call an set path function else where
         File dir = getApplicationContext().getDir("db", Context.MODE_PRIVATE);
         File dbFile = new File(dir.toString() + "/sicknasty.script");
         Service.setDBPathName(dbFile.toString());
