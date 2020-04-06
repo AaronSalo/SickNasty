@@ -9,20 +9,20 @@ import java.util.ArrayList;
 public class Post {
 
     private String text;
+    private String path;
+
     private ArrayList<Comment> comments;
+
     private User userId;                        //user id kept so we know which who owns this post
-                                                //can discuss redundantcy later during refactoring, useful when posting to communities//so we can trace back to the users personal page.
-
     private Page pageId;            //stored so we know which page this post is being posted too
-    private int postID = -1;
 
-    private long timeCreated;
+    private int postID = -1;
     private int likes;
     private int dislikes;
 
     private boolean liked;
 
-    private String path;
+    private long timeCreated;
 
     public Post(String text, User userId, String path, int likes, int dislikes, Page page) throws NoValidPageException, CaptionTextException {
         if(page != null)
@@ -31,10 +31,9 @@ public class Post {
             throw new NoValidPageException("Could not find a page to post to");
             
         this.comments = new ArrayList<Comment>();
-        
-        //this will be changed when i do final refactoring
-        if(text.length() > 255)
-            throw new CaptionTextException("Caption is too long; No more than 255 characters");
+
+        if(text.length() > Constants.POST_MAX_CONTENT_LENGTH)
+            throw new CaptionTextException("Caption is too long; No more than " + Constants.POST_MAX_CONTENT_LENGTH + " characters");
         else{
             this.text = text;
         }
