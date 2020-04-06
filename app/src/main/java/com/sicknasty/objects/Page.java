@@ -59,12 +59,13 @@ public abstract class Page {
         pageName = newName;
     }
 
-    //package private
-    ArrayList<User> getFollowers() {
+    public ArrayList<User> getFollowers() {
         return followers;
     }
 
     public ArrayList<Post> getPostList(){
         return postList;
     }
+
+    public void addFollower(User user) { followers.add(user); }
 }

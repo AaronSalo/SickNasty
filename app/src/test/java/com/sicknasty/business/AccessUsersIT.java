@@ -18,17 +18,18 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class AccessUsersIT {
 
-    AccessUsers users;
-    AccessPages pages;
+    private AccessUsers users;
 
     @Before public void setUp() {
         Service.initTestDatabase();
-        users = new AccessUsers();              //use business layer
-        pages=new AccessPages();
+        users = new AccessUsers();              //use business layer's db
     }
 
     @Test
@@ -58,8 +59,6 @@ public class AccessUsersIT {
             users.getUser(username); //should throw an exception
         } catch (DBUsernameNotFoundException e) {
             throw e;
-        } catch (UserNotFoundException e) {
-            fail();
         }
     }
 
@@ -80,23 +79,21 @@ public class AccessUsersIT {
 
 
     @Test
-    public void testUpdatesInUsername() throws DBPageNameNotFoundException, DBUsernameNotFoundException, DBUsernameExistsException, ChangeUsernameException, UserNotFoundException, DBPageNameExistsException, PasswordErrorException, ChangeNameException, UserCreationException {
+    public void testUpdatesInUsername(){
         String username = "jay";
         String newUsername = "aaron";
-//        try {
+        try {
             User user1 = new User("Jay K",username,"abcmmdef");
             users.insertUser(user1);
-            pages.insertNewPage(user1.getPersonalPage());
-            //users.getUser("aaron");
             users.updateUsername(user1, newUsername);
-            pages.deletePage(username);
             user1 = users.getUser(newUsername);
             assert(user1.getUsername() != username);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            fail();
-//        }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
     }
+
 
     @Test (expected = PasswordErrorException.class)
     public void testPasswordError() throws PasswordErrorException{
@@ -150,8 +147,29 @@ public class AccessUsersIT {
     }
 
     @Test
-    public void testMessageOrder() {
-        try {
+    public void testGetAllUsers() throws DBUsernameExistsException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException
+    {
+        String username = "user1";
+        String username1 = "user2";
+        String username2 = "user3";
+        User user1 = new User("user 1", username, "password");
+        User user2 = new User("user 2", username1, "password");
+        User user3 = new User("user 3", username2, "password");
+
+        users.insertUser(user1);
+        users.insertUser(user2);
+        users.insertUser(user3);
+
+
+        ArrayList<String> allUsers = users.getUsersByUsername();
+        assertTrue(allUsers.contains(username));
+        assertTrue(allUsers.contains(username1));
+        assertTrue(allUsers.contains(username2));
+    }
+
+    @Test
+    public void testMessageOrder() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException
+    {
             String username = "user1";
             String username1 = "user2";
             User user1 = new User("user 1", username, "password");
@@ -168,28 +186,14 @@ public class AccessUsersIT {
             users.addMessage(msg1);
             users.addMessage(msg2);
 
-
-
-            assertTrue(users.getMessages(user1,user2).get(0).getMsg().equals(msg.getMsg()));
-            assertFalse(users.getMessages(user1,user2).get(2).getMsg().equals(msg.getMsg()));
-
-
-
-        }catch (Exception e){
-
-            fail();
-        }
-
-
-
+            assertEquals(users.getMessages(user1, user2).get(0).getMsg(), msg.getMsg());
+            assertNotEquals(users.getMessages(user1, user2).get(2).getMsg(), msg.getMsg());
     }
 
 
-    @Test
-    public void testValidMessage(){
+    @Test(expected = MessageException.class)
+    public void testValidMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
 
-
-        try {
             String username = "user1";
             String username1 = "user2";
             User user1 = new User("user 1", username, "password");
@@ -198,52 +202,21 @@ public class AccessUsersIT {
             users.insertUser(user1);
             users.insertUser(user2);
 
+            Message msg = new Message("", user1, user2);
+            users.addMessage(msg);
 
-
-
-
-            try{
-
-                Message msg = new Message("", user1, user2);
-                users.addMessage(msg);
-
-
-
-            }catch (MessageException e){
-                    throw new MessageException("message must have atleast 1 char");
-            }
-
-            try{
-                Message msg1 = new Message("sjnjknfkjesktbkjerdkjgjdngjdkjfngk" +
+            msg = new Message("sjnjknfkjesktbkjerdkjgjdngjdkjfngk" +
                         "jbdfkjgbkjdbgkjbdkjxbcvkjdfbkbksdbkvbdskfbvkbedkfbgkerbdfkgb" +
                         "kdbvkdbfkvbrkdbklebdkvbkdbflkgkdbvkdbkbvdkbvkbvkbfkjgjfhkfngkd" +
                         "bfgbskgverkhgiuvhsgiersdlgdlvdblgsbdfgbcerldgbidbfgkbcludfbgiulcd" +
                         "fuigildkjbg", user2, user1);
-                users.addMessage(msg1);
+            users.addMessage(msg);
+    }
 
-
-            }catch (MessageException e){
-                throw new MessageException("Message excedes message char length");
-            }
-
-            try{
-                Message msg2 = new Message("good message", user1, user2);
-                users.addMessage(msg2);
-
-            }catch (MessageException e){
-                fail();
-            }
-
-
-
-        }catch (Exception e){
-
-            fail();
-        }
-
+    @Test
+    public void testDifferentUsersMessage(){
 
 
 
     }
-
 }

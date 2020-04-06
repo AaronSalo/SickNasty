@@ -59,7 +59,7 @@ public class CaptionActivity extends AppCompatActivity {
         try {
             curUser = users.getUser(preferences.getString("username",null));
             currPage = pages.getPage(pageName);
-        } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException e) {
+        } catch (DBUsernameNotFoundException | DBPageNameNotFoundException e) {
             String errorMsg = e.getMessage();
             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
         }

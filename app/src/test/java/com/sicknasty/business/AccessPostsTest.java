@@ -1,5 +1,6 @@
 package com.sicknasty.business;
 
+import com.sicknasty.objects.Exceptions.CaptionTextException;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
@@ -11,7 +12,7 @@ import com.sicknasty.objects.Post;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.PostPersistence;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
-import com.sicknasty.persistence.stubs.PostPersistenceStub;
+import com.sicknasty.stubs.PostPersistenceStub;
 
 import org.junit.After;
 import org.junit.Before;
@@ -43,11 +44,11 @@ public class AccessPostsTest {
     }
 
     @Test
-    public void testGetPostsByPage() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testGetPostsByPage() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, CaptionTextException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
 
         Page newPage=new PersonalPage(new User("test", "test", "testing1234"));
         ArrayList<Post> test = accessPostStub.getPostsByPage(newPage);
@@ -57,28 +58,28 @@ public class AccessPostsTest {
     }
 
     @Test
-    public void testPostInsert() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testPostInsert() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, CaptionTextException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
     }
 
     @Test
-    public void testPostDelete() throws NoValidPageException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException {
+    public void testPostDelete() throws NoValidPageException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBPostIDExistsException, CaptionTextException {
         User newUser = new User("hello", "helloo", "hellooooooo");
         Page page = new PersonalPage(newUser);
         Post post = new Post("this is a test",null,null,1, 1, page);
 
-        assertTrue("the post was not properly inserted", accessPostStub.insertPost(post));
+        accessPostStub.insertPost(post);
 
-        assertTrue("the deletion failed from the persistence stub", accessPostStub.deletePost(post));
+        accessPostStub.deletePost(post);
 
-        assertFalse("We somehow deleted the same post twice", accessPostStub.deletePost(post));
+        accessPostStub.deletePost(post);
 
         Post aDifferentPost = new Post("this is a test",newUser,null,1, 1, page);
 
-        assertFalse("deleted a post that was not inserted to the db", accessPostStub.deletePost(aDifferentPost));
+        accessPostStub.deletePost(aDifferentPost);
     }
     @Test
     public void deleteNullPost()

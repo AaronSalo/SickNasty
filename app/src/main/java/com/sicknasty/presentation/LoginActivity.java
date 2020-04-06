@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 String inputUsername = userName.getText().toString();
                 String inputPassword = password.getText().toString();
 
+
                 if(!inputUsername.isEmpty() && !inputPassword.isEmpty()){ //check sure we have a valid input
 
                     //some text we are going to show the user
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             infoText = "Password and username doesn't match";
                         }
-                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                    } catch (DBUsernameNotFoundException e) {
                         infoText = e.getMessage();
                     } finally {
                         //show the user the appropriate message

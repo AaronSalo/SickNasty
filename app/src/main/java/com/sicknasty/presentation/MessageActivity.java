@@ -44,7 +44,7 @@ public class MessageActivity extends AppCompatActivity {
             try {                              //gets current user (person being messaged)
                 curUser = users.getUser(extras.getString("currentUser"));
                 loggedInUser = users.getUser(extras.getString("loggedInUser"));
-            } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+            } catch (DBUsernameNotFoundException e) {
                 String errorMsg = e.getMessage();
                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
