@@ -43,6 +43,7 @@ public class CommunityListPageActivity extends AppCompatActivity {
                 Intent intent = new Intent(CommunityListPageActivity.this, CommunityPageActivity.class);
                 intent.putExtra("currentCommunityPage", lv.getItemAtPosition(position).toString());
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -51,6 +52,7 @@ public class CommunityListPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CommunityListPageActivity.this, CreateCommunityActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

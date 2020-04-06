@@ -63,7 +63,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
             page = pages.getPage(userName);        //again ,remember pageName is Username
             postAdapter = new PostAdapter(this, R.layout.activity_post, posts.getPostsByPage(page));
             numOfPosts = posts.getPostsByPage(page).size();
-        } catch (DBPageNameNotFoundException | NoValidPageException | UserNotFoundException | DBUsernameNotFoundException e) {
+        } catch (DBPageNameNotFoundException | NoValidPageException | DBUsernameNotFoundException e) {
             message = e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }

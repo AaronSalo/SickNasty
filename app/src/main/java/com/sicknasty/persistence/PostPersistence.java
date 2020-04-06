@@ -1,5 +1,6 @@
 package com.sicknasty.persistence;
 
+import com.sicknasty.objects.Comment;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.Post;
@@ -62,12 +63,12 @@ public interface PostPersistence {
 //     * @param   order whether the results get returned in ascending or descending order
 //     * @return  returns an ArrayList of Comment objects sorted by filter
 //     */
-//    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
-//
-//    /**
-//     * Add a comment to a Post
-//     *
-//     * @param   comment the comment to save
-//     */
-//    public void addComment(Comment comment);
+    public ArrayList<Comment> getCommentsByPost(Post post, final int limit, FILTER_BY filter, boolean ascOrder);
+
+    /**
+     * Add a comment to a Post
+     *
+     * @param   comment the comment to save
+     */
+    public void addComment(Comment comment);
 }

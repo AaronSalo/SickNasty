@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             infoText = "Password and username doesn't match";
                         }
-                    } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+                    } catch (DBUsernameNotFoundException e) {
                         infoText = e.getMessage();
                     } finally {
                         //show the user the appropriate message

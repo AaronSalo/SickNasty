@@ -1,18 +1,24 @@
 package com.sicknasty.business;
 
 import com.sicknasty.application.Service;
+import com.sicknasty.objects.CommunityPage;
 import com.sicknasty.objects.Exceptions.ChangeNameException;
 import com.sicknasty.objects.Exceptions.ChangeUsernameException;
+import com.sicknasty.objects.Exceptions.InvalidCommunityPageNameException;
 import com.sicknasty.objects.Exceptions.PasswordErrorException;
 import com.sicknasty.objects.Exceptions.UserCreationException;
+import com.sicknasty.objects.Page;
 import com.sicknasty.objects.PersonalPage;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameExistsException;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
+import com.sicknasty.persistence.exceptions.DBUserAlreadyFollowingException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
@@ -20,19 +26,20 @@ import static org.junit.Assert.assertNotNull;
 
 public class AccessPagesIT {
 
-    AccessPages pages;
-    AccessUsers users;
-    User jay;
-    PersonalPage page;
+    private AccessPages pages;
+    private User jay;
+    private PersonalPage page;
+    private AccessUsers users;
+
     @Before
-    public void setUp() throws DBUsernameExistsException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException {
+    public void setUp() throws DBUsernameExistsException,ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException
+    {
         Service.initTestDatabase();
         pages = new AccessPages();
-        users=  new AccessUsers();
-        jay=new User("Jay K","jay","abcmmdef");
+        users = new AccessUsers();
+        jay = new User("Jay K","jay","abcmmdef");
         users.insertUser(jay);
-        page=new PersonalPage(jay);
-
+        page = new PersonalPage(jay);
     }
 
     @Test(expected = DBPageNameExistsException.class)
@@ -90,6 +97,64 @@ public class AccessPagesIT {
         pages.insertNewPage(page);
         pages.deletePage("jayqs");
         pages.deletePage("jay");
+    }
+    @Test
+    public void testAllCommunityPages() throws InvalidCommunityPageNameException, DBPageNameExistsException, DBPageNameNotFoundException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException
+    {
+
+        ArrayList<String> communityPages = pages.getAllCommunityPages();
+        User user = new User("Jay K","jay2","1234567");
+        //even though personal page was added
+        assertEquals(communityPages.size(),0);
+
+        Page communityPage1 = new CommunityPage(jay,"COMPUTER");
+        Page communityPage2 = new CommunityPage(jay,"ARTS");
+        Page personalPage1 = new PersonalPage(user);
+
+        pages.insertNewPage(communityPage1);
+        pages.insertNewPage(communityPage2);
+
+        //make sure it is inserted
+        assertNotNull(pages.getPage("COMPUTER"));
+        assertNotNull(pages.getPage("ARTS"));
+
+        communityPages = pages.getAllCommunityPages();
+        assertEquals(communityPages.size(),2);
+
+        users.insertUser(user);
+        pages.insertNewPage(personalPage1);
+
+        communityPages = pages.getAllCommunityPages();
+        //should still be 2
+        assertEquals(communityPages.size(),2);
+
+        assertEquals("COMPUTER",communityPages.get(1));
+        assertEquals("ARTS",communityPages.get(0));
+    }
+
+    @Test
+    public void testFollowPages() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBPageNameExistsException, DBUserAlreadyFollowingException, DBPageNameNotFoundException, InvalidCommunityPageNameException {
+        User user = new User("Jay K","jay2","1234567");
+        Page communityPage = new CommunityPage(user,"COMPUTER");
+
+        pages.insertNewPage(page);
+        users.insertUser(user);
+        pages.insertNewPage(communityPage);
+
+        pages.addFollower(communityPage, jay);
+        pages.addFollower(communityPage, user);
+        pages.addFollower(page,user);
+
+
+        assertEquals(communityPage.getFollowers().size(),3);
+        assertEquals(page.getFollowers().size(),2);
+
+        assertEquals(communityPage.getFollowers().get(0), user);
+        assertEquals(communityPage.getFollowers().get(1), jay);
+
+        assertEquals(page.getFollowers().get(0), jay);
+        assertEquals(page.getFollowers().get(1), user);
+
     }
 
 }

@@ -44,13 +44,10 @@ public class AccessUsers {
         if (user == null) {
             throw new PasswordErrorException("User not found. Cannot change password.");
         } else {
-            try {
+
                 // update local copy and the database copy
                 // note that order here is not important
                 this.userHandler.updatePassword(user, newPassword);
-            } catch (Exception ex) {
-                throw ex; //rethrow the exception, handle it in the UI layer
-            }
         }
     }
 
@@ -59,17 +56,11 @@ public class AccessUsers {
      * @param user  the username we want to check,newUsername that we want to updarte
      */
     public void updateUsername(User user,String newUsername) throws ChangeUsernameException, DBUsernameExistsException, DBUsernameNotFoundException {
-        try {
-            this.userHandler.updateUsername(user.getUsername(), newUsername);
-        } catch (ChangeUsernameException | DBUsernameExistsException | DBUsernameNotFoundException e) {
-            throw e;
-        }
+        this.userHandler.updateUsername(user.getUsername(), newUsername);
     }
 
-    public User getUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
-        User user = userHandler.getUser(username);
-//
-        return user;
+    public User getUser(String username) throws DBUsernameNotFoundException {
+        return userHandler.getUser(username);
     }
 
 
