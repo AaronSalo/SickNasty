@@ -31,6 +31,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class  PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
 
+    //the height of the commentview when no comments have been added
+    final int DEFAULT_COMMENT_VIEW_HEIGHT = 10;
+
+
     AccessPosts posts = new AccessPosts(); //get a reference to posts
 
     SharedPreferences pref;
@@ -114,9 +118,9 @@ public class  PostAdapter extends ArrayAdapter<Post> {
 
         Uri postUri;
         if (post != null) {
-            postUri = Uri.parse(post.getPath());
-            viewHolder.ivImage.setImageURI(postUri);             //this is working
             viewHolder.userName.setText(post.getUserId().getUsername());
+            postUri = Uri.parse(post.getPath());
+            viewHolder.ivImage.setImageURI(postUri);
             viewHolder.textView.setText(post.getText());
             //display the comments
 
@@ -125,6 +129,10 @@ public class  PostAdapter extends ArrayAdapter<Post> {
 
             if(!comments.isEmpty()) { //if we have comments on the post
 
+                ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                params.height = DEFAULT_COMMENT_VIEW_HEIGHT;
+                viewHolder.commentView.setLayoutParams(params);
+
                 String commentText = "";
                 //insert the text from all the comments into a string
                 for (int i = 0; i < comments.size(); i++) {
@@ -132,7 +140,7 @@ public class  PostAdapter extends ArrayAdapter<Post> {
                     String commentContent = comments.get(i).getContent(); //get the comment itself
                     commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
                     //increase the size of the container
-                    ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                    params = viewHolder.commentView.getLayoutParams();
                     params.height += 100;
                     viewHolder.commentView.setLayoutParams(params);
                 }
@@ -140,7 +148,9 @@ public class  PostAdapter extends ArrayAdapter<Post> {
                 //set the commentViews text
                 viewHolder.commentView.setText(commentText); //set the text in the xml
             } else { //no comments... reduce the width of the comment view
-                viewHolder.commentView.setWidth(1);
+                ViewGroup.LayoutParams params = viewHolder.commentView.getLayoutParams();
+                params.height = DEFAULT_COMMENT_VIEW_HEIGHT;
+                viewHolder.commentView.setLayoutParams(params);
             }
         }
 
