@@ -21,6 +21,8 @@ import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 
@@ -166,18 +168,20 @@ public class AccessPostsIT {
         pages.insertNewPage(user1.getPersonalPage());
 
         Post post = new Post("HELLO USER",user1,"test",0,0,user1.getPersonalPage());
-        Comment comment = new Comment(user1,"NICE PIC", post.getPostID());
         posts.insertPost(post);
+        Comment comment = new Comment(user1,"NICE PIC", post.getPostID());
 
         posts.addComment(comment);
 
-        assertEquals(1, posts.getComments(post).size());
-        assertEquals(comment,post.getComments().get(0));
+        ArrayList<Comment> postComments = posts.getComments(post);
+        assertEquals(1, postComments.size());
+        assertEquals(comment, postComments.get(0));
 
         posts.addComment(comment);
 
-        assertEquals(2, posts.getComments(post).size());
-        assertEquals(comment,post.getComments().get(1));
+        postComments = posts.getComments(post);
+        assertEquals(2, postComments.size());
+        assertEquals(comment, postComments.get(1));
 
 
 
