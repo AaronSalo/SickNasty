@@ -21,7 +21,7 @@ import java.io.File;
 
 
 public class LoginActivity extends AppCompatActivity {
-    AccessUsers userHandler;
+    private AccessUsers userHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

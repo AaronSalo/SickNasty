@@ -19,11 +19,9 @@ import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.User;
 
 public class UserAccountActivity extends AppCompatActivity {
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
 
-    AccessUsers users = new AccessUsers();
-    SharedPreferences preferences;
+    private AccessUsers users = new AccessUsers();
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +68,8 @@ public class UserAccountActivity extends AppCompatActivity {
                     User user = users.getUser(oldUsername);     //find user with oldUsername
                     String updatedUsername = oldUsername;       //if it gets updates
 
+                    //if this condition is not present it will show an error that user already exist which is true
+                    //this is just checking if user has made any updates or not compared to their current username
                     if (!newUsername.equals(oldUsername)) {      //check if they have entered a different username than their currUsername
                         users.updateUsername(user, newUsername);    //if yes,try to update it
 

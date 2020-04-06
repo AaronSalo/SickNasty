@@ -61,5 +61,6 @@ public class AccessPosts {
     public void addComment(Comment comment) { postHandler.addComment(comment);}
 
     public ArrayList<Comment> getComments (Post post) {
-        return this.postHandler.getCommentsByPost(post, 0, PostPersistence.FILTER_BY.TIME_CREATED, true); }
+        return this.postHandler.getCommentsByPost(post, 0, PostPersistence.FILTER_BY.TIME_CREATED, true);
+    }
 }

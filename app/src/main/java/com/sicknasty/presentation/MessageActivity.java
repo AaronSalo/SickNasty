@@ -2,7 +2,6 @@ package com.sicknasty.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,21 +14,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sicknasty.R;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.MessageException;
-import com.sicknasty.objects.Exceptions.NoValidPageException;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Message;
 import com.sicknasty.objects.User;
-import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 import com.sicknasty.presentation.adapter.MessageAdapter;
 
 public class MessageActivity extends AppCompatActivity {
 
-    AccessUsers users;
-    User curUser=null;
-    User loggedInUser = null;
-    MessageAdapter messageAdapter = null;
-
+    private AccessUsers users;
+    private User curUser = null;
+    private User loggedInUser = null;
+    private MessageAdapter messageAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
