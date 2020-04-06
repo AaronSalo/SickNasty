@@ -43,6 +43,7 @@ public class CommunityPageActivity extends AppCompatActivity {
     private User loggedUser;
     private Page currPage = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

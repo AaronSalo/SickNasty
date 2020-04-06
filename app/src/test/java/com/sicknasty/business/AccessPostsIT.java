@@ -17,13 +17,13 @@ import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameExistsException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
-import org.junit.After;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+
 
 public class AccessPostsIT {
 

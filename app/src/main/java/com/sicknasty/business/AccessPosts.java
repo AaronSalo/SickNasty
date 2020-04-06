@@ -64,9 +64,10 @@ public class AccessPosts {
 
     public void addComment(Comment comment) { postHandler.addComment(comment);}
 
-    public ArrayList<Comment> getComments (Post post)
+    public ArrayList<Comment> getComments(Post post)
     {
         //i think always just filter by time created for now
         return this.postHandler.getCommentsByPost(post, 100, PostPersistence.FILTER_BY.TIME_CREATED, true);
     }
+
 }
