@@ -18,7 +18,6 @@ import com.sicknasty.business.AccessPages;
 import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.Exceptions.NoValidPageException;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.Page;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBPageNameNotFoundException;
@@ -33,6 +32,7 @@ public class OtherUserPageActivity extends AppCompatActivity {
     private AccessPosts posts = new AccessPosts();
     private Page page;
     private User loggedUser ,thisUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

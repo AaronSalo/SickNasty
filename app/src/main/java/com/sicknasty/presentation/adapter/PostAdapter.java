@@ -8,9 +8,7 @@ import com.sicknasty.business.AccessPosts;
 import com.sicknasty.business.AccessUsers;
 import com.sicknasty.objects.*;
 import com.sicknasty.R;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
-import com.sicknasty.presentation.LoggedUserPageActivity;
 
 import android.content.Context;
 import android.view.View;
@@ -27,20 +25,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import static android.content.Context.MODE_PRIVATE;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 public class PostAdapter extends ArrayAdapter<Post> {
     private int resourceId;
 
     //the height of the commentview when no comments have been added
-    final int DEFAULT_COMMENT_VIEW_HEIGHT = 10;
+    private final int DEFAULT_COMMENT_VIEW_HEIGHT = 10;
 
     AccessPosts posts = new AccessPosts(); //get a reference to posts
 
-    SharedPreferences pref;
+    private SharedPreferences pref;
 
-    Post post;
+    private Post post;
 
     public PostAdapter(@NonNull Context context, int resource, List<Post> posts) {
         super(context,resource,posts);
@@ -101,7 +98,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         viewHolder.commentView.setText(viewHolder.commentView.getText() + "\n" +
                                 loggedInUser.getUsername() + ": " + newComment.getContent());
                     } catch (DBUsernameNotFoundException e) {
-                        e.printStackTrace();
+                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -114,6 +111,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         Uri postUri;
         if (post != null) {
+
             //*To professor/any member*:
             //this is just for some data that's already there and we don't know where to put the uri so
             //when the sample post was created,it was created with a uri of 'test' so we know
@@ -146,7 +144,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 for (int i = 0; i < comments.size(); i++) {
                     String userName = comments.get(i).getUser().getUsername(); //get the user who posted the comment
                     String commentContent = comments.get(i).getContent(); //get the comment itself
-                    commentText += userName + ": " + commentContent + "\n"; //add it to the total comment
+                    commentText+= userName + ": " + commentContent + "\n"; //add it to the total comment
                     //increase the size of the container
                     params = viewHolder.commentView.getLayoutParams();
                     params.height += 100;

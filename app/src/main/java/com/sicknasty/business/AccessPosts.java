@@ -6,7 +6,6 @@ import com.sicknasty.objects.Exceptions.NoValidPageException;
 import com.sicknasty.objects.Post;
 import com.sicknasty.objects.Page;
 import com.sicknasty.persistence.PostPersistence;
-import com.sicknasty.persistence.exceptions.DBGenericException;
 import com.sicknasty.persistence.exceptions.DBPostIDExistsException;
 
 import java.util.ArrayList;
