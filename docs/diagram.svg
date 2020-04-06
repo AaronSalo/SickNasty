@@ -51,7 +51,7 @@
   </font>
  </defs>
  <defs class="TextShapeIndex">
-  <g ooo:slide="id1" ooo:id-list="id3 id4 id5 id6 id7 id8 id9 id10 id11 id12 id13 id14 id15 id16 id17 id18 id19 id20 id21 id22 id23 id24 id25 id26 id27 id28 id29 id30 id31 id32 id33 id34 id35 id36 id37 id38 id39 id40 id41 id42 id43 id44 id45 id46 id47 id48 id49 id50 id51 id52 id53 id54 id55 id56 id57 id58 id59 id60 id61 id62 id63 id64 id65 id66 id67 id68 id69 id70 id71"/>
+  <g ooo:slide="id1" ooo:id-list="id3 id4 id5 id6 id7 id8 id9 id10 id11 id12 id13 id14 id15 id16 id17 id18 id19 id20 id21 id22 id23 id24 id25 id26 id27 id28 id29 id30 id31 id32 id33 id34 id35 id36 id37 id38 id39 id40 id41 id42 id43 id44 id45 id46 id47 id48 id49 id50 id51 id52 id53 id54 id55 id56 id57 id58 id59 id60 id61 id62 id63 id64 id65 id66 id67 id68 id69 id70 id71 id72"/>
  </defs>
  <defs class="EmbeddedBulletChars">
   <g id="bullet-char-template-57356" transform="scale(0.00048828125,-0.00048828125)">
@@ -1489,6 +1489,13 @@
         <rect class="BoundingBox" stroke="none" fill="none" x="13875" y="22498" width="4527" height="1326"/>
         <path fill="none" stroke="rgb(0,0,0)" d="M 16138,23822 L 13876,23822 13876,22499 18400,22499 18400,23822 16138,23822 Z"/>
         <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="423px" font-weight="400"><tspan class="TextPosition" x="15220" y="23309"><tspan fill="rgb(0,0,0)" stroke="none">Comment</tspan></tspan></tspan></text>
+       </g>
+      </g>
+      <g class="com.sun.star.drawing.CustomShape">
+       <g id="id72">
+        <rect class="BoundingBox" stroke="none" fill="none" x="13875" y="24698" width="4527" height="1326"/>
+        <path fill="none" stroke="rgb(0,0,0)" d="M 16138,26022 L 13876,26022 13876,24699 18400,24699 18400,26022 16138,26022 Z"/>
+        <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="423px" font-weight="400"><tspan class="TextPosition" x="15182" y="25509"><tspan fill="rgb(0,0,0)" stroke="none">Constants</tspan></tspan></tspan></text>
        </g>
       </g>
      </g>
