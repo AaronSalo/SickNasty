@@ -66,10 +66,8 @@ public class AccessUsers {
         }
     }
 
-    public User getUser(String username) throws UserNotFoundException, DBUsernameNotFoundException {
-        User user = userHandler.getUser(username);
-//
-        return user;
+    public User getUser(String username) throws DBUsernameNotFoundException {
+        return userHandler.getUser(username);
     }
 
 

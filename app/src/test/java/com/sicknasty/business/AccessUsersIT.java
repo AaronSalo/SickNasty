@@ -18,6 +18,9 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class AccessUsersIT {
@@ -56,8 +59,6 @@ public class AccessUsersIT {
             users.getUser(username); //should throw an exception
         } catch (DBUsernameNotFoundException e) {
             throw e;
-        } catch (UserNotFoundException e) {
-            fail();
         }
     }
 
@@ -146,7 +147,29 @@ public class AccessUsersIT {
     }
 
     @Test
-    public void testMessageOrder() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
+    public void testGetAllUsers() throws DBUsernameExistsException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException
+    {
+        String username = "user1";
+        String username1 = "user2";
+        String username2 = "user3";
+        User user1 = new User("user 1", username, "password");
+        User user2 = new User("user 2", username1, "password");
+        User user3 = new User("user 3", username2, "password");
+
+        users.insertUser(user1);
+        users.insertUser(user2);
+        users.insertUser(user3);
+
+
+        ArrayList<String> allUsers = users.getUsersByUsername();
+        assertTrue(allUsers.contains(username));
+        assertTrue(allUsers.contains(username1));
+        assertTrue(allUsers.contains(username2));
+    }
+
+    @Test
+    public void testMessageOrder() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException
+    {
             String username = "user1";
             String username1 = "user2";
             User user1 = new User("user 1", username, "password");

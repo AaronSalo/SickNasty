@@ -24,6 +24,7 @@ import org.mockito.stubbing.Answer;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -98,23 +99,43 @@ public class AccessUsersTest {
         User jay = new User("Jay K","jay","abcmmdef");
         User aaron =  new User("Aaron Salo","aaron","abcmmdef");
 
-        assertNotNull("user not added",accessUsersStub.insertUser(jay));
-        assertNotNull("user not added",accessUsersStub.insertUser(aaron));
+        when(userPersistenceMock.insertNewUser(any(User.class))).thenAnswer(new Answer<User>()
+        {
+            @Override
+            public User answer(InvocationOnMock invocation) throws Throwable
+            {
+                Object[] args = invocation.getArguments();
+                return (User) args[0];
+            }
+        });
 
-        ArrayList<String> list = accessUsersStub.getUsersByUsername();
-        assertTrue("user jay was added but not found",list.contains("jay"));
-        assertTrue("user aaron was added but not found",list.contains("aaron"));
-        assertFalse("user not added but still found",list.contains("jay1"));
+        accessUsersMock.insertUser(jay);
+        accessUsersMock.insertUser(aaron);
+
+        //make sure we insert it
+        when(userPersistenceMock.getUser("jay")).thenReturn(jay);
+        when(userPersistenceMock.getUser("aaron")).thenReturn(aaron);
+
+
+        final ArrayList<String> users = new ArrayList<>();
+        users.add(jay.getUsername());
+        users.add(aaron.getUsername());
+
+        when(userPersistenceMock.getAllUsers()).thenReturn(users);
+        assertEquals(accessUsersMock.getUsersByUsername(), users);
+
+        //verify all method calls
+        verify(userPersistenceMock).insertNewUser(jay);
+        verify(userPersistenceMock).insertNewUser(aaron);
     }
 
     @Test
-    public void testMessageFields() throws DBUsernameExistsException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, MessageException, DBUsernameNotFoundException, UserNotFoundException {
+    public void testMessageFields() throws DBUsernameExistsException, ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, MessageException, DBUsernameNotFoundException
+    {
         String username =  "user1";
         String username1 = "user2";
-        String username2 = "user3";
         User user1 = new User("user 1", username, "password");
         User user2 = new User("user 2", username1, "password");
-        User user3 = new User("user 2", username1, "password");
 
         when(userPersistenceMock.insertNewUser(user1)).thenReturn(user1);
         when(userPersistenceMock.insertNewUser(user2)).thenReturn(user2);
@@ -130,16 +151,17 @@ public class AccessUsersTest {
         Message msg1 = new Message("hello back to you mr user1", user2, user1);
         Message msg2 = new Message("jemepelle user1", user1, user2);
 
-        userPersistenceMock.addMessage(msg);
-        userPersistenceMock.addMessage(msg1);
-        userPersistenceMock.addMessage(msg2);
-
-//        ArrayList<Message> messages = accessUsersMock.getMessages(user1,user2);
-        //??how to test return of arraylist
+        accessUsersMock.addMessage(msg);
+        accessUsersMock.addMessage(msg1);
+        accessUsersMock.addMessage(msg2);
 
         ArrayList<Message> messages = userPersistenceMock.getMessages(user1,user2);
+        messages.add(msg);
+        messages.add(msg1);
+        messages.add(msg2);
 
         doReturn(messages).when(userPersistenceMock).getMessages(user1,user2);
+        assertEquals(messages,accessUsersMock.getMessages(user1,user2));
 
         //make verify that all the functions are called-->verify(insert)
         verify(userPersistenceMock).insertNewUser(user1);
@@ -150,7 +172,9 @@ public class AccessUsersTest {
     }
 
     @Test
-    public void testDifferentUsersMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
+    public void testDifferentUsersMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException
+    {
+
         String username =  "user1";
         String username1 = "user2";
         String username2 = "user3";
@@ -173,12 +197,32 @@ public class AccessUsersTest {
         Message msg3 = new Message("hello good sir *tips fedora*", user2, user3);
 
 
-        userPersistenceMock.addMessage(msg);
-        userPersistenceMock.addMessage(msg1);
-        userPersistenceMock.addMessage(msg2);
-        userPersistenceMock.addMessage(msg3);
+        accessUsersMock.addMessage(msg);
+        accessUsersMock.addMessage(msg1);
+        accessUsersMock.addMessage(msg2);
+        accessUsersMock.addMessage(msg3);
 
-        doReturn(msg).when(userPersistenceMock).getMessages(user1,user2);
+
+        ArrayList<Message> messageArrayList = new ArrayList<>();
+        messageArrayList.add(msg);
+        when(userPersistenceMock.getMessages(user1,user2)).thenReturn(messageArrayList);
+
+        assertEquals(messageArrayList,accessUsersMock.getMessages(user1,user2));
+
+        messageArrayList = new ArrayList<>();
+        messageArrayList.add(msg1);
+        messageArrayList.add(msg2);
+
+        when(userPersistenceMock.getMessages(user1,user3)).thenReturn(messageArrayList);
+        assertEquals(messageArrayList, accessUsersMock.getMessages(user1,user3));
+        messageArrayList = new ArrayList<>();
+        messageArrayList.add(msg3);
+
+        //make sure that you are
+        doReturn(messageArrayList).when(userPersistenceMock).getMessages(user2,user3);
+        doReturn(messageArrayList).when(userPersistenceMock).getMessages(user3,user2);
+        assertEquals(messageArrayList, accessUsersMock.getMessages(user2,user3));
+
 
 
         //check messages between to make sure that is it is going to right user

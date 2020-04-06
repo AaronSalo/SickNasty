@@ -42,7 +42,7 @@ public class CreateCommunityActivity extends AppCompatActivity {
 
         try {
             currUser = users.getUser(loggerInUser);
-        } catch (UserNotFoundException | DBUsernameNotFoundException e) {
+        } catch (DBUsernameNotFoundException e) {
             Toast.makeText(CreateCommunityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

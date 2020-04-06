@@ -74,7 +74,7 @@ public class LoggedUserPageActivity extends AppCompatActivity {
 
             postAdapter = new PostAdapter(this, R.layout.activity_post, pagePosts);
             numOfPosts = pagePosts.size();
-        } catch (UserNotFoundException | DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
+        } catch (DBUsernameNotFoundException | DBPageNameNotFoundException | NoValidPageException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

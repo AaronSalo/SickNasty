@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class AccessPagesIT {
 
@@ -137,22 +135,25 @@ public class AccessPagesIT {
     @Test
     public void testFollowPages() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, DBPageNameExistsException, DBUserAlreadyFollowingException, DBPageNameNotFoundException, InvalidCommunityPageNameException {
         User user = new User("Jay K","jay2","1234567");
-        Page personalPage1 = new CommunityPage(user,"COMPUTER");
+        Page communityPage = new CommunityPage(user,"COMPUTER");
 
-        users.insertUser(user);
         pages.insertNewPage(page);
-        pages.insertNewPage(user.getPersonalPage());
-        pages.insertNewPage(personalPage1);
+        users.insertUser(user);
+        pages.insertNewPage(communityPage);
 
-        pages.addFollower(personalPage1,jay);
-        //pages.addFollower(personalPage1,user);
+        pages.addFollower(communityPage, jay);
+        pages.addFollower(communityPage, user);
         pages.addFollower(page,user);
 
-        assertEquals(pages.getPage("COMPUTER").getFollowers().size(),1);
-        assertEquals(pages.getPage("COMPUTER").getFollowers().get(1), jay);
 
-        assertEquals(pages.getPage("jay").getFollowers().size(),1);
-        assertEquals(pages.getPage("jay").getFollowers().get(0),user);
+        assertEquals(communityPage.getFollowers().size(),3);
+        assertEquals(page.getFollowers().size(),2);
+
+        assertEquals(communityPage.getFollowers().get(0), user);
+        assertEquals(communityPage.getFollowers().get(1), jay);
+
+        assertEquals(page.getFollowers().get(0), jay);
+        assertEquals(page.getFollowers().get(1), user);
 
     }
 
