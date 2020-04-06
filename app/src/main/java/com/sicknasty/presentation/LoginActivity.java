@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sicknasty.R;
 import com.sicknasty.application.Service;
 import com.sicknasty.business.AccessUsers;
-import com.sicknasty.objects.Exceptions.UserNotFoundException;
 import com.sicknasty.objects.User;
 import com.sicknasty.persistence.exceptions.DBUsernameNotFoundException;
 
@@ -22,7 +21,7 @@ import java.io.File;
 
 
 public class LoginActivity extends AppCompatActivity {
-    AccessUsers userHandler;
+    private AccessUsers userHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

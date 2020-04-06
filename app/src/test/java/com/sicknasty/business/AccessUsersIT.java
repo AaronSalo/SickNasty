@@ -192,8 +192,8 @@ public class AccessUsersIT {
 
 
     @Test(expected = MessageException.class)
-    public void testValidMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
-
+    public void testValidMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException
+    {
             String username = "user1";
             String username1 = "user2";
             User user1 = new User("user 1", username, "password");
@@ -214,9 +214,37 @@ public class AccessUsersIT {
     }
 
     @Test
-    public void testDifferentUsersMessage(){
+    public void testDifferentUsersMessage() throws ChangeNameException, PasswordErrorException, UserCreationException, ChangeUsernameException, DBUsernameExistsException, MessageException {
+        String username = "user1";
+        String username1 = "user2";
+        String username2 = "user3";
 
+        User user1 = new User("user 1", username, "password");
+        User user2 = new User("user 2", username1, "password");
+        User user3 = new User("user 3", username2, "password");
 
+        users.insertUser(user1);
+        users.insertUser(user2);
+        users.insertUser(user3);
+
+        Message msg = new Message("hello good sir *tips fedora*", user1, user2);
+        Message msg1 = new Message("hello back to you mr user1", user3, user1);
+        Message msg2 = new Message("jemepelle user1", user2, user3);
+        Message msg3 = new Message("jemepelle user1", user1, user3);
+
+        users.addMessage(msg);
+        users.addMessage(msg1);
+        users.addMessage(msg2);
+        users.addMessage(msg3);
+
+        assertEquals(1 , users.getMessages(user1,user2).size());
+        assertEquals(2 , users.getMessages(user1,user3).size());
+        assertEquals(1 , users.getMessages(user3,user2).size());
+
+        assertEquals(msg.getMsg() , users.getMessages(user1,user2).get(0).getMsg());
+        assertEquals(msg1.getMsg() , users.getMessages(user3,user1).get(0).getMsg());
+        assertEquals(msg3.getMsg() , users.getMessages(user3,user1).get(1).getMsg());
+        assertEquals(msg2.getMsg() , users.getMessages(user2,user3).get(0).getMsg());
 
     }
 }

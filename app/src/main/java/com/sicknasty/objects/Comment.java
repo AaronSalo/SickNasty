@@ -29,4 +29,19 @@ public class Comment {
 
     public long getTimePosted() { return timePosted; }
 
+    @Override
+    public boolean equals(Object obj) {
+        Comment otherComment = (Comment) obj;
+
+        String thisCommentUsername = this.user.getUsername();
+        String otherCommentUsername = otherComment.getUser().getUsername();
+
+        String otherContent = otherComment.getContent();
+
+        int otherPostID = otherComment.getPostId();
+
+        return thisCommentUsername.equals(otherCommentUsername) &&
+                this.content.equals(otherContent) &&
+                this.postId == otherPostID;
+    }
 }
