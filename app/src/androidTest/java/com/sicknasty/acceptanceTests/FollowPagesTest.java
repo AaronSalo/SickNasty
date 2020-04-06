@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -119,7 +120,7 @@ public class FollowPagesTest {
         onView(withId(R.id.followButton)).perform(click());
 
 
-        SystemClock.sleep(5000);
+        SystemClock.sleep(2000);
         //got to homw and play with it more searches and text matching in search_view
         onView(withId(R.id.home)).perform(click());
         SystemClock.sleep(1000);
@@ -128,22 +129,9 @@ public class FollowPagesTest {
         SystemClock.sleep(1000);
 
         //trying to hit follow multiple times tells you that u have alreaady followed
-        onView(withId(R.id.search_view)).perform(typeText("JA"),closeSoftKeyboard());
+        onView(withId(R.id.search_view)).perform(typeText("te"),closeSoftKeyboard());
         SystemClock.sleep(1000);
-        onView(allOf(withText("JAY$$"),isDisplayed())).perform(click());
-
-        SystemClock.sleep(1000);
-        onView(withId(R.id.followButton)).perform(click());
-
-        SystemClock.sleep(5000);
-
-        pressBack();
-        SystemClock.sleep(1000);
-        Espresso.closeSoftKeyboard();
-        SystemClock.sleep(1000);
-
         onView(allOf(withText("texanwits"),isDisplayed())).perform(click());
-
         SystemClock.sleep(1000);
         onView(withId(R.id.followButton)).perform(click());
 

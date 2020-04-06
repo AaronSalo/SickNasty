@@ -134,10 +134,11 @@
         android:id="@+id/home"
         android:layout_width="175dp"
         android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="120dp"
         android:background="@drawable/button_border"
         android:backgroundTint="@android:color/darker_gray"
-        android:text="Home"
+        android:text="Go to Home"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
